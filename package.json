@@ -1,0 +1,24 @@
+{
+  "name": "electron-react-rspack",
+  "version": "0.0.1",
+  "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
+  "main": "./src/main/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "electron",
+    "boilerplate",
+    "react",
+    "typescript",
+    "ts",
+    "rspack"
+  ],
+  "author": "Ryan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^26.2.4",
+    "eslint": "^8.50.0",
+    "typescript": "^5.2.2"
+  }
+}
