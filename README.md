@@ -30,8 +30,8 @@ pnpm package
 
 - [x] typescript
 - [x] eslint
-- [] rspack
-- [] electron-log
+- [x] rspack
+- [x] electron-log
 - [] electron-debug
 - [] sass
 - [] electron-builder

@@ -20,6 +20,7 @@
   ],
   "devDependencies": {
     "@rspack/cli": "^0.3.6",
+    "@svgr/webpack": "^8.1.0",
     "@types/fs-extra": "^11.0.2",
     "@types/node": "^20.8.2",
     "@types/react": "^18.2.24",
