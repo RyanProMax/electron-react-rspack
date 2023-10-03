@@ -26,6 +26,17 @@ To generate the project package based on the OS you're running on, just run:
 pnpm package
 ```
 
+## Features
+
+- [x] typescript
+- [x] eslint
+- [] rspack
+- [] electron-log
+- [] electron-debug
+- [] sass
+- [] electron-builder
+- [] electron-updater
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

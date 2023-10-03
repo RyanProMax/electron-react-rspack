@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Electron: Main",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "start:main"
+      ],
+      "env": {
+        "MAIN_ARGS": "--remote-debugging-port=9527"
+      }
+    },
+    {
+      "name": "Electron: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9527,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 15000
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Electron: All",
+      "configurations": [
+        "Electron: Main",
+        "Electron: Renderer"
+      ]
+    }
+  ]
+}

@@ -1,10 +1,13 @@
 {
   "name": "electron-react-rspack",
+  "author": "Ryan",
   "version": "0.0.1",
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "main": "./src/main/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ."
   },
   "keywords": [
     "electron",
@@ -14,11 +17,34 @@
     "ts",
     "rspack"
   ],
-  "author": "Ryan",
-  "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.8.2",
+    "@types/react": "^18.2.24",
+    "@types/react-dom": "^18.2.8",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "cross-env": "^7.0.3",
     "electron": "^26.2.4",
+    "electronmon": "^2.0.2",
     "eslint": "^8.50.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  }
+  },
+  "dependencies": {
+    "electron-log": "^4.4.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devEngines": {
+    "node": ">=16.x",
+    "npm": ">=8.x"
+  },
+  "electronmon": {
+    "patterns": [
+      "!**/**",
+      "src/main/**"
+    ],
+    "logLevel": "quiet"
+  },
+  "license": "MIT"
 }
