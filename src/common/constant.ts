@@ -3,6 +3,6 @@ export const PAGES = {
   SUB_PAGE: 'sub-page.html',
 };
 
-export const BRIDGE_CHANNEL = {
-  CREATE_WINDOW: 'CREATE_WINDOW',
-};
+export enum CHANNELS {
+  CREATE_WINDOW = 'CREATE_WINDOW',
+}

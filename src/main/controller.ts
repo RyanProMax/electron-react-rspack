@@ -1,21 +1,21 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log';
 
 import { createWindow } from '../common/utils';
-import { PAGES } from '../common/constant';
+import { CHANNELS, PAGES } from '../common/constant';
 
 export class Controller {
-  logger = log;
   mainWindow: BrowserWindow | null = null
 
   async init() {
     try {
-      this.logger.info('[main] init app');
+      log.info('[main] init app');
 
       app.on('window-all-closed', () => {
         if (process.platform !== 'darwin') app.quit();
       });
 
+      this.register();
       await app.whenReady();
       this.mainWindow = createWindow({
         htmlFileName: PAGES.MAIN,
@@ -37,5 +37,11 @@ export class Controller {
     } catch (e) {
       log.error(e);
     }
+  }
+
+  register() {
+    ipcMain.handle(CHANNELS.CREATE_WINDOW, async (_, ...args: Parameters<typeof createWindow>) => {
+      return Boolean(createWindow(args[0]));
+    });
   }
 }

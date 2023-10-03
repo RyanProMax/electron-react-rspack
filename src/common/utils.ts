@@ -4,12 +4,12 @@ import { URL } from 'url';
 
 import { port } from './env';
 
-const RESOURCES_PATH = app.isPackaged
-  ? path.join(process.resourcesPath, 'assets')
-  : path.join(__dirname, '../../assets');
-
 export function getAssetPath(...paths: string[]): string {
-  return path.join(RESOURCES_PATH, ...paths);
+  const resourcePath = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, '../../assets');
+
+  return path.join(resourcePath, ...paths);
 }
 
 export function getHtmlPath(htmlFileName: string) {
@@ -24,7 +24,7 @@ export function getHtmlPath(htmlFileName: string) {
 export function getPreloadPath(): string {
   return app.isPackaged
     ? path.join(__dirname, 'preload.js')
-    : path.join(__dirname, '../preload/dll/preload.js')
+    : path.resolve(__dirname, '../preload/dist/preload.js')
 }
 
 export const removeFileExtname = (fileName: string) => {

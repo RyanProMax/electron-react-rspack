@@ -1,7 +1,13 @@
-export default () => {
-  const openWindow = () => {
+import { CHANNELS, PAGES } from '../../common/constant';
 
-  };
+export default () => {
+  const openWindow = () =>
+    window.__ELECTRON__.ipcRenderer.invoke(
+      CHANNELS.CREATE_WINDOW,
+      {
+        htmlFileName: PAGES.SUB_PAGE,
+      }
+    );
 
   return (
     <div>

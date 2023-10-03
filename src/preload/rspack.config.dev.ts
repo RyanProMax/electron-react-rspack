@@ -3,15 +3,13 @@ import path from 'path';
 
 const configuration: Configuration = {
   mode: 'development',
+  target: 'electron-preload',
   entry: {
     preload: path.join(__dirname, 'index.ts'),
   },
   output: {
-    path: path.join(__dirname, 'dll'),
+    path: path.join(__dirname, 'dist'),
     filename: 'preload.js',
-    library: {
-      type: 'umd',
-    },
   },
 };
 
