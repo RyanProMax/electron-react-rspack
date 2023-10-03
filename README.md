@@ -2,6 +2,8 @@
 
 An Electron boilerplate including TypeScript, React, Rspack and ESLint.
 
+> Reference [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
+
 ## Installation
 
 Use pnpm in order to install all dependencies.
@@ -12,10 +14,12 @@ pnpm install
 
 ## Usage
 
-Just run `start` script.
-
 ```bash
+# use `pnpm start` to start renderer process.
 pnpm start
+
+# and use `pnpm start:main` to start main process.
+pnpm start:main
 ```
 
 ## Packaging
@@ -32,11 +36,12 @@ pnpm package
 - [x] eslint
 - [x] rspack
 - [x] electron-log
-- [] electron-debug
-- [] sass
-- [] electron-builder
-- [] electron-updater
+- [ ] electron-debug
+- [ ] sass
+- [ ] electron-builder
+- [ ] electron-updater
+- [ ] CI/CD
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/mit/) © [Ryan](https://github.com/RyanProMax)

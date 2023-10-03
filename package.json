@@ -5,7 +5,7 @@
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "main": "./src/main/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run start:preload && npm run start:renderer",
     "start:preload": "cross-env NODE_ENV=development rspack --config ./src/preload/rspack.config.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development rspack serve --config ./src/renderer/rspack.config.dev.ts",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ."
