@@ -1,6 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 import log from 'electron-log';
-import { getAssetPath, getHtmlPath } from './utils';
+
+import { createWindow } from '../common/utils';
+import { PAGES } from '../common/constant';
 
 export class Controller {
   logger = log;
@@ -15,16 +17,16 @@ export class Controller {
       });
 
       await app.whenReady();
-      this.mainWindow = this.createWindow({
-        htmlFileName: 'index.html',
+      this.mainWindow = createWindow({
+        htmlFileName: PAGES.MAIN,
         onClose: () => {
           this.mainWindow = null;
         }
       });
       app.on('activate', () => {
         if (this.mainWindow === null) {
-          this.mainWindow = this.createWindow({
-            htmlFileName: 'index.html',
+          this.mainWindow = createWindow({
+            htmlFileName: PAGES.MAIN,
             onClose: () => {
               this.mainWindow = null;
             }
@@ -35,35 +37,5 @@ export class Controller {
     } catch (e) {
       log.error(e);
     }
-  }
-
-  createWindow({ htmlFileName, minimize = false, onClose = () => {} }: {
-    htmlFileName: string,
-    minimize?: boolean,
-    onClose?: () => unknown
-  }) {
-    const browserWindow = new BrowserWindow({
-      show: false,
-      width: 1024,
-      height: 728,
-      icon: getAssetPath('icon.png'),
-      webPreferences: {
-        // preload: getPreloadPath(),
-      },
-    });
-
-    browserWindow.loadURL(getHtmlPath(htmlFileName));
-
-    browserWindow.on('ready-to-show', () => {
-      if (minimize) {
-        browserWindow.minimize();
-      } else {
-        browserWindow.show();
-      }
-    });
-
-    browserWindow.on('closed', onClose);
-
-    return browserWindow;
   }
 }

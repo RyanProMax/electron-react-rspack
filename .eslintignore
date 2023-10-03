@@ -1,5 +1,8 @@
 node_modules
 
+# ignore html
+*.html
+
 # ignore markdown or use eslint-plugin-markdown
 *.md
 
@@ -8,3 +11,5 @@ node_modules
 
 release/app/dist
 release/build
+
+src/preload/dll

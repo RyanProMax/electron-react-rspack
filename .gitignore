@@ -6,3 +6,5 @@ node_modules
 
 release/app/dist
 release/build
+
+src/preload/dll
