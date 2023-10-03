@@ -1,4 +1,4 @@
-import { CHANNELS, PAGES } from '../../common/constant';
+import { Channels, Pages } from '../../common/constant';
 
 import Icon from '../../../assets/icon.svg';
 import './Main.css'
@@ -6,9 +6,9 @@ import './Main.css'
 export default () => {
   const openWindow = () =>
     window.__ELECTRON__.ipcRenderer.invoke(
-      CHANNELS.CREATE_WINDOW,
+      Channels.CreateWindow,
       {
-        htmlFileName: PAGES.SUB_PAGE,
+        htmlFileName: Pages.Sub,
       }
     );
 

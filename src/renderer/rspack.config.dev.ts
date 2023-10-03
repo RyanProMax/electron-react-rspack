@@ -2,7 +2,7 @@ import { Configuration } from '@rspack/cli';
 import path from 'path';
 import fse from 'fs-extra';
 
-import { PAGES } from '../common/constant';
+import { Pages } from '../common/constant';
 import { port } from '../common/env';
 import { removeFileExtname } from '../common/utils';
 
@@ -27,12 +27,12 @@ const configuration: Configuration = {
     html: [
       {
         template: htmlTemplate,
-        filename: PAGES.MAIN,
+        filename: Pages.Main,
         chunks: ['main'],
       },
       {
         template: htmlTemplate,
-        filename: PAGES.SUB_PAGE,
+        filename: Pages.Sub,
         chunks: ['sub'],
       }
     ],

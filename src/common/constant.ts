@@ -1,8 +1,8 @@
-export const PAGES = {
-  MAIN: 'main.html',
-  SUB_PAGE: 'sub-page.html',
-};
+export enum Pages {
+  Main = 'main.html',
+  Sub = 'sub.html',
+}
 
-export enum CHANNELS {
-  CREATE_WINDOW = 'CREATE_WINDOW',
+export enum Channels {
+  CreateWindow = 'CreateWindow',
 }

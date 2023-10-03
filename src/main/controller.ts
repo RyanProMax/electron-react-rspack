@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log';
 
 import { createWindow } from '../common/utils';
-import { CHANNELS, PAGES } from '../common/constant';
+import { Channels, Pages } from '../common/constant';
 
 export class Controller {
   mainWindow: BrowserWindow | null = null
@@ -12,13 +12,15 @@ export class Controller {
       log.info('[main] init app');
 
       app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') app.quit();
+        if (process.platform !== 'darwin') {
+          app.quit();
+        }
       });
 
       this.register();
       await app.whenReady();
       this.mainWindow = createWindow({
-        htmlFileName: PAGES.MAIN,
+        htmlFileName: Pages.Main,
         onClose: () => {
           this.mainWindow = null;
         }
@@ -26,7 +28,7 @@ export class Controller {
       app.on('activate', () => {
         if (this.mainWindow === null) {
           this.mainWindow = createWindow({
-            htmlFileName: PAGES.MAIN,
+            htmlFileName: Pages.Main,
             onClose: () => {
               this.mainWindow = null;
             }
@@ -40,7 +42,7 @@ export class Controller {
   }
 
   register() {
-    ipcMain.handle(CHANNELS.CREATE_WINDOW, async (_, ...args: Parameters<typeof createWindow>) => {
+    ipcMain.handle(Channels.CreateWindow, async (_, ...args: Parameters<typeof createWindow>) => {
       return Boolean(createWindow(args[0]));
     });
   }
