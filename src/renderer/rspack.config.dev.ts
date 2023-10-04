@@ -18,7 +18,7 @@ const getEntryPath = () => {
   });
 
   return entry;
-}
+};
 
 const configuration: Configuration = {
   mode: 'development',

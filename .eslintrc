@@ -9,7 +9,8 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "semi": 2
     // "global-require": "off",
     // "import/no-dynamic-require": "off"
   }

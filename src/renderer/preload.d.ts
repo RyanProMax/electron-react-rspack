@@ -1,9 +1,10 @@
-import { ElectronHandler } from '../preload/index';
+import { __ELECTRON__, __ENV__ } from '../preload/index';
 
 declare global {
   interface Window {
-    __ELECTRON__: ElectronHandler;
+    __ELECTRON__: __ELECTRON__;
+    __ENV__: __ENV__;
   }
 }
 
-export {};
+export { };

@@ -24,12 +24,12 @@ export function getHtmlPath(htmlFileName: string) {
 export function getPreloadPath(): string {
   return app.isPackaged
     ? path.join(__dirname, 'preload.js')
-    : path.resolve(__dirname, '../preload/dist/preload.js')
+    : path.resolve(__dirname, '../preload/dist/preload.js');
 }
 
 export const removeFileExtname = (fileName: string) => {
-  return path.basename(fileName, path.extname(fileName))
-}
+  return path.basename(fileName, path.extname(fileName));
+};
 
 export const createWindow = ({ htmlFileName, minimize = false, onClose = () => {} }: {
   htmlFileName: string,
@@ -59,4 +59,4 @@ export const createWindow = ({ htmlFileName, minimize = false, onClose = () => {
   browserWindow.on('closed', onClose);
 
   return browserWindow;
-}
+};
