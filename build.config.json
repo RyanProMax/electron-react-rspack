@@ -1,0 +1,28 @@
+{
+  "productName": "electron-react-rspack",
+  "appId": "electron-react-rspack",
+  "icon": "assets/logo.ico",
+  "copyright": "Copyright © 2023 by Ryan",
+  "files": [
+    "build"
+  ],
+  "directories": {
+    "output": "release/${version}",
+    "buildResources": "assets"
+  },
+  "asar": false,
+  "nsis": {
+    "artifactName": "${productName}-${version}.${ext}",
+    "perMachine": true,
+    "oneClick": false,
+    "warningsAsErrors": false,
+    "deleteAppDataOnUninstall": true,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
+  "win": {
+    "target": "nsis"
+  }
+}

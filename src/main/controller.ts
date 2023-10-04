@@ -5,7 +5,7 @@ import { createWindow } from '../common/utils';
 import { Channels, Pages } from '../common/constant';
 
 export class Controller {
-  mainWindow: BrowserWindow | null = null
+  mainWindow: BrowserWindow | null = null;
 
   async init() {
     try {

@@ -5,8 +5,9 @@
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "npm",
       "runtimeArgs": [
+        "run",
         "start:main"
       ],
       "env": {

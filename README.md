@@ -37,7 +37,7 @@ pnpm package
 - [x] rspack
 - [x] electron-log
 - [x] sass
-- [ ] electron-builder
+- [x] electron-builder
 - [ ] electron-updater
 - [ ] CI/CD
 

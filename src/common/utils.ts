@@ -18,13 +18,13 @@ export function getHtmlPath(htmlFileName: string) {
     url.pathname = htmlFileName;
     return url.href;
   }
-  return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
+  return `file://${path.resolve(__dirname, './renderer/', htmlFileName)}`;
 }
 
 export function getPreloadPath(): string {
   return app.isPackaged
     ? path.join(__dirname, 'preload.js')
-    : path.resolve(__dirname, '../preload/dist/preload.js');
+    : path.join(process.cwd(), 'build/preload.js');
 }
 
 export const removeFileExtname = (fileName: string) => {

@@ -4,7 +4,7 @@ import { merge } from 'lodash';
 import baseConfiguration from './rspack.config.base';
 
 const devConfiguration: Configuration = {
-  mode: 'development',
+  mode: 'production',
 };
 
 export default merge(baseConfiguration, devConfiguration);

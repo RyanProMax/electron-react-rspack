@@ -3,12 +3,20 @@
   "author": "Ryan",
   "version": "0.0.1",
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
-  "main": "./src/main/index.ts",
+  "main": "build/loader.js",
   "scripts": {
     "start": "npm run start:preload && npm run start:renderer",
     "start:preload": "cross-env NODE_ENV=development rspack --config ./src/preload/rspack.config.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development rspack serve --config ./src/renderer/rspack.config.dev.ts",
-    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ."
+    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ./src/main/index.ts",
+    "build:preload": "cross-env NODE_ENV=production rspack --config ./src/preload/rspack.config.prod.ts",
+    "build:renderer": "cross-env NODE_ENV=production rspack --config ./src/renderer/rspack.config.prod.ts",
+    "build:main": "cross-env NODE_ENV=production rspack --config ./src/main/rspack.config.prod.ts",
+    "build": "npm run clean && concurrently \"npm run build:main\" \"npm run build:preload\" \"npm run build:renderer\"",
+    "clean": "ts-node ./scripts/clean.ts",
+    "pack:x86": "electron-builder -w --ia32 -c ./build.config.json",
+    "pack:x64": "electron-builder -w --x64 -c ./build.config.json",
+    "pack:mac": "electron-builder --mac -c ./build.config.json"
   },
   "keywords": [
     "electron",
@@ -28,21 +36,22 @@
     "@types/react-dom": "^18.2.8",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "concurrently": "^8.2.1",
     "cross-env": "^7.0.3",
     "electron": "^26.2.4",
+    "electron-builder": "^24.6.4",
+    "electron-log": "^4.4.8",
     "electronmon": "^2.0.2",
     "eslint": "^8.50.0",
+    "fs-extra": "^11.1.1",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5",
     "sass": "^1.68.0",
     "sass-loader": "^13.3.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "electron-log": "^4.4.8",
-    "fs-extra": "^11.1.1",
-    "lodash": "^4.17.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "devEngines": {
     "node": ">=16.x",
