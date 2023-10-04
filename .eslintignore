@@ -3,6 +3,9 @@ node_modules
 # ignore html
 *.html
 
+# ignore json
+*.json
+
 # ignore markdown or use eslint-plugin-markdown
 *.md
 

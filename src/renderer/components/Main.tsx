@@ -1,7 +1,7 @@
 import { Channels, Pages } from '../../common/constant';
 
 import Icon from '../../../assets/icon.svg';
-import './Main.css';
+import '../styles/common.scss';
 
 export default () => {
   const openWindow = () =>

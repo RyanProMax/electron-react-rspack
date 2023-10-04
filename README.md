@@ -36,8 +36,7 @@ pnpm package
 - [x] eslint
 - [x] rspack
 - [x] electron-log
-- [ ] electron-debug
-- [ ] sass
+- [x] sass
 - [ ] electron-builder
 - [ ] electron-updater
 - [ ] CI/CD
