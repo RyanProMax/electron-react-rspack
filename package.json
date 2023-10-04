@@ -16,7 +16,8 @@
     "clean": "ts-node ./scripts/clean.ts",
     "pack:x86": "electron-builder -w --ia32 -c ./build.config.json",
     "pack:x64": "electron-builder -w --x64 -c ./build.config.json",
-    "pack:mac": "electron-builder --mac -c ./build.config.json"
+    "pack:mac": "electron-builder --mac -c ./build.config.json",
+    "package": "npm run build && electron-builder build -c ./build.config.json --publish never"
   },
   "keywords": [
     "electron",
