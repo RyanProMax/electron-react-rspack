@@ -39,7 +39,7 @@ pnpm package
 - [x] sass
 - [x] electron-builder
 - [ ] electron-updater
-- [ ] CI/CD
+- [x] CI/CD: auto build and release when push tag
 
 ## License
 

@@ -1,6 +1,6 @@
 {
-  "productName": "electron-react-rspack",
-  "appId": "electron-react-rspack",
+  "productName": "ElectronReactRspack",
+  "appId": "ElectronReactRspack",
   "icon": "assets/logo.ico",
   "copyright": "Copyright © 2023 by Ryan",
   "files": [
@@ -23,6 +23,14 @@
     "createStartMenuShortcut": true
   },
   "win": {
-    "target": "nsis"
-  }
+    "target": "nsis",
+    "verifyUpdateCodeSignature": true
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "RyanProMax",
+      "repo": "electron-react-rspack"
+    }
+  ]
 }

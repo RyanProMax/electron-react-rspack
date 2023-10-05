@@ -47,6 +47,9 @@ devDependencies:
   electron-log:
     specifier: ^4.4.8
     version: registry.npmmirror.com/electron-log@4.4.8
+  electron-updater:
+    specifier: ^6.1.4
+    version: registry.npmmirror.com/electron-updater@6.1.4
   electronmon:
     specifier: ^2.0.2
     version: registry.npmmirror.com/electronmon@2.0.2
@@ -4591,6 +4594,23 @@ packages:
     version: 1.4.539
     dev: true
 
+  registry.npmmirror.com/electron-updater@6.1.4:
+    resolution: {integrity: sha512-yYAJc6RQjjV4WtInZVn+ZcLyXRhbVXoomKEfUUwDqIk5s2wxzLhWaor7lrNgxODyODhipjg4SVPMhJHi5EnsCA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron-updater/-/electron-updater-6.1.4.tgz}
+    name: electron-updater
+    version: 6.1.4
+    dependencies:
+      builder-util-runtime: registry.npmmirror.com/builder-util-runtime@9.2.1
+      fs-extra: registry.npmmirror.com/fs-extra@10.1.0
+      js-yaml: registry.npmmirror.com/js-yaml@4.1.0
+      lazy-val: registry.npmmirror.com/lazy-val@1.0.5
+      lodash.escaperegexp: registry.npmmirror.com/lodash.escaperegexp@4.1.2
+      lodash.isequal: registry.npmmirror.com/lodash.isequal@4.5.0
+      semver: registry.npmmirror.com/semver@7.5.4
+      tiny-typed-emitter: registry.npmmirror.com/tiny-typed-emitter@2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   registry.npmmirror.com/electron@26.2.4:
     resolution: {integrity: sha512-weMUSMyDho5E0DPQ3breba3D96IxwNvtYHjMd/4/wNN3BdI5s3+0orNnPVGJFcLhSvKoxuKUqdVonUocBPwlQA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron/-/electron-26.2.4.tgz}
     name: electron
@@ -6150,6 +6170,18 @@ packages:
   registry.npmmirror.com/lodash.difference@4.5.0:
     resolution: {integrity: sha512-dS2j+W26TQ7taQBGN8Lbbq04ssV3emRw4NY58WErlTO29pIqS0HmoT5aJ9+TUQ1N3G+JOZSji4eugsWwGp9yPA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash.difference/-/lodash.difference-4.5.0.tgz}
     name: lodash.difference
+    version: 4.5.0
+    dev: true
+
+  registry.npmmirror.com/lodash.escaperegexp@4.1.2:
+    resolution: {integrity: sha512-TM9YBvyC84ZxE3rgfefxUWiQKLilstD6k7PTGt6wfbtXF8ixIJLOL3VYyV/z+ZiPLsVxAsKAFVwWlWeb2Y8Yyw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz}
+    name: lodash.escaperegexp
+    version: 4.1.2
+    dev: true
+
+  registry.npmmirror.com/lodash.isequal@4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz}
+    name: lodash.isequal
     version: 4.5.0
     dev: true
 
@@ -7845,6 +7877,12 @@ packages:
     resolution: {integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/thunky/-/thunky-1.1.0.tgz}
     name: thunky
     version: 1.1.0
+    dev: true
+
+  registry.npmmirror.com/tiny-typed-emitter@2.1.0:
+    resolution: {integrity: sha512-qVtvMxeXbVej0cQWKqVSSAHmKZEHAvxdF8HEUBFWts8h+xEo5m/lEiPakuyZ3BnCBjOD8i24kzNOiOLLgsSxhA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tiny-typed-emitter/-/tiny-typed-emitter-2.1.0.tgz}
+    name: tiny-typed-emitter
+    version: 2.1.0
     dev: true
 
   registry.npmmirror.com/tmp-promise@3.0.3:
