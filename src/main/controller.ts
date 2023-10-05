@@ -22,7 +22,7 @@ export class Controller {
 
       this.register();
       await app.whenReady();
-      this.checkUpdate();
+      await this.checkUpdate();
 
       this.mainWindow = createWindow({
         htmlFileName: Pages.Main,
@@ -52,44 +52,52 @@ export class Controller {
     });
   }
 
-  checkUpdate() {
-    if (isDev) {
-      autoUpdater.updateConfigPath = path.join(
-        process.cwd(),
-        'test/dev-app-update.yml'
-      );
-      autoUpdater.forceDevUpdateConfig = true;
-    }
+  checkUpdate(): Promise<boolean> {
+    return new Promise(r => {
+      if (isDev) {
+        autoUpdater.updateConfigPath = path.join(
+          process.cwd(),
+          'test/dev-app-update.yml'
+        );
+        autoUpdater.forceDevUpdateConfig = true;
+      }
 
-    autoUpdater.autoDownload = false;
-    autoUpdater.logger = log;
+      autoUpdater.autoDownload = false;
+      autoUpdater.logger = log;
 
-    autoUpdater.on('error', console.error);
+      autoUpdater.on('error', (...args) => {
+        log.error(...args);
+        r(false);
+      });
 
-    autoUpdater.on('checking-for-update', (...args) => {
-      console.log('checking-for-update', args);
+      autoUpdater.on('checking-for-update', (...args) => {
+        console.log('checking-for-update', args);
+      });
+
+      autoUpdater.on('update-available', (versionAvailable) => {
+        log.info('[main] update-available', versionAvailable);
+        const confirmUpdate = true;
+        if (confirmUpdate) {
+          autoUpdater.downloadUpdate();
+        } else {
+          r(false);
+        }
+      });
+
+      autoUpdater.on('update-not-available', (updateVersionNotAvailable) => {
+        log.info('[main] update-not-available', updateVersionNotAvailable);
+      });
+
+      autoUpdater.on('download-progress', (progress) => {
+        console.log('download-progress', progress);
+      });
+
+      autoUpdater.on('update-downloaded', (updateDownloadedEvent) => {
+        log.info('update-downloaded', updateDownloadedEvent);
+        r(true);
+      });
+
+      autoUpdater.checkForUpdates();
     });
-
-    autoUpdater.on('update-available', (...args) => {
-      console.log('update-available', args);
-
-      // 也可以默认直接更新，二选一即可
-      // autoUpdater.downloadUpdate();
-      // sendUpdateMessage(message.updateAva);
-    });
-
-    autoUpdater.on('update-not-available', (...args) => {
-      console.log('update-not-available', args);
-    });
-
-    autoUpdater.on('download-progress', (...args) => {
-      console.log('download-progress', args);
-    });
-
-    autoUpdater.on('update-downloaded', (...args) => {
-      console.log('update-downloaded', args);
-    });
-
-    autoUpdater.checkForUpdatesAndNotify();
   }
 }
