@@ -1,16 +1,21 @@
+import log from 'electron-log/renderer';
 import { Channels, Pages } from '../../common/constant';
 
 import Icon from '../../../assets/icon.svg';
 import '../styles/common.scss';
 
+const homeLogger = log.scope('home');
+
 export default () => {
-  const openWindow = () =>
+  const openWindow = () => {
+    homeLogger.info('open sub window');
     window.__ELECTRON__.ipcRenderer.invoke(
       Channels.CreateWindow,
       {
         htmlFileName: Pages.Sub,
       }
     );
+  };
 
   return (
     <div>

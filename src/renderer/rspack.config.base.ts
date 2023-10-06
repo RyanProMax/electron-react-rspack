@@ -20,8 +20,8 @@ const baseConfiguration: Configuration = {
     html: [
       {
         template: htmlTemplate,
-        filename: Pages.Main,
-        chunks: ['main'],
+        filename: Pages.Home,
+        chunks: ['home'],
       },
       {
         template: htmlTemplate,

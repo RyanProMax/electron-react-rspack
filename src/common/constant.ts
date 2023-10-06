@@ -1,5 +1,5 @@
 export enum Pages {
-  Main = 'main.html',
+  Home = 'home.html',
   Sub = 'sub.html',
 }
 
