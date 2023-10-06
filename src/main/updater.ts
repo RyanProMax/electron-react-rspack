@@ -9,15 +9,15 @@ const updaterLogger = logger.scope('updater');
 
 const TIME_OUT = 10 * 1000;
 
-export function checkUpdate(): Promise<boolean> {
+export function checkUpdate(): Promise<void> {
   return new Promise(r => {
     const timer = setTimeout(() => {
-      r(true);
+      r();
     }, TIME_OUT);
 
-    const _resolve = (result: boolean) => {
+    const _resolve = () => {
       clearTimeout(timer);
-      r(result);
+      r();
     };
 
     if (isDev) {
@@ -33,7 +33,7 @@ export function checkUpdate(): Promise<boolean> {
 
     autoUpdater.on('error', (...args) => {
       updaterLogger.error(...args);
-      _resolve(true);
+      _resolve();
     });
 
     autoUpdater.on('checking-for-update', (...args) => {
@@ -52,13 +52,13 @@ export function checkUpdate(): Promise<boolean> {
       if (confirmUpdate) {
         autoUpdater.downloadUpdate();
       } else {
-        _resolve(true);
+        _resolve();
       }
     });
 
     autoUpdater.on('update-not-available', (updateVersionNotAvailable) => {
       updaterLogger.info('update-not-available', updateVersionNotAvailable);
-      _resolve(true);
+      _resolve();
     });
 
     autoUpdater.on('download-progress', (progress) => {
@@ -68,7 +68,7 @@ export function checkUpdate(): Promise<boolean> {
     autoUpdater.on('update-downloaded', (updateDownloadedEvent) => {
       updaterLogger.info('update-downloaded', updateDownloadedEvent);
       autoUpdater.quitAndInstall(false);
-      _resolve(false);
+      _resolve();
     });
 
     autoUpdater.checkForUpdates();
