@@ -23,8 +23,40 @@
     "createStartMenuShortcut": true
   },
   "win": {
-    "target": "nsis",
+    "target": [
+      "zip",
+      "nsis"
+    ],
     "verifyUpdateCodeSignature": true
+  },
+  "mac": {
+    "category": "public.app-category.productivity",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  },
+  "dmg": {
+    "icon": "assets/logo.ico",
+    "iconSize": 100,
+    "contents": [
+      {
+        "x": 380,
+        "y": 280,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 110,
+        "y": 280,
+        "type": "file"
+      }
+    ],
+    "window": {
+      "width": 1024,
+      "height": 768
+    }
   },
   "publish": [
     {

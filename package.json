@@ -14,9 +14,6 @@
     "build:main": "cross-env NODE_ENV=production rspack --config ./src/main/rspack.config.prod.ts",
     "build": "npm run clean && concurrently \"npm run build:main\" \"npm run build:preload\" \"npm run build:renderer\"",
     "clean": "ts-node ./scripts/clean.ts",
-    "pack:x86": "electron-builder -w --ia32 -c ./build.config.json --publish never",
-    "pack:x64": "electron-builder -w --x64 -c ./build.config.json --publish never",
-    "pack:mac": "electron-builder --mac -c ./build.config.json --publish never",
     "package:local": "npm run build && electron-builder build -c ./build.config.json --publish never",
     "package": "npm run build && electron-builder build -c ./build.config.json --publish always"
   },

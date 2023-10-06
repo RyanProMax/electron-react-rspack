@@ -35,11 +35,11 @@ pnpm package
 - [x] typescript
 - [x] eslint
 - [x] rspack
-- [x] electron-log
 - [x] sass
+- [x] electron-log
 - [x] electron-builder
-- [ ] electron-updater
-- [x] CI/CD: auto build and release when push tag
+- [x] electron-updater: auto update app version.
+- [x] CI/CD: auto build and release when push tag.
 
 ## License
 
