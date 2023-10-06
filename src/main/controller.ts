@@ -21,7 +21,12 @@ export class Controller {
 
       this.register();
       await app.whenReady();
-      await checkUpdate();
+
+      const shouldContinue = await checkUpdate();
+      if (!shouldContinue) {
+        this.logger.info('skip launch');
+        return;
+      }
 
       this.mainWindow = createWindow({
         htmlFileName: Pages.Home,
