@@ -1,13 +1,13 @@
 {
   "productName": "ElectronReactRspack",
   "appId": "ElectronReactRspack",
-  "icon": "assets/logo.ico",
+  "icon": "assets/icons/1024x1024.png",
   "copyright": "Copyright © 2023 by Ryan",
   "files": [
     "build"
   ],
   "directories": {
-    "output": "release/${version}",
+    "output": "release/build",
     "buildResources": "assets"
   },
   "asar": false,
@@ -26,38 +26,39 @@
     "target": [
       "zip",
       "nsis"
-    ],
-    "verifyUpdateCodeSignature": true
-  },
-  "mac": {
-    "category": "public.app-category.productivity",
-    "artifactName": "${productName}-${version}-${arch}.${ext}",
-    "target": [
-      "dmg",
-      "zip"
     ]
   },
+  "mac": {
+    "target": {
+      "target": "default",
+      "arch": [
+        "arm64",
+        "x64"
+      ]
+    },
+    "type": "distribution",
+    "hardenedRuntime": true,
+    "entitlements": "assets/entitlements.mac.plist",
+    "entitlementsInherit": "assets/entitlements.mac.plist",
+    "gatekeeperAssess": false
+  },
   "dmg": {
-    "icon": "assets/logo.ico",
-    "iconSize": 100,
     "contents": [
       {
-        "x": 380,
-        "y": 280,
-        "type": "link",
-        "path": "/Applications"
+        "x": 130,
+        "y": 220
       },
       {
-        "x": 110,
-        "y": 280,
-        "type": "file"
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
       }
-    ],
-    "window": {
-      "width": 1024,
-      "height": 768
-    }
+    ]
   },
+  "extraResources": [
+    "./assets/**"
+  ],
   "publish": [
     {
       "provider": "github",
