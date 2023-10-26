@@ -8,7 +8,7 @@
     "start": "npm run start:preload && npm run start:renderer",
     "start:preload": "cross-env NODE_ENV=development rspack --config ./src/preload/rspack.config.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development rspack serve --config ./src/renderer/rspack.config.dev.ts",
-    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only ./src/main/index.ts",
+    "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./src/main/index.ts",
     "build:preload": "cross-env NODE_ENV=production rspack --config ./src/preload/rspack.config.prod.ts",
     "build:renderer": "cross-env NODE_ENV=production rspack --config ./src/renderer/rspack.config.prod.ts",
     "build:main": "cross-env NODE_ENV=production rspack --config ./src/main/rspack.config.prod.ts",
@@ -42,7 +42,6 @@
     "electron-builder": "^24.6.4",
     "electron-log": "5.0.0-rc.1",
     "electron-updater": "^6.1.4",
-    "electronmon": "^2.0.2",
     "eslint": "^8.50.0",
     "fs-extra": "^11.1.1",
     "lodash": "^4.17.21",
@@ -57,13 +56,6 @@
   "devEngines": {
     "node": ">=16.x",
     "npm": ">=8.x"
-  },
-  "electronmon": {
-    "patterns": [
-      "!**/**",
-      "src/main/**"
-    ],
-    "logLevel": "quiet"
   },
   "license": "MIT"
 }
