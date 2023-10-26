@@ -1,4 +1,4 @@
-import { Controller } from './controller';
+import { Controller } from './modules/Controller';
 
 const controller = new Controller();
-controller.init();
+controller.startApp();

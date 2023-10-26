@@ -4,6 +4,9 @@ import path from 'path';
 const configuration: Configuration = {
   mode: 'production',
   target: 'electron-main',
+  resolve: {
+    tsConfigPath: path.resolve(process.cwd(), './tsconfig.json'),
+  },
   entry: {
     loader: path.join(__dirname, 'index.ts'),
   },
