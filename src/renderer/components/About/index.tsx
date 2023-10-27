@@ -1,17 +1,11 @@
-import { useEffect, useState } from 'react';
+import MenuBar from '../MenuBar';
+import './index.less';
 
 export default () => {
-  const [r, setR] = useState(Math.random());
-  useEffect(() => {
-    setInterval(() => {
-      setR(Math.random());
-    }, 1000);
-  }, []);
-
   return (
-    <div>
-      <h1>{r}</h1>
-      Sub Page
+    <div className='about'>
+      <MenuBar title='关于' />
+      <h1>Electron</h1>
     </div>
   );
 };

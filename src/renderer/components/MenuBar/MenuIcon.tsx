@@ -9,7 +9,13 @@ import IconUnmaximize from 'src/renderer/images/unmaximize.svg';
 
 import './MenuIcon.less';
 
-export default ({ isDefaultMaximize = false, className }: {
+export default ({
+  minimize = true, maximize = true, closable = true,
+  isDefaultMaximize = false, className
+}: {
+  minimize?: boolean
+  maximize?: boolean
+  closable?: boolean
   isDefaultMaximize?: boolean
   className?: string
 }) => {
@@ -30,13 +36,19 @@ export default ({ isDefaultMaximize = false, className }: {
 
   return (
     <div className={classnames('menu-icon', className)}>
-      <IconMinus onClick={onMinimize} className='menu-icon__item' />
-      {isMaximize ? (
-        <IconUnmaximize onClick={onMaximize} className='menu-icon__item--svg' />
-      ) : (
-        <IconMaximize onClick={onMaximize} className='menu-icon__item--svg' />
-      )}
-      <IconClose onClick={onClose} className='menu-icon__item' />
+      {minimize ? (
+        <IconMinus onClick={onMinimize} className='menu-icon__item' />
+      ) : null}
+      {maximize ? (
+        isMaximize ? (
+          <IconUnmaximize onClick={onMaximize} className='menu-icon__item--svg' />
+        ) : (
+          <IconMaximize onClick={onMaximize} className='menu-icon__item--svg' />
+        )
+      ) : null}
+      {closable ? (
+        <IconClose onClick={onClose} className='menu-icon__item' />
+      ) : null}
     </div>
   );
 };

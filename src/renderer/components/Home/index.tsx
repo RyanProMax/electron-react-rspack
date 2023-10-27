@@ -8,7 +8,7 @@ import { ipcRenderer } from 'src/renderer/utils';
 import usePackageJson from 'src/renderer/hooks/usePackageJson';
 import useDarkMode from 'src/renderer/hooks/useDarkMode';
 
-import Titlebar from './Titlebar';
+import MenuBar from '../MenuBar';
 import logo from 'assets/icons/256x256.png';
 
 import './index.less';
@@ -18,9 +18,12 @@ const homeLogger = log.scope('home');
 export default () => {
   const packageJson = usePackageJson();
   const { ThemeIcon, toggleTheme } = useDarkMode();
+  const title = packageJson
+    ? `${packageJson.name.split('-').map(upperFirst).join('')} Ver: ${packageJson.version}`
+    : '';
 
   const openGithub = () => {
-    return ipcRenderer.invoke(
+    ipcRenderer.send(
       Channels.OpenExternal,
       'https://github.com/RyanProMax/electron-react-rspack'
     );
@@ -33,7 +36,11 @@ export default () => {
 
   return (
     <div className='home'>
-      <Titlebar packageJson={packageJson} />
+      <MenuBar
+        title={title}
+        minimize={true}
+        maximize={true}
+      />
       <div className='home__content'>
         <div className='home__logo-container'>
           <img src={logo} className='home__logo' />

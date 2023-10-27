@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
 import { Channels, Pages } from '../../common/constant';
-import { getAssetPath, getHtmlPath, getPreloadPath } from '../utils/index';
+import { getHtmlPath, getPreloadPath } from '../utils/index';
 
 export default class AboutWindow {
   browserWindow: BrowserWindow | null = null;
@@ -13,9 +13,12 @@ export default class AboutWindow {
     } else {
       this.browserWindow = new BrowserWindow({
         show: false,
-        width: 1024,
-        height: 728,
-        icon: getAssetPath('icon.png'),
+        width: 320,
+        height: 320,
+        autoHideMenuBar: true,
+        frame: false,
+        transparent: true,
+        resizable: false,
         webPreferences: {
           preload: getPreloadPath(),
         },

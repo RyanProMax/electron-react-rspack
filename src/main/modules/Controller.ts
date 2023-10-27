@@ -59,6 +59,7 @@ export class Controller {
   }
 
   private _register() {
+    // on
     ipcMain.on(Channels.Close, (event) => {
       this.logger.info(Channels.Close);
       const { sender } = event;
@@ -89,9 +90,8 @@ export class Controller {
       const browserWindow = BrowserWindow.fromId(sender.id);
       browserWindow?.minimizable && browserWindow.minimize();
     });
-    ipcMain.handle(Channels.GetPackageJson, getPackageJson);
-    ipcMain.handle(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
-      return shell.openExternal(url, options);
+    ipcMain.on(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
+      shell.openExternal(url, options);
     });
     ipcMain.on(Channels.Broadcast, (event, channel: Channels, ...data: unknown[]) => {
       const { sender } = event;
@@ -104,6 +104,9 @@ export class Controller {
         w?.webContents?.send(channel, ...data);
       });
     });
+
+    // handle
+    ipcMain.handle(Channels.GetPackageJson, getPackageJson);
   }
 
   private quitApp() {
