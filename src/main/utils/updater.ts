@@ -2,8 +2,8 @@ import { dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 
-import { isDev } from '../common/env';
-import { logger } from './utils/logger';
+import { isDev } from '../../common/env';
+import { logger } from './logger';
 
 const updaterLogger = logger.scope('updater');
 

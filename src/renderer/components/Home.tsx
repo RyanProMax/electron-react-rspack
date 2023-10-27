@@ -9,12 +9,7 @@ const homeLogger = log.scope('home');
 export default () => {
   const openWindow = () => {
     homeLogger.info('open sub window');
-    window.__ELECTRON__.ipcRenderer.invoke(
-      Channels.CreateWindow,
-      {
-        htmlFileName: Pages.Sub,
-      }
-    );
+    window.__ELECTRON__.ipcRenderer.send(Channels.CreateSubWindow);
   };
 
   return (

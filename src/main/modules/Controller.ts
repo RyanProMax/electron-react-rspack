@@ -1,14 +1,15 @@
-import { app, ipcMain } from 'electron';
+import { app } from 'electron';
 
-import { createWindow } from '../../common/utils';
-import { Channels } from '../../common/constant';
 import { logger } from '../utils/logger';
-import { checkUpdate } from '../updater';
+import { checkUpdate } from '../utils/updater';
+
 import MainWindow from './MainWindow';
+import SubWindow from './SubWindow';
 
 export class Controller {
   logger = logger.scope('controller');
   mainWindow: MainWindow | null = null;
+  subWindow: SubWindow | null = null;
 
   async startApp() {
     try {
@@ -18,6 +19,7 @@ export class Controller {
       await app.whenReady();
 
       this.mainWindow = new MainWindow();
+      this.subWindow = new SubWindow();
 
       this.registerMainEvent();
       checkUpdate();
@@ -37,8 +39,7 @@ export class Controller {
   }
 
   registerMainEvent() {
-    ipcMain.handle(Channels.CreateWindow, async (_, ...args: Parameters<typeof createWindow>) => {
-      return Boolean(createWindow(args[0]));
-    });
+    this.mainWindow?.register();
+    this.subWindow?.register();
   }
 }

@@ -4,5 +4,5 @@ export enum Pages {
 }
 
 export enum Channels {
-  CreateWindow = 'CreateWindow',
+  CreateSubWindow = 'CreateSubWindow',
 }

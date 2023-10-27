@@ -4,17 +4,17 @@ import { getAssetPath, getHtmlPath, getPreloadPath } from '../utils/index';
 import { Pages } from '../../common/constant';
 
 export default class MainWindow {
-  browserWindow = this.createMainWindow();
+  browserWindow = this.createWindow();
 
   constructor() {
     app.on('activate', () => {
       if (!this.browserWindow) {
-        this.browserWindow = this.createMainWindow();
+        this.browserWindow = this.createWindow();
       }
     });
   }
 
-  private createMainWindow() {
+  private createWindow() {
     const browserWindow = new BrowserWindow({
       show: false,
       width: 1024,
