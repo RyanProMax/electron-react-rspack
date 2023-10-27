@@ -23,7 +23,7 @@ const baseConfiguration: Configuration = {
   target: 'web',
   entry,
   resolve: {
-    tsConfigPath: path.resolve(process.cwd(), './tsconfig.json'),
+    tsConfigPath: path.resolve(__dirname, '../../tsconfig.json'),
   },
   optimization: {
     splitChunks: {
@@ -48,6 +48,11 @@ const baseConfiguration: Configuration = {
   },
   module: {
     rules: [
+      // Images
+      {
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
@@ -60,7 +65,8 @@ const baseConfiguration: Configuration = {
           options: {
             lessOptions: {
               modifyVars: {
-                'arcoblue-6': '#37D4CF',
+                // custom your primary color
+                // 'arcoblue-6': '#37D4CF',
               },
               javaScriptEnabled: true,
             }

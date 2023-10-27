@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default () => {
   const [r, setR] = useState(Math.random());
   useEffect(() => {
     setInterval(() => {
       setR(Math.random());
-    }, 1000)
-  }, [])
+    }, 1000);
+  }, []);
 
   return (
     <div>

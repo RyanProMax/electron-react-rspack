@@ -1,25 +1,20 @@
+@import './reset.less';
 @import './scroll-bar.less';
 
 @font-family: auto;
 @color-primary: rgb(var(--primary-6));
 @color-error: rgb(var(--red-5));
 @color-hover: rgba(22, 22, 22, 0.72);
+@background-color: rgba(var(--color-rgb-255), 0.9);
 
 @borderRadius: 8px;
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: @font-family;
-  .scroll-bar();
-
-  background-color: rgba(var(--color-bg-1), 0.9);
   color: @color-primary;
   line-height: 1.2;
-}
 
-.arco-tooltip-content {
-  padding: 6px 12px;
+  .scroll-bar();
 }
 
 body {

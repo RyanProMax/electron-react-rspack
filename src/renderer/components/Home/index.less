@@ -1,0 +1,43 @@
+@import '../../styles/common.less';
+
+.home {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: @background-color;
+  border-radius: @borderRadius;
+
+  .titlebar {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(var(--color-rgb-255));
+    -webkit-app-region: drag;
+
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &__logo {
+    width: 180px;
+
+    &-container {
+      margin-top: -90px;
+      margin-bottom: 48px;
+    }
+  }
+
+  &__title {
+    color: var(--color-text-1);
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+}

@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 
-import { getAssetPath, getHtmlPath, getPreloadPath } from '../utils/index';
+import { getHtmlPath, getPreloadPath } from '../utils/index';
 import { Pages } from '../../common/constant';
 
 export default class MainWindow {
@@ -19,9 +19,14 @@ export default class MainWindow {
       show: false,
       width: 1024,
       height: 728,
-      icon: getAssetPath('icon.png'),
+      minWidth: 720,
+      minHeight: 480,
+      autoHideMenuBar: true,
+      frame: false,
+      transparent: true,
       webPreferences: {
         preload: getPreloadPath(),
+        webSecurity: false,
       },
     });
 
