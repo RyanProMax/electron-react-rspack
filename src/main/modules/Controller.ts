@@ -66,7 +66,7 @@ export class Controller {
       if (sender.id === this.mainWindow?.browserWindow.id) {
         this.quitApp();
       } else {
-        const browserWindow = BrowserWindow.fromId(sender.id);
+        const browserWindow = BrowserWindow.fromWebContents(sender);
         browserWindow?.closable && browserWindow.close();
       }
     });
@@ -74,7 +74,7 @@ export class Controller {
     ipcMain.on(Channels.Maximize, (event) => {
       this.logger.info(Channels.Maximize);
       const { sender } = event;
-      const browserWindow = BrowserWindow.fromId(sender.id);
+      const browserWindow = BrowserWindow.fromWebContents(sender);
       if (browserWindow?.maximizable) {
         if (browserWindow.isMaximized()) {
           browserWindow.unmaximize();
@@ -87,7 +87,7 @@ export class Controller {
     ipcMain.on(Channels.Minimize, (event) => {
       this.logger.info(Channels.Minimize);
       const { sender } = event;
-      const browserWindow = BrowserWindow.fromId(sender.id);
+      const browserWindow = BrowserWindow.fromWebContents(sender);
       browserWindow?.minimizable && browserWindow.minimize();
     });
     ipcMain.on(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
