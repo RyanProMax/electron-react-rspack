@@ -1,10 +1,10 @@
 import { Configuration } from '@rspack/cli';
 import path from 'path';
 import fse from 'fs-extra';
-import { keyBy } from 'lodash';
+import keyBy from 'lodash/keyBy';
 
 import { Pages } from '../common/constant';
-import { removeFileExtname } from '../common/utils';
+import { removeFileExtname } from '../main/utils';
 
 const htmlTemplate = path.join(__dirname, 'template.html');
 const entryDir = path.join(__dirname, 'entry');
@@ -13,21 +13,37 @@ const entry = keyBy(
   files.map(f => path.join(entryDir, f)),
   filePath => removeFileExtname(filePath)
 );
+const html = Object.values(Pages).map(filename => ({
+  template: htmlTemplate,
+  filename,
+  chunks: [removeFileExtname(filename)],
+}));
 
 const baseConfiguration: Configuration = {
+  target: 'web',
   entry,
+  resolve: {
+    tsConfigPath: path.resolve(process.cwd(), './tsconfig.json'),
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   builtins: {
-    html: [
+    html,
+    pluginImport: [
       {
-        template: htmlTemplate,
-        filename: Pages.Home,
-        chunks: ['home'],
+        libraryName: '@arco-design/web-react',
+        libraryDirectory: 'es',
+        camelToDashComponentName: false,
+        style: true,
       },
       {
-        template: htmlTemplate,
-        filename: Pages.Sub,
-        chunks: ['sub'],
-      }
+        libraryName: '@arco-design/web-react/icon',
+        libraryDirectory: 'react-icon',
+        camelToDashComponentName: false,
+      },
     ],
   },
   module: {
@@ -38,8 +54,18 @@ const baseConfiguration: Configuration = {
         use: ['@svgr/webpack'],
       },
       {
-        test: /\.s?(c|a)ss$/,
-        use: ['sass-loader'],
+        test: /\.less$/,
+        use: [{
+          loader: 'less-loader',
+          options: {
+            lessOptions: {
+              modifyVars: {
+                'arcoblue-6': '#37D4CF',
+              },
+              javaScriptEnabled: true,
+            }
+          }
+        }],
         type: 'css',
       },
     ],

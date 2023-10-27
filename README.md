@@ -35,11 +35,12 @@ pnpm package
 - [x] typescript
 - [x] eslint
 - [x] rspack
-- [x] sass
+- [x] less
 - [x] electron-log
 - [x] electron-builder
 - [x] electron-updater: auto update app version.
 - [x] CI/CD: auto build and release when push tag.
+- [x] [arco-design](https://github.com/arco-design/arco-design)
 
 ## License
 

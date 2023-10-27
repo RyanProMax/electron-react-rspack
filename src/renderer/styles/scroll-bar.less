@@ -1,0 +1,23 @@
+@scrollBarWidth: 8px;
+
+.scroll-bar() {
+  &::-webkit-scrollbar {
+    background: transparent;
+    border-radius: (@scrollBarWidth / 2);
+    width: @scrollBarWidth;
+  }
+
+  // 滚动条轨道
+  // 内阴影+圆角
+  &::-webkit-scrollbar-track {
+    border-radius: @scrollBarWidth;
+    background-color: transparent;
+  }
+
+  // 滑块
+  // 内阴影+圆角
+  &::-webkit-scrollbar-thumb {
+    border-radius: (@scrollBarWidth / 2);
+    background-color: rgba(var(--color-rgb-0), 0.32);
+  }
+}

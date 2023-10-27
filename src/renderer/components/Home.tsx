@@ -2,7 +2,7 @@ import log from 'electron-log/renderer';
 import { Channels, Pages } from '../../common/constant';
 
 import Icon from '../../../assets/icon.svg';
-import '../styles/common.scss';
+import '../styles/common.less';
 
 const homeLogger = log.scope('home');
 

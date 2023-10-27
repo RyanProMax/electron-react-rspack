@@ -19,7 +19,7 @@ declare module '*.jpg' {
   export default content;
 }
 
-declare module '*.scss' {
+declare module '*.less' {
   const content: Styles;
   export default content;
 }

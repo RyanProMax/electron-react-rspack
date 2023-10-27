@@ -1,0 +1,35 @@
+@import './scroll-bar.less';
+
+@font-family: auto;
+@color-primary: rgb(var(--primary-6));
+@color-error: rgb(var(--red-5));
+@color-hover: rgba(22, 22, 22, 0.72);
+
+@borderRadius: 8px;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: @font-family;
+  .scroll-bar();
+
+  background-color: rgba(var(--color-bg-1), 0.9);
+  color: @color-primary;
+  line-height: 1.2;
+}
+
+.arco-tooltip-content {
+  padding: 6px 12px;
+}
+
+body {
+  --color-rgb-0: 0, 0, 0;
+  --color-rgb-255: 255, 255, 255;
+  --color-rgb-22: 233, 233, 233;
+
+  &[arco-theme='dark'] {
+    --color-rgb-0: 255, 255, 255;
+    --color-rgb-255: 0, 0, 0;
+    --color-rgb-22: 22, 22, 22;
+  }
+}
