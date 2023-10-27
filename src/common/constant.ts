@@ -1,12 +1,13 @@
 export enum Pages {
   Home = 'home.html',
-  Sub = 'sub.html',
+  About = 'about.html',
 }
 
 export enum Channels {
   // main events
   Quit = 'Quit',
   Minimize = 'Minimize',
+  Maximize = 'Maximize',
   GetPackageJson = 'GetPackageJson',
   OpenExternal = 'OpenExternal',
   Broadcast = 'Broadcast',

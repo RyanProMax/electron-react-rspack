@@ -1,7 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import Sub from '../components/Sub';
+import About from '../components/About';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(
-  <Sub />
-);
+root.render(<About />);

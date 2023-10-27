@@ -7,7 +7,7 @@ import { checkUpdate } from '../utils/updater';
 
 import Store from './Store';
 import MainWindow from './MainWindow';
-import SubWindow from './SubWindow';
+import AboutWindow from './AboutWindow';
 
 export class Controller {
   logger = logger.scope('controller');
@@ -15,7 +15,7 @@ export class Controller {
   store: Store | null = null;
 
   mainWindow: MainWindow | null = null;
-  subWindow: SubWindow | null = null;
+  aboutWindow: AboutWindow | null = null;
 
   async startApp() {
     try {
@@ -26,7 +26,7 @@ export class Controller {
 
       this.store = new Store();
       this.mainWindow = new MainWindow();
-      this.subWindow = new SubWindow();
+      this.aboutWindow = new AboutWindow();
 
       this.registerMainEvent();
       checkUpdate();
@@ -55,7 +55,7 @@ export class Controller {
     this.store?.register();
 
     this.mainWindow?.register();
-    this.subWindow?.register();
+    this.aboutWindow?.register();
   }
 
   private _register() {
@@ -63,11 +63,24 @@ export class Controller {
       this.logger.info('app quit');
       app.quit();
     });
+    ipcMain.on(Channels.Maximize, (event) => {
+      this.logger.info(Channels.Maximize);
+      const { sender } = event;
+      const browserWindow = BrowserWindow.fromId(sender.id);
+      if (browserWindow?.maximizable) {
+        if (browserWindow.isMaximized()) {
+          browserWindow.unmaximize();
+        } else {
+          browserWindow.maximize();
+        }
+      }
+
+    });
     ipcMain.on(Channels.Minimize, (event) => {
       this.logger.info(Channels.Minimize);
       const { sender } = event;
       const browserWindow = BrowserWindow.fromId(sender.id);
-      browserWindow?.minimize();
+      browserWindow?.minimizable && browserWindow.minimize();
     });
     ipcMain.handle(Channels.GetPackageJson, getPackageJson);
     ipcMain.handle(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
@@ -77,7 +90,7 @@ export class Controller {
       const { sender } = event;
       const BroadcastList = [
         this.mainWindow?.browserWindow,
-        this.subWindow?.browserWindow,
+        this.aboutWindow?.browserWindow,
       ];
       const filterBroadcastList = BroadcastList.filter(w => w && w.webContents.id !== sender.id);
       filterBroadcastList.forEach(w => {
