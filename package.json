@@ -44,6 +44,7 @@
     "electron": "^26.2.4",
     "electron-builder": "^24.6.4",
     "electron-log": "5.0.0-rc.1",
+    "electron-store": "^8.1.0",
     "electron-updater": "^6.1.4",
     "eslint": "^8.50.0",
     "fs-extra": "^11.1.1",
