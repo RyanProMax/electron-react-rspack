@@ -6,6 +6,7 @@ import log from 'electron-log/renderer';
 import { Channels } from 'src/common/constant';
 import { ipcRenderer } from 'src/renderer/utils';
 import usePackageJson from 'src/renderer/hooks/usePackageJson';
+import useDarkMode from 'src/renderer/hooks/useDarkMode';
 
 import Titlebar from './Titlebar';
 import logo from 'assets/icons/256x256.png';
@@ -16,6 +17,7 @@ const homeLogger = log.scope('home');
 
 export default () => {
   const packageJson = usePackageJson();
+  const { ThemeIcon, toggleTheme } = useDarkMode();
 
   const openGithub = () => {
     return ipcRenderer.invoke(
@@ -56,6 +58,13 @@ export default () => {
             size='large'
             icon={<IconBulb />}
             onClick={openAboutMe}
+          />
+          <Button
+            style={{ width: 48, height: 48, fontSize: 20, marginLeft: 16 }}
+            shape='circle'
+            size='large'
+            icon={<ThemeIcon />}
+            onClick={toggleTheme}
           />
         </div>
       </div>
