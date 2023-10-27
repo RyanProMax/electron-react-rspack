@@ -6,6 +6,7 @@ export enum Pages {
 export enum Channels {
   // main events
   Quit = 'Quit',
+  Minimize = 'Minimize',
   GetPackageJson = 'GetPackageJson',
   OpenExternal = 'OpenExternal',
   Broadcast = 'Broadcast',
@@ -15,5 +16,5 @@ export enum Channels {
   SetUserStore = 'SetUserStore',
 
   // sub window
-  CreateSubWindow = 'CreateSubWindow',
+  AboutMe = 'AboutMe',
 }

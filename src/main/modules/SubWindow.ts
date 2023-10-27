@@ -32,6 +32,6 @@ export default class SubWindow {
   }
 
   register() {
-    ipcMain.on(Channels.CreateSubWindow, this.createWindow);
+    ipcMain.on(Channels.AboutMe, this.createWindow);
   }
 }

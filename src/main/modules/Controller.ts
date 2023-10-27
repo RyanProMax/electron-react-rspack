@@ -1,4 +1,4 @@
-import { app, ipcMain, shell } from 'electron';
+import { BrowserWindow, app, ipcMain, shell } from 'electron';
 
 import { Channels } from '../../common/constant';
 import { getPackageJson } from '../utils';
@@ -62,6 +62,12 @@ export class Controller {
     ipcMain.on(Channels.Quit, () => {
       this.logger.info('app quit');
       app.quit();
+    });
+    ipcMain.on(Channels.Minimize, (event) => {
+      this.logger.info(Channels.Minimize);
+      const { sender } = event;
+      const browserWindow = BrowserWindow.fromId(sender.id);
+      browserWindow?.minimize();
     });
     ipcMain.handle(Channels.GetPackageJson, getPackageJson);
     ipcMain.handle(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
