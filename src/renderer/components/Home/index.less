@@ -23,43 +23,12 @@
       width: 24px;
     }
 
-    &-left,
-    &-right {
-      -webkit-app-region: no-drag;
+    &-left {
       display: flex;
       align-items: center;
 
-      svg:not(:first-child) {
-        margin-left: 8px;
-      }
-    }
-
-    &-left {
       span {
         margin-left: 6px;
-      }
-    }
-
-    &__icon {
-      font-size: 18px;
-      color: rgb(var(--color-rgb-0));
-      cursor: pointer;
-      transition: color .25s;
-
-      &:hover {
-        color: @color-primary;
-      }
-
-      &--svg {
-        fill: rgb(var(--color-rgb-0));
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        transition: fill .25s;
-
-        &:hover {
-          fill: @color-primary;
-        }
       }
     }
   }

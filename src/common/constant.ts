@@ -5,6 +5,7 @@ export enum Pages {
 
 export enum Channels {
   // main events
+  Close = 'Close',
   Quit = 'Quit',
   Minimize = 'Minimize',
   Maximize = 'Maximize',

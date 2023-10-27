@@ -7,7 +7,7 @@ export default class AboutWindow {
   browserWindow: BrowserWindow | null = null;
 
   private createWindow() {
-    if (this.browserWindow) {
+    if (this.browserWindow && !this.browserWindow.isDestroyed()) {
       this.browserWindow.show();
       this.browserWindow.focus();
     } else {
@@ -37,5 +37,10 @@ export default class AboutWindow {
 
   register() {
     ipcMain.on(Channels.AboutMe, this.createWindow);
+  }
+
+  close() {
+    this.browserWindow?.closable && this.browserWindow.close();
+    this.browserWindow = null;
   }
 }

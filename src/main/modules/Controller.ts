@@ -59,10 +59,17 @@ export class Controller {
   }
 
   private _register() {
-    ipcMain.on(Channels.Quit, () => {
-      this.logger.info('app quit');
-      app.quit();
+    ipcMain.on(Channels.Close, (event) => {
+      this.logger.info(Channels.Close);
+      const { sender } = event;
+      if (sender.id === this.mainWindow?.browserWindow.id) {
+        this.quitApp();
+      } else {
+        const browserWindow = BrowserWindow.fromId(sender.id);
+        browserWindow?.closable && browserWindow.close();
+      }
     });
+    ipcMain.on(Channels.Quit, this.quitApp);
     ipcMain.on(Channels.Maximize, (event) => {
       this.logger.info(Channels.Maximize);
       const { sender } = event;
@@ -97,5 +104,10 @@ export class Controller {
         w?.webContents?.send(channel, ...data);
       });
     });
+  }
+
+  private quitApp() {
+    this.logger.info('app quit');
+    app.quit();
   }
 }
