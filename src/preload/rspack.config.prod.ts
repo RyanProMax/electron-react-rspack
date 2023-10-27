@@ -1,10 +1,19 @@
 import { Configuration } from '@rspack/cli';
-import { merge } from 'lodash';
+import path from 'path';
 
-import baseConfiguration from './rspack.config.base';
-
-const devConfiguration: Configuration = {
+const configuration: Configuration = {
   mode: 'production',
+  target: 'electron-preload',
+  resolve: {
+    tsConfigPath: path.resolve(process.cwd(), './tsconfig.json'),
+  },
+  entry: {
+    preload: path.join(__dirname, 'index.ts'),
+  },
+  output: {
+    path: path.join(process.cwd(), 'build'),
+    filename: '[name].js',
+  },
 };
 
-export default merge(baseConfiguration, devConfiguration);
+export default configuration;

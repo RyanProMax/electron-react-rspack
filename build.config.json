@@ -7,7 +7,7 @@
     "build"
   ],
   "directories": {
-    "output": "release/build",
+    "output": "release",
     "buildResources": "assets"
   },
   "asar": false,

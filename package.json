@@ -5,8 +5,7 @@
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "main": "build/loader.js",
   "scripts": {
-    "start": "npm run start:preload && npm run start:renderer",
-    "start:preload": "cross-env NODE_ENV=development rspack --config ./src/preload/rspack.config.dev.ts",
+    "start": "npm run build:preload && npm run start:renderer",
     "start:renderer": "cross-env NODE_ENV=development rspack serve --config ./src/renderer/rspack.config.dev.ts",
     "start:main": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./src/main/index.ts",
     "build:preload": "cross-env NODE_ENV=production rspack --config ./src/preload/rspack.config.prod.ts",
@@ -15,7 +14,10 @@
     "build": "npm run clean && concurrently \"npm run build:main\" \"npm run build:preload\" \"npm run build:renderer\"",
     "clean": "ts-node ./scripts/clean.ts",
     "package:local": "npm run build && electron-builder build -c ./build.config.json --publish never",
-    "package": "npm run build && electron-builder build -c ./build.config.json --publish always"
+    "package": "npm run build && electron-builder build -c ./build.config.json --publish always",
+    "analyze:preload": "cross-env NODE_ENV=production rspack --config ./src/preload/rspack.config.prod.ts --analyze",
+    "analyze:renderer": "cross-env NODE_ENV=production rspack --config ./src/renderer/rspack.config.prod.ts --analyze",
+    "analyze:main": "cross-env NODE_ENV=production rspack --config ./src/main/rspack.config.prod.ts --analyze"
   },
   "keywords": [
     "electron",

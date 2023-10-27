@@ -10,7 +10,12 @@
   ],
   "rules": {
     "no-console": "off",
-    "semi": 2
+    "semi": 2,
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
     // "global-require": "off",
     // "import/no-dynamic-require": "off"
   }
