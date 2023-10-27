@@ -1,12 +1,17 @@
 @import './reset.less';
 @import './scroll-bar.less';
 
-@font-family: auto;
+@font-face {
+  font-family: @font-family;
+  src: url('./fonts/AlimamaFangYuanTiVF-Thin.woff2')format('woff2'),
+    url('./fonts/AlimamaFangYuanTiVF-Thin.woff');
+}
+
+@font-family: 'FangYuanTiVF-Thin';
 @color-primary: rgb(var(--primary-6));
 @color-error: rgb(var(--red-5));
 @color-hover: rgba(22, 22, 22, 0.72);
 @background-color: rgba(var(--color-rgb-255), 0.9);
-
 @borderRadius: 8px;
 
 body {
