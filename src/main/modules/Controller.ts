@@ -17,6 +17,13 @@ export class Controller {
   mainWindow: MainWindow | null = null;
   aboutWindow: AboutWindow | null = null;
 
+  private get broadcastWindows() {
+    return [
+      this.mainWindow?.browserWindow,
+      this.aboutWindow?.browserWindow,
+    ].filter(w => w) as BrowserWindow[];
+  }
+
   async startApp() {
     try {
       this.logger.info('app start');
@@ -95,11 +102,7 @@ export class Controller {
     });
     ipcMain.on(Channels.Broadcast, (event, channel: Channels, ...data: unknown[]) => {
       const { sender } = event;
-      const BroadcastList = [
-        this.mainWindow?.browserWindow,
-        this.aboutWindow?.browserWindow,
-      ];
-      const filterBroadcastList = BroadcastList.filter(w => w && w.webContents.id !== sender.id);
+      const filterBroadcastList = this.broadcastWindows.filter(w => w && w.webContents.id !== sender.id);
       filterBroadcastList.forEach(w => {
         w?.webContents?.send(channel, ...data);
       });

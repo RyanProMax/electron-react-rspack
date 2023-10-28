@@ -12,6 +12,7 @@ export enum Channels {
   GetPackageJson = 'GetPackageJson',
   OpenExternal = 'OpenExternal',
   Broadcast = 'Broadcast',
+  ToggleTheme = 'ToggleTheme',
 
   // store
   GetUserStore = 'GetUserStore',

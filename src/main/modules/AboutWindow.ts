@@ -44,7 +44,7 @@ export default class AboutWindow {
   }
 
   register() {
-    ipcMain.on(Channels.AboutMe, this.createWindow);
+    ipcMain.on(Channels.AboutMe, this.createWindow.bind(this));
   }
 
   close() {
