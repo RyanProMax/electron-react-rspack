@@ -30,9 +30,9 @@ export default class AboutWindow {
         this.browserWindow!.show();
       });
 
-      this.browserWindow.webContents.setWindowOpenHandler((data) => {
-        shell.openExternal(data.url);
-        return { action: 'deny' };
+      this.browserWindow.webContents.on('will-navigate', (e, url) => {
+        e.preventDefault();
+        shell.openExternal(url);
       });
 
       this.browserWindow.on('close', () => {

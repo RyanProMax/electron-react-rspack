@@ -1,9 +1,10 @@
-import { Grid } from '@arco-design/web-react';
+import { Grid, Link } from '@arco-design/web-react';
 import MenuBar from '../MenuBar';
 
 import usePackageJson from 'src/renderer/hooks/usePackageJson';
 
 import './index.less';
+import useDarkMode from 'src/renderer/hooks/useDarkMode';
 
 const Row = Grid.Row;
 const Col = Grid.Col;
@@ -23,7 +24,7 @@ const Line = ({ label, content, className }: {
 
 export default () => {
   const packageJson = usePackageJson();
-  console.log('packageJson', packageJson);
+  useDarkMode();
 
   return (
     <div className='about'>
@@ -32,9 +33,9 @@ export default () => {
         <Line
           label='Homepage'
           content={(
-            <a href={packageJson?.homepage} target='__blank'>
+            <Link href={packageJson?.homepage} icon>
               {packageJson?.name}
-            </a>
+            </Link>
           )}
           className='about__content-item'
         />
@@ -52,13 +53,13 @@ export default () => {
           label='License'
           content={(
             <div>
-              <a href={'https://choosealicense.com/licenses/mit/'} target='__blank'>
+              <Link href={'https://choosealicense.com/licenses/mit/'} >
                 {packageJson?.license}
-              </a>
-              <span style={{ margin: '0 6px' }}>©</span>
-              <a href={'https://github.com/RyanProMax/'} target='__blank'>
+              </Link>
+              <span style={{ margin: '0 2px' }}>©</span>
+              <Link href={'https://github.com/RyanProMax/'} >
                 {packageJson?.author}
-              </a>
+              </Link>
             </div>
           )}
           className='about__content-item'
