@@ -3,9 +3,9 @@ import { BrowserWindow, app, ipcMain, shell } from 'electron';
 import { Channels } from '../../common/constant';
 import { getPackageJson } from '../utils';
 import { logger } from '../utils/logger';
-import { checkUpdate } from '../utils/updater';
 
 import Store from './Store';
+import AppUpdater from './AppUpdater';
 import MainWindow from './MainWindow';
 import AboutWindow from './AboutWindow';
 
@@ -13,6 +13,7 @@ export class Controller {
   logger = logger.scope('controller');
 
   store: Store | null = null;
+  appUpdater: AppUpdater = new AppUpdater();
 
   mainWindow: MainWindow | null = null;
   aboutWindow: AboutWindow | null = null;
@@ -21,6 +22,7 @@ export class Controller {
     return [
       this.mainWindow?.browserWindow,
       this.aboutWindow?.browserWindow,
+      this.appUpdater?.browserWindow,
     ].filter(w => w) as BrowserWindow[];
   }
 
@@ -36,7 +38,7 @@ export class Controller {
       this.aboutWindow = new AboutWindow();
 
       this.registerMainEvent();
-      checkUpdate();
+      this.appUpdater.checkUpdate();
 
       this.logger.info('app start success');
     } catch (e) {

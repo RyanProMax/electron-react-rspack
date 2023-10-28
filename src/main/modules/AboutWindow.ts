@@ -27,7 +27,7 @@ export default class AboutWindow {
       this.browserWindow.loadURL(getHtmlPath(Pages.About));
 
       this.browserWindow.on('ready-to-show', () => {
-        this.browserWindow!.show();
+        this.browserWindow?.show();
       });
 
       this.browserWindow.webContents.on('will-navigate', (e, url) => {
@@ -49,6 +49,5 @@ export default class AboutWindow {
 
   close() {
     this.browserWindow?.closable && this.browserWindow.close();
-    this.browserWindow = null;
   }
 }

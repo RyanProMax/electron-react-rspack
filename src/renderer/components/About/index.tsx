@@ -1,26 +1,13 @@
-import { Grid, Link } from '@arco-design/web-react';
+import { Link } from '@arco-design/web-react';
 import MenuBar from '../MenuBar';
+import TextLine from '../TextLine';
 
 import usePackageJson from 'src/renderer/hooks/usePackageJson';
-
-import './index.less';
 import useDarkMode from 'src/renderer/hooks/useDarkMode';
 
-const Row = Grid.Row;
-const Col = Grid.Col;
+import './index.less';
 
-const Line = ({ label, content, className }: {
-  label: string
-  content?: string | React.ReactElement
-  className?: string
-}) => {
-  return (
-    <Row className={className}>
-      <Col span={6}>{label}:</Col>
-      <Col span={18}>{content}</Col>
-    </Row>
-  );
-};
+const colSpan: [number, number] = [6, 18];
 
 export default () => {
   const packageJson = usePackageJson();
@@ -30,26 +17,29 @@ export default () => {
     <div className='about'>
       <MenuBar title='关于' />
       <div className='about__content'>
-        <Line
+        <TextLine
           label='Homepage'
           content={(
             <Link href={packageJson?.homepage} icon>
               {packageJson?.name}
             </Link>
           )}
+          colSpan={colSpan}
           className='about__content-item'
         />
-        <Line
+        <TextLine
           label='Description'
           content={packageJson?.description}
+          colSpan={colSpan}
           className='about__content-item'
         />
-        <Line
+        <TextLine
           label='Version'
           content={packageJson?.version}
+          colSpan={colSpan}
           className='about__content-item'
         />
-        <Line
+        <TextLine
           label='License'
           content={(
             <div>
@@ -62,6 +52,7 @@ export default () => {
               </Link>
             </div>
           )}
+          colSpan={colSpan}
           className='about__content-item'
         />
       </div>

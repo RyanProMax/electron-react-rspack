@@ -10,7 +10,7 @@ import IconUnmaximize from 'src/renderer/images/unmaximize.svg';
 import './MenuIcon.less';
 
 export default ({
-  minimize = true, maximize = true, closable = true,
+  minimize = false, maximize = false, closable = true,
   isDefaultMaximize = false, className
 }: {
   minimize?: boolean

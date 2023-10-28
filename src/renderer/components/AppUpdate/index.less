@@ -1,0 +1,67 @@
+@import '../../styles/common.less';
+
+.app-updater {
+  width: 100vw;
+  height: 100vh;
+  padding: 0 24px;
+  background-color: rgba(var(--color-rgb-255), 0.9);
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: @borderRadius;
+  font-size: medium;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__header {
+    -webkit-app-region: drag;
+    position: relative;
+    width: 100%;
+    padding: 16px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid rgb(var(--color-rgb-0));
+    box-sizing: border-box;
+  }
+
+  &__menu {
+    position: absolute;
+    right: 0;
+  }
+
+  &__content {
+    flex: 1;
+    width: 100%;
+    padding: 18px 0;
+    box-sizing: border-box;
+
+    &-item {
+      &:not(:first-child) {
+        line-height: 1.5;
+        margin-top: 8px;
+      }
+    }
+  }
+
+  &__progress {
+    margin-top: 18px;
+  }
+
+  &__footer {
+    width: 100%;
+    padding: 16px 0;
+    border-top: 1px solid rgb(var(--color-rgb-0));
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    &-button {
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 export enum Pages {
   Home = 'home.html',
   About = 'about.html',
+  Update = 'update.html',
 }
 
 export enum Channels {
@@ -13,6 +14,12 @@ export enum Channels {
   OpenExternal = 'OpenExternal',
   Broadcast = 'Broadcast',
   ToggleTheme = 'ToggleTheme',
+  Render = 'Render',
+
+  // app updater
+  AppUpdaterConfirm = 'AppUpdaterConfirm',
+  AppUpdaterProgress = 'AppUpdaterProgress',
+  AppUpdaterAbort = 'AppUpdaterAbort',
 
   // store
   GetUserStore = 'GetUserStore',
