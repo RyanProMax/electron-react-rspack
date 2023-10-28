@@ -4,6 +4,8 @@ An Electron boilerplate including TypeScript, React, Rspack and ESLint.
 
 > Reference [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
 
+![ElectronReactRspack](https://github.com/RyanProMax/image-hub/blob/main/electron-react-rspack/03.png)
+
 ## Installation
 
 Use pnpm in order to install all dependencies.
@@ -41,6 +43,7 @@ pnpm package
 - [x] eslint
 - [x] less
 - [x] [arco-design](https://github.com/arco-design/arco-design): a comprehensive React UI components library.
+- [x] theme: light/dark mode.
 - [x] CI/CD: auto build and release when push tag.
 
 ## License
