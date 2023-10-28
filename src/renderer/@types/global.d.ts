@@ -11,6 +11,11 @@ declare global {
     author: string
     version: string
     description: string
+    homepage: string
+    repository: {
+      type: string
+      url: string
+    }
     license: string
   }
 }

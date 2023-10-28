@@ -1,6 +1,11 @@
 {
   "name": "electron-react-rspack",
   "author": "Ryan",
+  "homepage": "https://github.com/RyanProMax/electron-react-rspack#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanProMax/electron-react-rspack.git"
+  },
   "version": "0.0.3",
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "main": "build/loader.js",

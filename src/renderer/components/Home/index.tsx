@@ -23,9 +23,9 @@ export default () => {
     : '';
 
   const openGithub = () => {
-    ipcRenderer.send(
+    packageJson && ipcRenderer.send(
       Channels.OpenExternal,
-      'https://github.com/RyanProMax/electron-react-rspack'
+      packageJson.homepage
     );
   };
 

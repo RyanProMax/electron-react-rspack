@@ -9,6 +9,8 @@ export default (pickProps: string[] = [
   'author',
   'version',
   'description',
+  'homepage',
+  'repository',
   'license',
 ]) => {
   const [packageJson, setPackageJson] = useState<PackageJson>();

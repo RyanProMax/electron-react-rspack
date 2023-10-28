@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain } from 'electron';
+import { BrowserWindow, ipcMain, shell } from 'electron';
 
 import { Channels, Pages } from '../../common/constant';
 import { getHtmlPath, getPreloadPath } from '../utils/index';
@@ -13,8 +13,8 @@ export default class AboutWindow {
     } else {
       this.browserWindow = new BrowserWindow({
         show: false,
-        width: 320,
-        height: 320,
+        width: 480,
+        height: 240,
         autoHideMenuBar: true,
         frame: false,
         transparent: true,
@@ -28,6 +28,11 @@ export default class AboutWindow {
 
       this.browserWindow.on('ready-to-show', () => {
         this.browserWindow!.show();
+      });
+
+      this.browserWindow.webContents.setWindowOpenHandler((data) => {
+        shell.openExternal(data.url);
+        return { action: 'deny' };
       });
 
       this.browserWindow.on('close', () => {
