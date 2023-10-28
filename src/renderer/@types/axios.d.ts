@@ -1,8 +1,7 @@
-import * as AxiosType from 'axios';
+import * as axios from 'axios';
 
-declare namespace _AxiosType {
-  type IAxiosRequestConfig = AxiosType.AxiosRequestConfig;
+declare global {
+  namespace AxiosType {
+    type AxiosRequestConfig = axios.AxiosRequestConfig;
+  }
 }
-
-export = _AxiosType;
-export as namespace __AXIOS__;

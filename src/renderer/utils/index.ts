@@ -6,7 +6,7 @@ export const ipcRenderer = window.__ELECTRON__.ipcRenderer;
 
 export const callApi = async ({
   raw = false, headers, ...config
-}: __AXIOS__.IAxiosRequestConfig & { raw?: boolean }) => {
+}: AxiosType.AxiosRequestConfig & { raw?: boolean }) => {
   const result = await axios({
     headers: {
       Accept: 'application/json',
