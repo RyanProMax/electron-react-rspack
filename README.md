@@ -6,6 +6,8 @@ An Electron boilerplate including TypeScript, React, Rspack and ESLint.
 
 ![ElectronReactRspack](https://github.com/RyanProMax/image-hub/blob/main/electron-react-rspack/03.png)
 
+![AutoUpdate](https://github.com/RyanProMax/image-hub/blob/main/electron-react-rspack/04.png)
+
 ## Installation
 
 Use pnpm in order to install all dependencies.
