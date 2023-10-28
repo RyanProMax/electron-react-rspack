@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 log.transports.file.resolvePathFn = (variables) =>
   path.join(
     variables.libraryDefaultDir,
-    `${dayjs().format('YYYY-MM-DD')}`
+    `${dayjs().format('YYYY-MM-DD')}.log`
   );
 
 log.initialize({ preload: true });
