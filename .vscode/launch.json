@@ -5,10 +5,9 @@
       "name": "Electron: Main",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "pnpm",
       "runtimeArgs": [
-        "run",
-        "start:main"
+        "pnpm --filter main run start"
       ],
       "env": {
         "MAIN_ARGS": "--remote-debugging-port=9527"

@@ -25,7 +25,7 @@ export function getHtmlPath(htmlFileName: string) {
 export function getPreloadPath(): string {
   return app.isPackaged
     ? path.join(__dirname, 'preload.js')
-    : path.join(process.cwd(), 'build/preload.js');
+    : path.join(process.cwd(), '../../build/preload.js');
 }
 
 export const removeFileExtname = (fileName: string) => {
