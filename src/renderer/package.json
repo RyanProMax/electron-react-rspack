@@ -1,0 +1,25 @@
+{
+  "name": "renderer",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development rspack serve --config ./rspack.config.dev.ts",
+    "build": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts",
+    "analyze": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts --analyze"
+  },
+  "dependencies": {
+    "@arco-design/web-react": "^2.61.1",
+    "axios": "^1.6.8",
+    "classnames": "^2.5.1",
+    "lodash-es": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@types/lodash-es": "^4.17.12",
+    "@types/react": "^18.2.69",
+    "@types/react-dom": "^18.2.22",
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0"
+  }
+}
