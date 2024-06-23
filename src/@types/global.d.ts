@@ -1,3 +1,5 @@
+/// <reference types="@rsbuild/core/types" />
+
 declare global {
   interface Window {
     __ELECTRON__: {

@@ -41,7 +41,16 @@ const configuration: RsbuildConfig = {
   },
   output: {
     targets: ['web'],
-    assetPrefix: path.join(process.cwd(), '../../build/renderer'),
+    /**
+     * Important: If set as an absolute path string, 
+     * it might be escaped in the browser,
+     * causing resource request failures.
+     * Therefore, it's best to use "auto".
+     * 
+     * 重要：如果设置为绝对路径字符串，可能会在浏览器下被转义导致资源请求失败
+     * 所以最好用auto
+     */
+    assetPrefix: 'auto',
     distPath: {
       root: path.join(process.cwd(), '../../build/renderer'),
     },
