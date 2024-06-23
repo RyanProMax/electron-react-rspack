@@ -1,4 +1,4 @@
-import { Controller } from './modules/Controller';
+import Core from './core';
 
-const controller = new Controller();
-controller.startApp();
+const core = new Core();
+core.startApp();

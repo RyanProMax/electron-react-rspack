@@ -34,8 +34,8 @@
     "url": "git+https://github.com/RyanProMax/electron-react-rspack.git"
   },
   "devEngines": {
-    "node": ">=16.x",
-    "npm": ">=8.x"
+    "node": ">=20.x",
+    "npm": ">=10.x"
   },
   "license": "MIT"
 }

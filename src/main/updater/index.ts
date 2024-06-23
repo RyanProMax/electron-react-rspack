@@ -4,7 +4,7 @@ import path from 'path';
 
 import { Channels, Pages } from '../../common/constant';
 import { isDev } from '../../common/env';
-import { logger } from '../utils/logger';
+import { logger } from '../logger';
 import { getHtmlPath, getPreloadPath } from '../utils';
 
 type CheckAvailableVersionResult = {

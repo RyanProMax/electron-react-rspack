@@ -1,44 +1,27 @@
 import { BrowserWindow, app, ipcMain, shell } from 'electron';
 
-import { Channels } from '../../common/constant';
+import { Channels, Pages } from '../../common/constant';
 import { getPackageJson } from '../utils';
-import { logger } from '../utils/logger';
+import { logger } from '../logger';
 
-import Store from './Store';
-import AppUpdater from './AppUpdater';
-import MainWindow from './MainWindow';
-import AboutWindow from './AboutWindow';
+import Store from '../store';
+import Windows from '../windows';
+import AppUpdater from '../updater';
 
-export class Controller {
-  logger = logger.scope('controller');
+export default class Core {
+  logger = logger.scope('Core');
 
   store: Store | null = null;
-  appUpdater: AppUpdater = new AppUpdater();
-
-  mainWindow: MainWindow | null = null;
-  aboutWindow: AboutWindow | null = null;
-
-  private get broadcastWindows() {
-    return [
-      this.mainWindow?.browserWindow,
-      this.aboutWindow?.browserWindow,
-      this.appUpdater?.browserWindow,
-    ].filter(w => w) as BrowserWindow[];
-  }
+  windows: Windows | null = null;
+  appUpdater = new AppUpdater();
 
   async startApp() {
     try {
       this.logger.info('app start');
 
-      this.registerAppEvent();
+      await this.beforeAppReady();
       await app.whenReady();
-
-      this.store = new Store();
-      this.mainWindow = new MainWindow();
-      this.aboutWindow = new AboutWindow();
-
-      this.registerMainEvent();
-      this.appUpdater.checkUpdate();
+      await this.afterAppReady();
 
       this.logger.info('app start success');
     } catch (e) {
@@ -47,7 +30,7 @@ export class Controller {
   }
 
   // run before app-ready
-  private registerAppEvent() {
+  private async beforeAppReady() {
     app.on('window-all-closed', () => {
       if (process.platform !== 'darwin') {
         app.quit();
@@ -55,24 +38,27 @@ export class Controller {
     });
   }
 
-  // run after app ready
-  private registerMainEvent() {
+  // run after app-ready
+  private async afterAppReady() {
+    this.store = new Store();
+
     // main events
-    this._register();
+    this.registerMainEvents();
 
-    // store event
-    this.store?.register();
+    // init windows
+    this.windows = new Windows();
 
-    this.mainWindow?.register();
-    this.aboutWindow?.register();
+    this.appUpdater.checkUpdate();
   }
 
-  private _register() {
+  private registerMainEvents() {
     // on
     ipcMain.on(Channels.Close, (event) => {
       this.logger.info(Channels.Close);
       const { sender } = event;
-      if (sender.id === this.mainWindow?.browserWindow.id) {
+
+      const mainWindow = this.windows?.getBrowserWindow(Pages.Home);
+      if (sender.id === mainWindow?.id) {
         this.quitApp();
       } else {
         const browserWindow = BrowserWindow.fromWebContents(sender);
@@ -104,8 +90,8 @@ export class Controller {
     });
     ipcMain.on(Channels.Broadcast, (event, channel: Channels, ...data: unknown[]) => {
       const { sender } = event;
-      const filterBroadcastList = this.broadcastWindows.filter(w => w && w.webContents.id !== sender.id);
-      filterBroadcastList.forEach(w => {
+      const allWindows = this.windows?.getAllWindows() || [];
+      allWindows.filter(w => w && w.webContents.id !== sender.id).forEach(w => {
         w?.webContents?.send(channel, ...data);
       });
     });

@@ -15,6 +15,10 @@ export default class Store {
     name: 'userStore',
   });
 
+  constructor() {
+    this.register();
+  }
+
   register() {
     ipcMain.handle(Channels.GetUserStore, (_, key: string) => {
       return this.userStore.get(key);
