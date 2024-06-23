@@ -53,7 +53,7 @@ export default abstract class BaseWindow {
     return this.browserWindow;
   }
 
-  register() {
+  protected register() {
     // ...
   }
 

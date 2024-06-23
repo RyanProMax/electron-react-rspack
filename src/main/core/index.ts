@@ -1,6 +1,6 @@
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { app, ipcMain } from 'electron';
 
-import { Channels, Pages } from '../../common/constant';
+import { Channels } from '../../common/constant';
 import { getPackageJson } from '../utils';
 import { logger } from '../logger';
 
@@ -42,52 +42,18 @@ export default class Core {
   private async afterAppReady() {
     this.store = new Store();
 
-    // main events
-    this.registerMainEvents();
-
     // init windows
-    this.windows = new Windows();
+    this.windows = new Windows(this);
+
+    this.register();
 
     this.appUpdater.checkUpdate();
   }
 
-  private registerMainEvents() {
+  private register() {
     // on
-    ipcMain.on(Channels.Close, (event) => {
-      this.logger.info(Channels.Close);
-      const { sender } = event;
-
-      const mainWindow = this.windows?.getBrowserWindow(Pages.Home);
-      if (sender.id === mainWindow?.id) {
-        this.quitApp();
-      } else {
-        const browserWindow = BrowserWindow.fromWebContents(sender);
-        browserWindow?.closable && browserWindow.close();
-      }
-    });
     ipcMain.on(Channels.Quit, this.quitApp);
-    ipcMain.on(Channels.Maximize, (event) => {
-      this.logger.info(Channels.Maximize);
-      const { sender } = event;
-      const browserWindow = BrowserWindow.fromWebContents(sender);
-      if (browserWindow?.maximizable) {
-        if (browserWindow.isMaximized()) {
-          browserWindow.unmaximize();
-        } else {
-          browserWindow.maximize();
-        }
-      }
 
-    });
-    ipcMain.on(Channels.Minimize, (event) => {
-      this.logger.info(Channels.Minimize);
-      const { sender } = event;
-      const browserWindow = BrowserWindow.fromWebContents(sender);
-      browserWindow?.minimizable && browserWindow.minimize();
-    });
-    ipcMain.on(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
-      shell.openExternal(url, options);
-    });
     ipcMain.on(Channels.Broadcast, (event, channel: Channels, ...data: unknown[]) => {
       const { sender } = event;
       const allWindows = this.windows?.getAllWindows() || [];
@@ -100,7 +66,7 @@ export default class Core {
     ipcMain.handle(Channels.GetPackageJson, getPackageJson);
   }
 
-  private quitApp() {
+  quitApp() {
     this.logger.info('app quit');
     app.quit();
   }

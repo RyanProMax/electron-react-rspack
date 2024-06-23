@@ -19,7 +19,7 @@ export default class Store {
     this.register();
   }
 
-  register() {
+  private register() {
     ipcMain.handle(Channels.GetUserStore, (_, key: string) => {
       return this.userStore.get(key);
     });
