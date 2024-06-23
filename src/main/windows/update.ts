@@ -1,33 +1,44 @@
-import { BrowserWindow, ipcMain } from 'electron';
+import { ipcMain } from 'electron';
 import { CancellationToken, UpdateInfo, autoUpdater } from 'electron-updater';
 import path from 'path';
 
+import BaseWindow from './base';
 import { Channels, Pages } from '../../common/constant';
 import { isDev } from '../../common/env';
 import { logger } from '../logger';
-import { getHtmlPath, getPreloadPath } from '../utils';
 
 type CheckAvailableVersionResult = {
   result: boolean
   data?: UpdateInfo
 }
 
-export default class AppUpdater {
+export default class Update extends BaseWindow {
   private logger = logger.scope('AppUpdater');
+  page = Pages.Update;
+
   private TIME_OUT = 10 * 1000;
 
-  browserWindow: BrowserWindow | null = null;
-
   constructor() {
+    super();
     if (isDev) {
       autoUpdater.updateConfigPath = path.join(
-        process.cwd(),
-        'test/dev-app-update.yml'
+        __dirname,
+        '../../../test/dev-app-update.yml'
       );
       autoUpdater.forceDevUpdateConfig = true;
     }
     autoUpdater.autoDownload = false;
     autoUpdater.logger = this.logger;
+
+    this.checkUpdate();
+  }
+
+  createWindow() {
+    return super.createWindow({
+      width: 360,
+      height: 240,
+      resizable: false,
+    });
   }
 
   async checkUpdate() {
@@ -101,30 +112,13 @@ export default class AppUpdater {
   }
 
   updateConfirm(data: UpdateInfo): Promise<boolean> {
-    this.browserWindow = new BrowserWindow({
-      show: false,
-      width: 360,
-      height: 240,
-      autoHideMenuBar: true,
-      frame: false,
-      transparent: true,
-      resizable: false,
-      webPreferences: {
-        preload: getPreloadPath(),
-      },
-    });
+    const browserWindow = this.createWindow();
 
-    this.browserWindow.loadURL(getHtmlPath(Pages.Update));
-
-    this.browserWindow.webContents.on('did-finish-load', () => {
+    browserWindow.webContents.on('did-finish-load', () => {
       if (this.browserWindow) {
         this.browserWindow.webContents.send(Channels.Render, data);
         this.browserWindow.show();
       }
-    });
-
-    this.browserWindow.on('close', () => {
-      this.browserWindow = null;
     });
 
     return new Promise((resolve) => {

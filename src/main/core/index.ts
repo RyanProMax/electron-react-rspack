@@ -6,14 +6,12 @@ import { logger } from '../logger';
 
 import Store from '../store';
 import Windows from '../windows';
-import AppUpdater from '../updater';
 
 export default class Core {
   logger = logger.scope('Core');
 
   store: Store | null = null;
   windows: Windows | null = null;
-  appUpdater = new AppUpdater();
 
   async startApp() {
     try {
@@ -46,8 +44,6 @@ export default class Core {
     this.windows = new Windows(this);
 
     this.register();
-
-    this.appUpdater.checkUpdate();
   }
 
   private register() {

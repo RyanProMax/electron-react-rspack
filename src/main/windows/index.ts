@@ -3,6 +3,7 @@ import { BrowserWindow, ipcMain, shell } from 'electron';
 import BaseWindow from './base';
 import Main from './main';
 import About from './about';
+import Update from './update';
 
 import Core from '../core';
 import { logger } from '../logger';
@@ -15,6 +16,7 @@ export default class Windows {
   private RegisterWindows = [
     Main,
     About,
+    Update,
   ];
   private core: Core;
 
@@ -69,12 +71,12 @@ export default class Windows {
   }
 
   getWindowInstance(page: Pages) {
-    return this.windowInstances.get(page);
+    return this.windowInstances.get(page) || null;
   }
 
   getBrowserWindow(page: Pages) {
     const windowInstance = this.getWindowInstance(page);
-    return windowInstance?.browserWindow;
+    return windowInstance?.browserWindow || null;
   }
 
   getAllWindows() {
