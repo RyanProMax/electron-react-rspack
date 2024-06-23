@@ -36,11 +36,13 @@ pnpm package
 
 ## Features
 
+- [x] Electron: v31.0.2
 - [x] typescript
-- [x] rspack
+- [x] rspack: for electron product (preload and main).
+- [x] rsbuild: for web product.
 - [x] electron-store: local persistent storage.
-- [x] electron-log
-- [x] electron-builder
+- [x] electron-log: local logger.
+- [x] electron-builder: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175).
 - [x] electron-updater: auto update app version.
 - [x] eslint
 - [x] less
