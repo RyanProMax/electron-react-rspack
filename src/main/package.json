@@ -5,21 +5,5 @@
     "start": "cross-env NODE_ENV=development electron -r ts-node/register/transpile-only ./index.ts",
     "build": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts",
     "analyze": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts --analyze"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/lodash": "^4.17.0",
-    "@types/node": "^20.11.30",
-    "cross-env": "^7.0.3",
-    "dayjs": "^1.11.10",
-    "electron": "^26.2.4",
-    "electron-builder": "^24.13.3",
-    "electron-log": "^5.1.2",
-    "electron-store": "^8.2.0",
-    "electron-updater": "^6.1.8",
-    "fs-extra": "^11.2.0",
-    "lodash": "^4.17.21",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
   }
 }

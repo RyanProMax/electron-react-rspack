@@ -4,9 +4,5 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts",
     "analyze": "cross-env NODE_ENV=production rspack --config ./rspack.config.prod.ts --analyze"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "electron": "^26.2.4"
   }
 }
