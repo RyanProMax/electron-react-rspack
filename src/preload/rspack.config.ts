@@ -1,6 +1,7 @@
 import { Configuration } from '@rspack/cli';
 import path from 'path';
 
+// TODO: rsbuild compile target does not support electron reload
 const configuration: Configuration = {
   mode: 'production',
   target: 'electron-preload',
