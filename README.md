@@ -19,8 +19,8 @@ pnpm install
 ## Usage
 
 ```bash
-# use `pnpm start` to start renderer process.
-pnpm start
+# use `pnpm start:renderer` to start renderer process.
+pnpm start:renderer
 
 # and use `pnpm start:main` to start main process.
 pnpm start:main

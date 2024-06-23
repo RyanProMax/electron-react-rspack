@@ -13,9 +13,10 @@
   ],
   "main": "build/loader.js",
   "scripts": {
-    "start": "pnpm clean && pnpm --filter preload run build && pnpm --filter renderer run start",
-    "build": "pnpm clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
+    "start:renderer": "pnpm clean && pnpm --filter preload run build && pnpm --filter renderer run start",
+    "start:main": "pnpm --filter main run start",
     "clean": "ts-node ./scripts/clean.ts",
+    "build": "pnpm clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
     "package:local": "pnpm build && electron-builder build -c ./build.config.json --publish never",
     "package": "pnpm build && electron-builder build -c ./build.config.json --publish always"
   },
