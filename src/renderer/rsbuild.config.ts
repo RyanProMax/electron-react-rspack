@@ -41,6 +41,7 @@ const configuration: RsbuildConfig = {
   },
   output: {
     targets: ['web'],
+    assetPrefix: path.join(process.cwd(), '../../build/renderer'),
     distPath: {
       root: path.join(process.cwd(), '../../build/renderer'),
     },
