@@ -36,15 +36,15 @@ pnpm package
 
 ## Features
 
-- [x] **Electron**: v31.0.2
+- [x] **Electron**: update to v31.0.2
 - [x] **Typescript**
 - [x] **RSPack**: for electron product (preload and main).
-- [x] **RSbuild**: for web product.
+- [x] **RSBuild**: for web product.
 - [x] **Electron-Store**: local persistent storage.
 - [x] **Electron-Log**: local logger.
 - [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175).
 - [x] **Electron-Updater**: auto update app version.
-- [x] **Eslint**
+- [x] **ESLint**
 - [x] **Less**
 - [x] **[Arco-Design](https://github.com/arco-design/arco-design)**: a comprehensive React UI components library.
 - [x] **Theme**: light/dark mode.
