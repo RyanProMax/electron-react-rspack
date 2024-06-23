@@ -4,8 +4,8 @@ import { Channels } from 'src/common/constant';
 import { ipcRenderer } from 'src/renderer/utils';
 
 import { IconMinus, IconClose } from '@arco-design/web-react/icon';
-import IconMaximize from 'src/renderer/images/maximize.svg';
-import IconUnmaximize from 'src/renderer/images/unmaximize.svg';
+import IconMaximize from 'src/renderer/images/maximize.svg?react';
+import IconUnmaximize from 'src/renderer/images/unmaximize.svg?react';
 
 import './MenuIcon.less';
 

@@ -5,4 +5,4 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 export const isDev = process.env.NODE_ENV === 'development';
 
-export const port = process.env.PORT || 9527;
+export const port = Number(process.env.PORT) || 9527;

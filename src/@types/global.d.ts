@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    __ELECTRON__: import('../preload').__ELECTRON__;
+    __ELECTRON__: Electron.IpcRenderer;
   }
 
   interface PackageJson {

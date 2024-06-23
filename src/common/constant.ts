@@ -1,7 +1,7 @@
 export enum Pages {
-  Home = 'home.html',
-  About = 'about.html',
-  Update = 'update.html',
+  Home = 'home',
+  About = 'about',
+  Update = 'update',
 }
 
 export enum Channels {

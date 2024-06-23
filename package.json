@@ -1,6 +1,6 @@
 {
   "name": "electron-react-rspack",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Ryan",
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "keywords": [
@@ -20,7 +20,9 @@
     "package": "npm run build && electron-builder build -c ./build.config.json --publish always"
   },
   "devDependencies": {
-    "@rspack/cli": "^0.3.6",
+    "@rsbuild/core": "^0.7.9",
+    "@rspack/cli": "^0.7.4",
+    "@rspack/core": "^0.7.4",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.17.0",
     "@types/node": "^20.14.8",
@@ -31,7 +33,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
-    "electron": "^26.2.4",
+    "electron": "^31.0.2",
     "electron-builder": "^24.13.3",
     "electron-log": "^5.1.2",
     "electron-store": "^8.2.0",
@@ -40,7 +42,8 @@
     "fs-extra": "^11.2.0",
     "lodash": "^4.17.21",
     "rimraf": "^5.0.5",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.15.7",
     "typescript": "^5.2.2"
   },
   "homepage": "https://github.com/RyanProMax/electron-react-rspack#readme",

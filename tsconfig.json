@@ -20,6 +20,7 @@
   },
   "include": [
     "src/**/*",
+    "assets/**/*"
   ],
   "exclude": [
     "release/build",

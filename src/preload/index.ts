@@ -10,5 +10,3 @@ const __ELECTRON_API__ = {
 };
 
 contextBridge.exposeInMainWorld('__ELECTRON__', __ELECTRON_API__);
-
-export type __ELECTRON__ = typeof __ELECTRON_API__;
