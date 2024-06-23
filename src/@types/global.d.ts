@@ -1,6 +1,8 @@
 declare global {
   interface Window {
-    __ELECTRON__: Electron.IpcRenderer;
+    __ELECTRON__: {
+      ipcRenderer: Electron.IpcRenderer;
+    };
   }
 
   interface PackageJson {

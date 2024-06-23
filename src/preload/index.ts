@@ -2,8 +2,8 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 const __ELECTRON_API__ = {
   ipcRenderer: {
-    ...ipcRenderer,
-    // https://stackoverflow.com/questions/66913598/ipcrenderer-on-is-not-a-function
+    invoke: ipcRenderer.invoke.bind(ipcRenderer),
+    send: ipcRenderer.send.bind(ipcRenderer),
     on: ipcRenderer.on.bind(ipcRenderer),
     removeListener: ipcRenderer.removeListener.bind(ipcRenderer),
   },
