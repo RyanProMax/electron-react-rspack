@@ -13,11 +13,11 @@
   ],
   "main": "build/loader.js",
   "scripts": {
-    "start": "pnpm --filter preload run build && pnpm --filter renderer run start",
-    "build": "npm run clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
+    "start": "pnpm clean && pnpm --filter preload run build && pnpm --filter renderer run start",
+    "build": "pnpm clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
     "clean": "ts-node ./scripts/clean.ts",
-    "package:local": "npm run build && electron-builder build -c ./build.config.json --publish never",
-    "package": "npm run build && electron-builder build -c ./build.config.json --publish always"
+    "package:local": "pnpm build && electron-builder build -c ./build.config.json --publish never",
+    "package": "pnpm build && electron-builder build -c ./build.config.json --publish always"
   },
   "devDependencies": {
     "@rsbuild/core": "^0.7.9",

@@ -12,6 +12,7 @@ const configuration: RsbuildConfig = {
     targets: ['node'],
     distPath: {
       root: path.join(process.cwd(), '../../build'),
+      server: './',
     },
     filename: {
       js: '[name].js',

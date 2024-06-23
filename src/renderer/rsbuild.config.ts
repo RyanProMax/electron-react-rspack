@@ -7,7 +7,6 @@ import path from 'path';
 import fse from 'fs-extra';
 import keyBy from 'lodash/keyBy';
 
-// import { Pages } from '../common/constant';
 import { removeFileExtname } from '../main/utils';
 import { port } from '../common/env';
 
@@ -18,13 +17,6 @@ const entry = keyBy(
   files.map(f => path.join(entryDir, f)),
   filePath => removeFileExtname(filePath)
 );
-// const html = Object.values(Pages).map(filename => ({
-//   template: htmlTemplate,
-//   filename,
-//   chunks: [removeFileExtname(filename)],
-// }));
-
-console.log('entry', entry);
 
 const configuration: RsbuildConfig = {
   html: {
@@ -50,8 +42,7 @@ const configuration: RsbuildConfig = {
   output: {
     targets: ['web'],
     distPath: {
-      root: path.join(process.cwd(), '../../build'),
-      // image: '../asset/resource',
+      root: path.join(process.cwd(), '../../build/renderer'),
     },
     // filename: {
     //   js: '[name].js',
