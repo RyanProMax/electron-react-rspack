@@ -35,7 +35,7 @@ export const removeFileExtname = (fileName: string) => {
 export const getPackageJson = () => {
   const filePath = app.isPackaged
     ? path.resolve(__dirname, '../package.json')
-    : path.join(process.cwd(), 'package.json');
+    : path.join(process.cwd(), '../../package.json');
 
   return fse.readFile(filePath, 'utf-8');
 };
