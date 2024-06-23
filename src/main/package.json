@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "cross-env NODE_ENV=development NODE_OPTIONS=\"--import tsx\" electron ./index.ts",
-    "build": "rsbuild build",
-    "analyze": "cross-env BUNDLE_ANALYZE=true rsbuild build"
+    "build": "rspack build",
+    "analyze": "rspack build --analyze"
   }
 }

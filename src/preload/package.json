@@ -2,7 +2,7 @@
   "name": "preload",
   "version": "0.0.1",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rspack --config ./rspack.config.ts",
-    "analyze": "cross-env NODE_ENV=production rspack --config ./rspack.config.ts --analyze"
+    "build": "rspack build",
+    "analyze": "rspack build --analyze"
   }
 }
