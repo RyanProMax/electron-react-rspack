@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { Channels } from 'src/common/constant';
 
@@ -6,7 +6,7 @@ export const ipcRenderer = window.__ELECTRON__.ipcRenderer;
 
 export const callApi = async ({
   raw = false, headers, ...config
-}: AxiosType.AxiosRequestConfig & { raw?: boolean }) => {
+}: AxiosRequestConfig & { raw?: boolean }) => {
   const result = await axios({
     headers: {
       Accept: 'application/json',
