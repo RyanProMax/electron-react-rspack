@@ -1,6 +1,6 @@
 {
   "name": "electron-react-rspack",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Ryan",
   "description": "An Electron boilerplate including TypeScript, React, Rspack and ESLint.",
   "keywords": [
