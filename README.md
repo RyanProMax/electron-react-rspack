@@ -36,7 +36,7 @@ pnpm package
 
 ## Features
 
-- [x] **Electron**: update to v31.0.2
+- [x] **Electron**: update to v37.2.0
 - [x] **Typescript**
 - [x] **RSPack**: for electron product (preload and main).
 - [x] **RSBuild**: for web product.

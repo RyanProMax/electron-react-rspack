@@ -9,7 +9,7 @@ const configuration: Configuration = {
   mode: 'production',
   target: 'electron-main',
   resolve: {
-    tsConfigPath: path.resolve(process.cwd(), '../../tsconfig.json'),
+    tsConfig: path.resolve(process.cwd(), '../../tsconfig.json'),
     extensions: ['.ts', '.js'],
   },
   entry: {
