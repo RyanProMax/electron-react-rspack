@@ -9,10 +9,9 @@ const configuration: RsbuildConfig = {
     tsconfigPath: path.resolve(process.cwd(), '../../tsconfig.json'),
   },
   output: {
-    targets: ['node'],
+    target: 'node',
     distPath: {
       root: path.join(process.cwd(), '../../build'),
-      server: './',
     },
     filename: {
       js: '[name].js',
