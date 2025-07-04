@@ -40,7 +40,7 @@ const configuration: RsbuildConfig = {
     ]
   },
   output: {
-    targets: ['web'],
+    target: 'web',
     /**
      * Important: If set as an absolute path string, 
      * it might be escaped in the browser,

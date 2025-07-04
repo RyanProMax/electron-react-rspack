@@ -36,7 +36,7 @@ pnpm package
 
 ## Features
 
-- [x] **Electron**: update to v31.0.2
+- [x] **Electron**: update to v37.2.0
 - [x] **Typescript**
 - [x] **RSPack**: for electron product (preload and main).
 - [x] **RSBuild**: for web product.
@@ -49,6 +49,23 @@ pnpm package
 - [x] **[Arco-Design](https://github.com/arco-design/arco-design)**: a comprehensive React UI components library.
 - [x] **Theme**: light/dark mode.
 - [x] **CI/CD**: auto build and release when push tag.
+
+
+## FAQ
+
+### Electron Startup Error
+
+If you encounter Electron startup errors like: "electron failed to install correctly, please delete node_modules/electron and try installing again."
+
+You can try using electron-fix to resolve the issue:
+
+```bash
+# Install electron-fix globally
+npm install -g electron-fix
+
+# Run the fix command
+electron-fix start
+```
 
 ## License
 

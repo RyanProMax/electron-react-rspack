@@ -9,7 +9,7 @@ const configuration: Configuration = {
   mode: 'production',
   target: 'electron-preload',
   resolve: {
-    tsConfigPath: path.resolve(process.cwd(), '../../tsconfig.json'),
+    tsConfig: path.resolve(process.cwd(), '../../tsconfig.json'),
   },
   entry: {
     preload: path.join(__dirname, 'index.ts'),
