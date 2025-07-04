@@ -56,5 +56,8 @@
     "node": ">=20.x",
     "npm": ">=10.x"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["electron"]
+  },
   "license": "MIT"
 }
