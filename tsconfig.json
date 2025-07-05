@@ -16,7 +16,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "build"
+    "outDir": "build",
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
   "include": [
     "**/*.js",
