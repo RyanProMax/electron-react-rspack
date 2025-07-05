@@ -5,14 +5,17 @@ import { Channels } from 'src/common/constant';
 export const ipcRenderer = window.__ELECTRON__.ipcRenderer;
 
 export const callApi = async ({
-  raw = false, headers, ...config
+  raw = false,
+  headers,
+  ...config
 }: AxiosRequestConfig & { raw?: boolean }) => {
   const result = await axios({
     headers: {
       Accept: 'application/json',
-      ['Content-Type']: config.method?.toLowerCase() === 'post'
-        ? 'application/x-www-form-urlencoded'
-        : 'application/json',
+      ['Content-Type']:
+        config.method?.toLowerCase() === 'post'
+          ? 'application/x-www-form-urlencoded'
+          : 'application/json',
       ...headers,
     },
     method: 'get',

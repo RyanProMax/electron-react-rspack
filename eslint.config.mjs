@@ -14,13 +14,13 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['eslint.config.mjs', 'prettier.config.js'],
+    ignores: ['build/**', 'release/**', 'dist/**', 'node_modules/**'],
   },
   js.configs.recommended,
   ...compat.extends(
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    'plugin:prettier/recommended'
   ),
   {
     plugins: {
@@ -35,8 +35,8 @@ export default [
       },
 
       parser: tsParser,
-      ecmaVersion: 5,
-      sourceType: 'commonjs',
+      ecmaVersion: 'latest',
+      sourceType: 'module',
 
       parserOptions: {
         project: true,

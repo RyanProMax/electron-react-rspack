@@ -8,9 +8,9 @@ import { isDev } from '../../common/env';
 import { logger } from '../logger';
 
 type CheckAvailableVersionResult = {
-  result: boolean
-  data?: UpdateInfo
-}
+  result: boolean;
+  data?: UpdateInfo;
+};
 
 export default class Update extends BaseWindow {
   private logger = logger.scope('AppUpdater');
@@ -21,10 +21,7 @@ export default class Update extends BaseWindow {
   constructor() {
     super();
     if (isDev) {
-      autoUpdater.updateConfigPath = path.join(
-        __dirname,
-        '../../../test/dev-app-update.yml'
-      );
+      autoUpdater.updateConfigPath = path.join(__dirname, '../../../test/dev-app-update.yml');
       autoUpdater.forceDevUpdateConfig = true;
     }
     autoUpdater.autoDownload = false;
@@ -51,10 +48,7 @@ export default class Update extends BaseWindow {
         // start update
         autoUpdater.on('download-progress', (progress) => {
           console.log('download-progress', progress);
-          this.browserWindow?.webContents.send(
-            Channels.AppUpdaterProgress,
-            progress
-          );
+          this.browserWindow?.webContents.send(Channels.AppUpdaterProgress, progress);
         });
 
         autoUpdater.on('update-downloaded', (updateDownloadedEvent) => {
@@ -78,7 +72,7 @@ export default class Update extends BaseWindow {
   }
 
   checkAvailableVersion(): Promise<CheckAvailableVersionResult> {
-    return new Promise(r => {
+    return new Promise((r) => {
       const timer = setTimeout(() => {
         r({ result: false });
       }, this.TIME_OUT);

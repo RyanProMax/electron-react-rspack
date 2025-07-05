@@ -19,11 +19,11 @@ export default () => {
       <div className='about__content'>
         <TextLine
           label='Homepage'
-          content={(
+          content={
             <Link href={packageJson?.homepage} icon>
               {packageJson?.name}
             </Link>
-          )}
+          }
           colSpan={colSpan}
           className='about__content-item'
         />
@@ -41,17 +41,13 @@ export default () => {
         />
         <TextLine
           label='License'
-          content={(
+          content={
             <div>
-              <Link href={'https://choosealicense.com/licenses/mit/'} >
-                {packageJson?.license}
-              </Link>
+              <Link href={'https://choosealicense.com/licenses/mit/'}>{packageJson?.license}</Link>
               <span style={{ margin: '0 2px' }}>©</span>
-              <Link href={'https://github.com/RyanProMax/'} >
-                {packageJson?.author}
-              </Link>
+              <Link href={'https://github.com/RyanProMax/'}>{packageJson?.author}</Link>
             </div>
-          )}
+          }
           colSpan={colSpan}
           className='about__content-item'
         />

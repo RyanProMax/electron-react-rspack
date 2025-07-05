@@ -2,6 +2,7 @@
 build
 dist
 output
+release
 *.log
 *.lock
 *.json

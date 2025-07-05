@@ -18,7 +18,9 @@
     "clean": "ts-node ./scripts/clean.ts",
     "build": "pnpm clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
     "package:local": "pnpm build && electron-builder build -c ./build.config.json --publish never",
-    "package": "pnpm build && electron-builder build -c ./build.config.json --publish always"
+    "package": "pnpm build && electron-builder build -c ./build.config.json --publish always",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

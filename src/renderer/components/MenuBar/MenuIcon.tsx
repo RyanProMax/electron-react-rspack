@@ -10,14 +10,17 @@ import IconUnmaximize from 'src/renderer/images/unmaximize.svg?react';
 import './MenuIcon.less';
 
 export default ({
-  minimize = false, maximize = false, closable = true,
-  isDefaultMaximize = false, className
+  minimize = false,
+  maximize = false,
+  closable = true,
+  isDefaultMaximize = false,
+  className,
 }: {
-  minimize?: boolean
-  maximize?: boolean
-  closable?: boolean
-  isDefaultMaximize?: boolean
-  className?: string
+  minimize?: boolean;
+  maximize?: boolean;
+  closable?: boolean;
+  isDefaultMaximize?: boolean;
+  className?: string;
 }) => {
   const [isMaximize, setIsMaximize] = useState(isDefaultMaximize);
 
@@ -26,7 +29,7 @@ export default ({
   };
 
   const onMaximize = () => {
-    setIsMaximize(v => !v);
+    setIsMaximize((v) => !v);
     return ipcRenderer.send(Channels.Maximize);
   };
 
@@ -36,9 +39,7 @@ export default ({
 
   return (
     <div className={classnames('menu-icon', className)}>
-      {minimize ? (
-        <IconMinus onClick={onMinimize} className='menu-icon__item' />
-      ) : null}
+      {minimize ? <IconMinus onClick={onMinimize} className='menu-icon__item' /> : null}
       {maximize ? (
         isMaximize ? (
           <IconUnmaximize onClick={onMaximize} className='menu-icon__item--svg' />
@@ -46,9 +47,7 @@ export default ({
           <IconMaximize onClick={onMaximize} className='menu-icon__item--svg' />
         )
       ) : null}
-      {closable ? (
-        <IconClose onClick={onClose} className='menu-icon__item' />
-      ) : null}
+      {closable ? <IconClose onClick={onClose} className='menu-icon__item' /> : null}
     </div>
   );
 };

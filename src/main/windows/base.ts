@@ -58,6 +58,8 @@ export default abstract class BaseWindow {
   }
 
   close() {
-    this.browserWindow?.closable && this.browserWindow.close();
+    if (this.browserWindow?.closable) {
+      this.browserWindow.close();
+    }
   }
 }

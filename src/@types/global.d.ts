@@ -16,7 +16,7 @@ declare global {
     repository: {
       type: string;
       url: string;
-    }
+    };
     license: string;
   }
 }

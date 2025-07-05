@@ -14,8 +14,8 @@ const htmlTemplate = path.join(__dirname, 'template.html');
 const entryDir = path.join(__dirname, 'entry');
 const files = fse.readdirSync(entryDir);
 const entry = keyBy(
-  files.map(f => path.join(entryDir, f)),
-  filePath => removeFileExtname(filePath)
+  files.map((f) => path.join(entryDir, f)),
+  (filePath) => removeFileExtname(filePath)
 );
 
 const configuration: RsbuildConfig = {
@@ -37,16 +37,16 @@ const configuration: RsbuildConfig = {
         libraryDirectory: 'react-icon',
         camelToDashComponentName: false,
       },
-    ]
+    ],
   },
   output: {
     target: 'web',
     /**
-     * Important: If set as an absolute path string, 
+     * Important: If set as an absolute path string,
      * it might be escaped in the browser,
      * causing resource request failures.
      * Therefore, it's best to use "auto".
-     * 
+     *
      * 重要：如果设置为绝对路径字符串，可能会在浏览器下被转义导致资源请求失败
      * 所以最好用auto
      */
@@ -69,8 +69,8 @@ const configuration: RsbuildConfig = {
             // 'arcoblue-6': '#37D4CF',
           },
           javascriptEnabled: true,
-        }
-      }
+        },
+      },
     }),
   ],
   performance: {
@@ -80,8 +80,8 @@ const configuration: RsbuildConfig = {
     hmr: true,
   },
   server: {
-    port
-  }
+    port,
+  },
 };
 
 export default configuration;

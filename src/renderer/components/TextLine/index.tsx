@@ -5,14 +5,17 @@ const Row = Grid.Row;
 const Col = Grid.Col;
 
 export default ({
-  label, content, className, colSpan = [10, 12],
+  label,
+  content,
+  className,
+  colSpan = [10, 12],
   labelAlign = 'left',
 }: {
-  label: string
-  content?: string | React.ReactElement
-  className?: string
-  colSpan?: [number, number]
-  labelAlign?: 'left' | 'right'
+  label: string;
+  content?: string | React.ReactElement;
+  className?: string;
+  colSpan?: [number, number];
+  labelAlign?: 'left' | 'right';
 }) => {
   const gap = 24 - colSpan[1] - colSpan[0];
 
@@ -22,16 +25,12 @@ export default ({
         span={colSpan[0]}
         className={'text-line__label'}
         style={{
-          textAlign: labelAlign
+          textAlign: labelAlign,
         }}
       >
         {label}:
       </Col>
-      <Col
-        span={colSpan[1]}
-        offset={gap}
-        className={'text-line__content'}
-      >
+      <Col span={colSpan[1]} offset={gap} className={'text-line__content'}>
         {content}
       </Col>
     </Row>

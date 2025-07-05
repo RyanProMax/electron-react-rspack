@@ -16,7 +16,7 @@ const configuration: RsbuildConfig = {
     filename: {
       js: '[name].js',
     },
-  }
+  },
 };
 
 export default configuration;

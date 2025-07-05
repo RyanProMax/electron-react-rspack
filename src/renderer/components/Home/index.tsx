@@ -23,10 +23,9 @@ export default () => {
     : '';
 
   const openGithub = () => {
-    packageJson && ipcRenderer.send(
-      Channels.OpenExternal,
-      packageJson.homepage
-    );
+    if (packageJson) {
+      ipcRenderer.send(Channels.OpenExternal, packageJson.homepage);
+    }
   };
 
   const openAboutMe = () => {
@@ -36,20 +35,13 @@ export default () => {
 
   return (
     <div className='home'>
-      <MenuBar
-        title={title}
-        minimize={true}
-        maximize={true}
-      />
+      <MenuBar title={title} minimize={true} maximize={true} />
       <div className='home__content'>
         <div className='home__logo-container'>
           <img src={logo} className='home__logo' />
         </div>
         <p className='home__title'>
-          {packageJson?.name
-            ? packageJson.name.split('-').map(upperFirst).join(' ')
-            : null
-          }
+          {packageJson?.name ? packageJson.name.split('-').map(upperFirst).join(' ') : null}
         </p>
         <div>
           <Button

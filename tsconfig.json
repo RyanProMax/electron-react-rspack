@@ -16,14 +16,18 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "output"
+    "outDir": "build"
   },
   "include": [
-    "src/**/*",
-    "assets/**/*"
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.json"
   ],
   "exclude": [
     "node_modules",
-    "release/**/*"
+    "release/**/*",
+    "build/**/*"
   ]
 }

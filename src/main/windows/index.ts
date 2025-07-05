@@ -13,11 +13,7 @@ export default class Windows {
   logger = logger.scope('Windows');
 
   private windowInstances = new Map<Pages, BaseWindow>();
-  private RegisterWindows = [
-    Main,
-    About,
-    Update,
-  ];
+  private RegisterWindows = [Main, About, Update];
   private core: Core;
 
   constructor(core: Core) {
@@ -26,7 +22,7 @@ export default class Windows {
   }
 
   private register() {
-    this.RegisterWindows.forEach(WindowClass => {
+    this.RegisterWindows.forEach((WindowClass) => {
       const instance = new WindowClass();
       this.windowInstances.set(instance.page, instance);
     });
@@ -41,7 +37,9 @@ export default class Windows {
         this.core.quitApp();
       } else {
         const browserWindow = BrowserWindow.fromWebContents(sender);
-        browserWindow?.closable && browserWindow.close();
+        if (browserWindow?.closable) {
+          browserWindow.close();
+        }
       }
     });
 
@@ -62,7 +60,9 @@ export default class Windows {
       this.logger.info(Channels.Minimize);
       const { sender } = event;
       const browserWindow = BrowserWindow.fromWebContents(sender);
-      browserWindow?.minimizable && browserWindow.minimize();
+      if (browserWindow?.minimizable) {
+        browserWindow.minimize();
+      }
     });
 
     ipcMain.on(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
@@ -81,7 +81,7 @@ export default class Windows {
 
   getAllWindows() {
     return Array.from(this.windowInstances.values())
-      .map(instance => instance.browserWindow)
-      .filter(v => Boolean(v)) as Electron.BrowserWindow[];
+      .map((instance) => instance.browserWindow)
+      .filter((v) => Boolean(v)) as Electron.BrowserWindow[];
   }
 }

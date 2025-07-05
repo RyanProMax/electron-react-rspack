@@ -34,8 +34,8 @@ const configuration: Configuration = {
         },
         type: 'javascript/auto',
       },
-    ]
-  }
+    ],
+  },
 };
 
 export default configuration;

@@ -4,12 +4,15 @@ import MenuIcon from './MenuIcon';
 import './index.less';
 
 export default ({
-  title, minimize = false, maximize = false, closable = true,
+  title,
+  minimize = false,
+  maximize = false,
+  closable = true,
 }: {
-  title?: string
-  minimize?: boolean
-  maximize?: boolean
-  closable?: boolean
+  title?: string;
+  minimize?: boolean;
+  maximize?: boolean;
+  closable?: boolean;
 }) => {
   return (
     <div className='menu-bar'>
@@ -18,6 +21,6 @@ export default ({
         {title ? <span>{title}</span> : null}
       </div>
       <MenuIcon minimize={minimize} maximize={maximize} closable={closable} />
-    </div >
+    </div>
   );
 };

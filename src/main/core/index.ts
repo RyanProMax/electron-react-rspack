@@ -53,9 +53,11 @@ export default class Core {
     ipcMain.on(Channels.Broadcast, (event, channel: Channels, ...data: unknown[]) => {
       const { sender } = event;
       const allWindows = this.windows?.getAllWindows() || [];
-      allWindows.filter(w => w && w.webContents.id !== sender.id).forEach(w => {
-        w?.webContents?.send(channel, ...data);
-      });
+      allWindows
+        .filter((w) => w && w.webContents.id !== sender.id)
+        .forEach((w) => {
+          w?.webContents?.send(channel, ...data);
+        });
     });
 
     // handle

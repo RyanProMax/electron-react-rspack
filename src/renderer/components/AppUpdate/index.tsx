@@ -12,16 +12,12 @@ import './index.less';
 export default () => {
   useDarkMode();
   const packageJson = usePackageJson();
-  const {
-    status, updateInfo, progress, confirmCallback, abort,
-  } = useAppUpdate();
+  const { status, updateInfo, progress, confirmCallback, abort } = useAppUpdate();
 
   return (
     <div className='app-updater'>
       <div className='app-updater__header'>
-        <span>
-          New Version: {updateInfo?.version}
-        </span>
+        <span>New Version: {updateInfo?.version}</span>
         <MenuIcon className='app-updater__menu' />
       </div>
       <div className='app-updater__content'>
@@ -38,19 +34,13 @@ export default () => {
           className='app-updater__content-item'
         />
         {status !== Status.Confirm ? (
-          <Progress
-            percent={round(progress?.percent || 0)}
-            className='app-updater__progress'
-          />
+          <Progress percent={round(progress?.percent || 0)} className='app-updater__progress' />
         ) : null}
       </div>
       <div className='app-updater__footer'>
         {status === Status.Confirm ? (
           <>
-            <Button
-              onClick={() => confirmCallback(false)}
-              className='app-updater__footer-button'
-            >
+            <Button onClick={() => confirmCallback(false)} className='app-updater__footer-button'>
               Cancel
             </Button>
             <Button
@@ -62,10 +52,7 @@ export default () => {
             </Button>
           </>
         ) : (
-          <Button
-            onClick={abort}
-            className='app-updater__footer-button'
-          >
+          <Button onClick={abort} className='app-updater__footer-button'>
             Abort Update
           </Button>
         )}

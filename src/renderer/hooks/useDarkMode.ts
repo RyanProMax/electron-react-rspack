@@ -12,7 +12,8 @@ const ThemeStorageKey = '__THEME__';
 
 const mediaQueryListDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-const getTheme = () => (window.localStorage.getItem(ThemeStorageKey) as THEME) ||
+const getTheme = () =>
+  (window.localStorage.getItem(ThemeStorageKey) as THEME) ||
   (mediaQueryListDark.matches ? THEME.Dark : THEME.Light);
 
 const refreshTheme = (theme: THEME) => {
@@ -30,11 +31,7 @@ export default () => {
   const toggleTheme = () => {
     const _t = theme === THEME.Dark ? THEME.Light : THEME.Dark;
     setTheme(_t);
-    ipcRenderer.send(
-      Channels.Broadcast,
-      Channels.ToggleTheme,
-      _t
-    );
+    ipcRenderer.send(Channels.Broadcast, Channels.ToggleTheme, _t);
   };
 
   useEffect(() => {
