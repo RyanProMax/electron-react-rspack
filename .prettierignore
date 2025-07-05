@@ -1,0 +1,9 @@
+﻿node_modules
+build
+dist
+output
+*.log
+*.lock
+*.json
+*.md
+.DS_Store

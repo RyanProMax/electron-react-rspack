@@ -44,7 +44,7 @@ pnpm package
 - [x] **Electron-Log**: local logger.
 - [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175).
 - [x] **Electron-Updater**: auto update app version.
-- [x] **ESLint**
+- [x] **ESLint & Prettier**
 - [x] **Less**
 - [x] **[Arco-Design](https://github.com/arco-design/arco-design)**: a comprehensive React UI components library.
 - [x] **Theme**: light/dark mode.

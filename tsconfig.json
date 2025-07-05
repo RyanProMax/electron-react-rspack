@@ -5,7 +5,7 @@
     "module": "NodeNext",
     "lib": [
       "dom",
-      "es2021"
+      "esnext"
     ],
     "jsx": "react-jsx",
     "strict": true,
@@ -23,6 +23,7 @@
     "assets/**/*"
   ],
   "exclude": [
+    "node_modules",
     "release/**/*"
   ]
 }
