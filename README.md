@@ -38,17 +38,16 @@ pnpm package
 
 - [x] **Electron**: update to v37.2.0
 - [x] **Typescript**
-- [x] **RSPack**: for electron product (preload and main).
-- [x] **RSBuild**: for web product.
+- [x] **RSPack**: for electron product (preload, main, renderer)
 - [x] **Electron-Store**: local persistent storage.
 - [x] **Electron-Log**: local logger.
-- [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175).
-- [x] **Electron-Updater**: auto update app version.
+- [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175)
+- [x] **Electron-Updater**: auto update app version
 - [x] **ESLint & Prettier**
 - [x] **Less**
-- [x] **[Arco-Design](https://github.com/arco-design/arco-design)**: a comprehensive React UI components library.
-- [x] **Theme**: light/dark mode.
-- [x] **CI/CD**: auto build and release when push tag.
+- [x] **[Arco-Design](https://github.com/arco-design/arco-design)**: a comprehensive React UI components library
+- [x] **Theme**: light/dark mode
+- [x] **CI/CD**: auto build and release when push tag
 
 ## License
 

@@ -1,10 +1,6 @@
 import { Configuration } from '@rspack/cli';
 import path from 'path';
 
-/**
- * TODO: rsbuild cannot build electron product
- * So keep using @rspack/cli as compiler
- */
 const configuration: Configuration = {
   mode: 'production',
   target: 'electron-preload',

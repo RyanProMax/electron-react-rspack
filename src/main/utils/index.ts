@@ -19,7 +19,7 @@ export function getHtmlPath(htmlFileName: string) {
     url.pathname = htmlFileName;
     return url.href;
   }
-  return `file://${path.resolve(__dirname, './renderer/', `${htmlFileName}.html`)}`;
+  return `file://${path.resolve(__dirname, './renderer/', htmlFileName)}`;
 }
 
 export function getPreloadPath(): string {

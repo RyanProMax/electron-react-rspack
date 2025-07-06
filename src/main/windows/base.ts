@@ -34,7 +34,7 @@ export default abstract class BaseWindow {
     } else {
       this.browserWindow = new BrowserWindow(merge({}, this.DefaultConfig, options));
 
-      this.browserWindow.loadURL(getHtmlPath(this.page));
+      this.browserWindow.loadURL(getHtmlPath(`${this.page}.html`));
 
       this.browserWindow.on('ready-to-show', () => {
         this.browserWindow?.show();
