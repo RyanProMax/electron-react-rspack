@@ -175,8 +175,8 @@ const configuration: Configuration = {
   },
   performance: {
     // 资源大小警告阈值
-    maxAssetSize: 500000, // 500KB
-    maxEntrypointSize: 500000, // 500KB
+    maxAssetSize: 500 * 1000, // 500KB
+    maxEntrypointSize: 2 * 1024 * 1000, // 2MB
     // 过滤掉字体文件的警告
     assetFilter: (assetFilename) => {
       return !assetFilename.endsWith('.woff') && !assetFilename.endsWith('.woff2');

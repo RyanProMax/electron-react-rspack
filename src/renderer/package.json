@@ -4,7 +4,7 @@
   "scripts": {
     "start": "rspack serve",
     "build": "rspack build",
-    "analyze": "cross-env BUNDLE_ANALYZE=true rspack build --analyze"
+    "analyze": "cross-env rspack build --analyze"
   },
   "dependencies": {
     "@arco-design/web-react": "^2.66.1",

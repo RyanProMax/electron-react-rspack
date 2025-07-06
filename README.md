@@ -39,8 +39,8 @@ pnpm package
 - [x] **Electron**: update to v37.2.0
 - [x] **Typescript**
 - [x] **RSPack**: for electron product (preload, main, renderer)
-- [x] **Electron-Store**: local persistent storage.
-- [x] **Electron-Log**: local logger.
+- [x] **Electron-Store**: local persistent storage
+- [x] **Electron-Log**: local logger
 - [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175)
 - [x] **Electron-Updater**: auto update app version
 - [x] **ESLint & Prettier**
