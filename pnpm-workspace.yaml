@@ -1,2 +1,22 @@
 packages:
   - 'src/*'
+
+allowBuilds:
+  electron: true
+  electron-winstaller: true
+  esbuild: true
+
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - esbuild
+
+overrides:
+  '@babel/plugin-transform-modules-systemjs': 7.29.7
+  '@arco-plugins/unplugin-react>minimatch': 9.0.9
+  '@rspack/dev-server>webpack-dev-server': 5.2.4
+  '@svgr/plugin-svgo>svgo': 3.3.3
+  'sockjs>uuid': 11.1.1
+  'ts-node>diff': 4.0.4
+  fast-uri: 3.1.2
+  webpack: 5.107.2

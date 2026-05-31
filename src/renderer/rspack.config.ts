@@ -73,6 +73,7 @@ const configuration: Configuration = {
             loader: 'less-loader',
             options: {
               lessOptions: {
+                quietDeprecations: true,
                 modifyVars: {
                   // 'arcoblue-6': '#37D4CF',
                 },
@@ -173,15 +174,23 @@ const configuration: Configuration = {
       sideEffects: false,
     }),
   },
-  performance: {
-    // 资源大小警告阈值
-    maxAssetSize: 500 * 1000, // 500KB
-    maxEntrypointSize: 2 * 1024 * 1000, // 2MB
-    // 过滤掉字体文件的警告
-    assetFilter: (assetFilename) => {
-      return !assetFilename.endsWith('.woff') && !assetFilename.endsWith('.woff2');
-    },
-  },
+  performance: isProduction
+    ? {
+        // 资源大小警告阈值
+        maxAssetSize: 800 * 1000, // 800KB
+        maxEntrypointSize: 2 * 1024 * 1000, // 2MB
+        // 过滤掉字体文件的警告
+        assetFilter: (assetFilename) => {
+          return (
+            !assetFilename.endsWith('.map') &&
+            !assetFilename.endsWith('.woff') &&
+            !assetFilename.endsWith('.woff2')
+          );
+        },
+      }
+    : {
+        hints: false,
+      },
 };
 
 export default configuration;
