@@ -10,7 +10,9 @@ An Electron boilerplate including TypeScript, React, Rspack and ESLint.
 
 ## Installation
 
-Use pnpm in order to install all dependencies.
+Use Node.js 22.12.0 or later (Node.js 24 is used in CI) and pnpm to install all dependencies.
+
+Electron 44 requires macOS 13 or later and supports 64-bit platforms only.
 
 ```bash
 pnpm install
@@ -36,12 +38,12 @@ pnpm package
 
 ## Features
 
-- [x] **Electron**: update to v37.2.0
+- [x] **Electron**: v44.4.5
 - [x] **Typescript**
 - [x] **RSPack**: for electron product (preload, main, renderer)
 - [x] **Electron-Store**: local persistent storage
 - [x] **Electron-Log**: local logger
-- [x] **Electron-Builder**: [have to keep using v24.9.1](https://github.com/electron-userland/electron-builder/issues/8175)
+- [x] **Electron-Builder**: v26.15.3
 - [x] **Electron-Updater**: auto update app version
 - [x] **ESLint & Prettier**
 - [x] **Less**
