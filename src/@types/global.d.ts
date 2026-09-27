@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     __ELECTRON__: {
+      readonly electronVersion: string;
       ipcRenderer: Electron.IpcRenderer;
     };
   }

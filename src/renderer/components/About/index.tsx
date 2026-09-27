@@ -40,6 +40,12 @@ export default () => {
           className='about__content-item'
         />
         <TextLine
+          label='Electron'
+          content={window.__ELECTRON__.electronVersion}
+          colSpan={colSpan}
+          className='about__content-item'
+        />
+        <TextLine
           label='License'
           content={
             <div>

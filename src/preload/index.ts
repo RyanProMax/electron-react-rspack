@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 const __ELECTRON_API__ = {
+  electronVersion: process.versions.electron,
   ipcRenderer: {
     invoke: ipcRenderer.invoke.bind(ipcRenderer),
     send: ipcRenderer.send.bind(ipcRenderer),
