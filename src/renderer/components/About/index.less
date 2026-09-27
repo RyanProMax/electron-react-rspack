@@ -21,11 +21,11 @@
     flex: 1;
     min-height: 0;
     width: 100%;
-    padding: 28px 32px 32px;
+    padding: 20px 28px 24px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 22px;
   }
 
   &__description {
@@ -33,21 +33,19 @@
     max-width: 42ch;
     color: var(--color-text-2);
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 1.7;
   }
 
   &__versions {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 10px;
     margin: 0;
-    padding: 24px 0;
-    border-top: 1px solid var(--color-border-2);
-    border-bottom: 1px solid var(--color-border-2);
+    padding: 0;
 
     > div {
       display: grid;
-      grid-template-columns: 112px 1fr;
+      grid-template-columns: 96px 1fr;
       align-items: baseline;
       gap: 16px;
     }
@@ -60,7 +58,7 @@
 
     dd {
       margin: 0;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       font-variant-numeric: tabular-nums;
       line-height: 1.6;
@@ -73,7 +71,8 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 13px;
+    margin-top: auto;
+    font-size: 12px;
     line-height: 1.5;
 
     .arco-link {
