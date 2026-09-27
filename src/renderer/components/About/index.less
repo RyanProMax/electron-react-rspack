@@ -3,27 +3,102 @@
 .about {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(var(--color-rgb-255));
+  background-color: var(--color-bg-2);
   overflow: hidden;
   border-radius: @borderRadius;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+
+  > .menu-bar {
+    flex: 0 0 40px;
+    background-color: transparent;
+    font-size: 13px;
+  }
 
   &__content {
     flex: 1;
+    min-height: 0;
     width: 100%;
-    padding: 18px 32px;
+    padding: 20px 28px 24px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    overflow-y: auto;
+  }
 
-    &-item {
-      font-size: medium;
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 
-      &:not(:first-child) {
-        line-height: 1.5;
-        margin-top: 8px;
-      }
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
     }
+  }
+
+  &__logo {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+
+  &__description {
+    margin-top: 14px;
+    color: var(--color-text-2);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  &__versions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin: 0;
+    padding: 16px 20px;
+    border: 1px solid var(--color-border-2);
+    border-radius: 10px;
+    background-color: var(--color-fill-1);
+
+    dt {
+      color: var(--color-text-3);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    dd {
+      margin: 6px 0 0;
+      font-size: 18px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.4;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.5;
+
+    .arco-link {
+      font-size: inherit;
+    }
+  }
+
+  &__license {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-3);
   }
 }

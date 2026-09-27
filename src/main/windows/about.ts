@@ -8,7 +8,7 @@ export default class About extends BaseWindow {
 
   register() {
     ipcMain.on(Channels.AboutMe, () => {
-      this.createWindow({ height: 300, minHeight: 300 });
+      this.createWindow({ width: 520, height: 360, minHeight: 360 });
     });
   }
 }
