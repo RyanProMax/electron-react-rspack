@@ -1,6 +1,4 @@
 import { Link } from '@arco-design/web-react';
-import { upperFirst } from 'lodash-es';
-import logo from 'assets/icons/256x256.png';
 import MenuBar from '../MenuBar';
 
 import usePackageJson from 'src/renderer/hooks/usePackageJson';
@@ -10,20 +8,13 @@ import './index.less';
 
 export default () => {
   const packageJson = usePackageJson();
-  const appName = packageJson?.name.split('-').map(upperFirst).join(' ');
   useDarkMode();
 
   return (
     <div className='about'>
       <MenuBar title='关于' />
       <div className='about__content'>
-        <div className='about__intro'>
-          <div className='about__heading'>
-            <img src={logo} alt='' className='about__logo' />
-            <h1>{appName}</h1>
-          </div>
-          <p className='about__description'>{packageJson?.description}</p>
-        </div>
+        <p className='about__description'>{packageJson?.description}</p>
         <dl className='about__versions'>
           <div>
             <dt>应用版本</dt>

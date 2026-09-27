@@ -21,62 +21,49 @@
     flex: 1;
     min-height: 0;
     width: 100%;
-    padding: 20px 28px 24px;
+    padding: 28px 32px 32px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 22px;
-    overflow-y: auto;
-  }
-
-  &__heading {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    h1 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-  }
-
-  &__logo {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
+    gap: 28px;
   }
 
   &__description {
-    margin-top: 14px;
+    margin: 0;
+    max-width: 42ch;
     color: var(--color-text-2);
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: 14px;
+    line-height: 1.8;
   }
 
   &__versions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
     margin: 0;
-    padding: 16px 20px;
-    border: 1px solid var(--color-border-2);
-    border-radius: 10px;
-    background-color: var(--color-fill-1);
+    padding: 24px 0;
+    border-top: 1px solid var(--color-border-2);
+    border-bottom: 1px solid var(--color-border-2);
+
+    > div {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      align-items: baseline;
+      gap: 16px;
+    }
 
     dt {
-      color: var(--color-text-3);
-      font-size: 12px;
-      line-height: 1.5;
+      color: var(--color-text-2);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     dd {
-      margin: 6px 0 0;
-      font-size: 18px;
+      margin: 0;
+      font-size: 15px;
       font-weight: 600;
       font-variant-numeric: tabular-nums;
-      line-height: 1.4;
+      line-height: 1.6;
     }
   }
 
@@ -86,8 +73,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: auto;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
 
     .arco-link {
