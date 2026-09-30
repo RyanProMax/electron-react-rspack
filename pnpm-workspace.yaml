@@ -20,7 +20,7 @@ overrides:
   '@svgr/plugin-svgo>svgo': 3.3.5
   'sockjs>uuid': 11.1.1
   'ts-node>diff': 4.0.4
-  'brace-expansion@<1.1.18': 1.1.18
+  'brace-expansion@<1.1.21': 1.1.21
   'browserslist@<4.28.7': 4.28.7
   fast-uri: 3.1.8
   'http-proxy-middleware@<2.0.10': 2.0.10
