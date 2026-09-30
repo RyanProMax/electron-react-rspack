@@ -22,7 +22,7 @@ overrides:
   'ts-node>diff': 4.0.4
   'brace-expansion@<1.1.18': 1.1.18
   'browserslist@<4.28.7': 4.28.7
-  fast-uri: 3.1.6
+  fast-uri: 3.1.8
   'http-proxy-middleware@<2.0.10': 2.0.10
   'nanoid@<3.3.18': 3.3.18
   'postcss@<8.5.23': 8.5.23
