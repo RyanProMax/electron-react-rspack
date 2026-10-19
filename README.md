@@ -10,21 +10,22 @@ An Electron boilerplate including TypeScript, React, Rspack and ESLint.
 
 ## Installation
 
-Use Node.js 22.12.0 or later (Node.js 24 is used in CI) and pnpm to install all dependencies.
+Use Node.js 22.12.0 or later (Node.js 24 is used in CI) and pnpm 10.32.1 to install all dependencies.
 
 Electron 44 requires macOS 13 or later and supports 64-bit platforms only.
 
 ```bash
-pnpm install
+npm install --global pnpm@10.32.1
+pnpm install --frozen-lockfile
 ```
 
 ## Usage
 
 ```bash
-# use `pnpm start:renderer` to start renderer process.
+# In the first terminal, start the renderer and wait for compilation to finish.
 pnpm start:renderer
 
-# and use `pnpm start:main` to start main process.
+# In a second terminal, start the Electron main process.
 pnpm start:main
 ```
 
@@ -33,8 +34,19 @@ pnpm start:main
 To generate the project package based on the OS you're running on, just run:
 
 ```bash
-pnpm package
+pnpm package:local
 ```
+
+Artifacts are written to `release/`. This command uses `--publish never`; `pnpm package` is reserved for release publishing.
+
+## Checks
+
+```bash
+pnpm lint
+pnpm build
+```
+
+Pushes to `main` and pull requests run installation, lint and build checks on macOS and Windows. There is currently no automated test suite; Electron window interactions require a manual smoke check.
 
 ## Features
 
