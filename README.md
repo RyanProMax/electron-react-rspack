@@ -44,9 +44,14 @@ Artifacts are written to `release/`. This command uses `--publish never`; `pnpm 
 ```bash
 pnpm lint
 pnpm build
+pnpm test:e2e
 ```
 
-Pushes to `main` and pull requests run installation, lint and build checks on macOS and Windows. There is currently no automated test suite; Electron window interactions require a manual smoke check.
+`pnpm test:e2e` runs a Playwright Electron smoke suite against the production build (`build/loader.js`). Run `pnpm build` first; the suite does not start the dev server and does not need `playwright install`. It launches the app, checks that the home window renders, toggles dark mode, and reads `app.getAppPath()` plus a user-store round trip through the preload bridge. Auto-update is turned off for the run (`ELECTRON_SKIP_UPDATE=1`), native dialogs are stubbed, and each launch gets its own `userData` directory.
+
+The suite does not cover packaged installers, the real auto-update flow, component-level UI tests, or multi-window permissions. On Linux without a display, run it with `xvfb-run --auto-servernum pnpm test:e2e`.
+
+Pushes to `main` and pull requests run installation, lint, build, and this smoke suite on macOS, Windows, and Linux. The Linux job uses xvfb.
 
 ## Features
 

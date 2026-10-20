@@ -21,11 +21,13 @@
     "package:local": "pnpm build && electron-builder build -c ./build.config.json --publish never",
     "package": "pnpm build && electron-builder build -c ./build.config.json --publish always",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix"
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
+    "@playwright/test": "^1.64.1",
     "@rspack/cli": "^1.7.11",
     "@rspack/core": "^1.7.11",
     "@types/fs-extra": "^11.0.4",

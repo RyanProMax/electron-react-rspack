@@ -20,6 +20,12 @@ export default class Update extends BaseWindow {
 
   constructor() {
     super();
+    // Production builds check GitHub for updates on startup. E2E sets this so the
+    // suite never opens the update window or hits the network.
+    if (process.env.ELECTRON_SKIP_UPDATE === '1') {
+      this.logger.info('auto update skipped');
+      return;
+    }
     if (isDev) {
       autoUpdater.updateConfigPath = path.join(__dirname, '../../../test/dev-app-update.yml');
       autoUpdater.forceDevUpdateConfig = true;
