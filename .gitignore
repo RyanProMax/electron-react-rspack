@@ -7,3 +7,8 @@ node_modules
 build
 release
 .env
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/

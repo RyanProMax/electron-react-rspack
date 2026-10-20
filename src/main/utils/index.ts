@@ -1,6 +1,6 @@
 import { app } from 'electron';
 import path from 'path';
-import { URL } from 'url';
+import { URL, pathToFileURL } from 'url';
 import fse from 'fs-extra';
 
 import { port } from '../../common/env';
@@ -19,7 +19,7 @@ export function getHtmlPath(htmlFileName: string) {
     url.pathname = htmlFileName;
     return url.href;
   }
-  return `file://${path.resolve(__dirname, './renderer/', htmlFileName)}`;
+  return pathToFileURL(path.resolve(__dirname, './renderer/', htmlFileName)).href;
 }
 
 export function getPreloadPath(): string {
