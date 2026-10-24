@@ -9,6 +9,7 @@ test('app launches and the first window appears', async ({ electronApp, window }
   expect(window.isClosed()).toBe(false);
   await expect(window.locator('#root')).toBeAttached();
   expect(electronApp.windows()).toHaveLength(1);
+  expect(new URL(window.url()).protocol).toBe(process.env.E2E_DEV === '1' ? 'http:' : 'file:');
   if (process.env.E2E_DEV === '1') {
     const endpoint = new URL(
       '/rspack-dev-server/open-editor?fileName=does-not-exist',

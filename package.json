@@ -25,7 +25,8 @@
     "test:e2e": "playwright test",
     "test:unit": "node --import tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit --incremental false --skipLibCheck",
-    "analyze": "pnpm clean && concurrently \"pnpm --filter main run analyze\" \"pnpm --filter preload run analyze\" \"pnpm --filter renderer run analyze\""
+    "analyze": "pnpm clean && concurrently \"pnpm --filter main run analyze\" \"pnpm --filter preload run analyze\" \"pnpm --filter renderer run analyze\"",
+    "test:e2e:dev": "pnpm --filter main run build:dev && cross-env E2E_DEV=1 playwright test"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

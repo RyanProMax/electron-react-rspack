@@ -56,10 +56,10 @@ pnpm exec tsc --noEmit --incremental false
 For development smoke, keep `start:renderer` running and execute:
 
 ```bash
-pnpm exec cross-env E2E_DEV=1 pnpm test:e2e
+pnpm test:e2e:dev
 ```
 
-The same suite also checks that the dev server's browser-editor endpoint returns 404. On a headless Linux host, use `xvfb-run --auto-servernum pnpm test:e2e`. PR CI runs lint, build, source typecheck, unit tests and production Electron smoke on macOS, Windows and Linux. Development smoke is a separate local check.
+This command first rebuilds main in development mode: Rspack replaces NODE_ENV at build time, so setting it only when launching a production bundle is insufficient. The same suite also checks that the dev server's browser-editor endpoint returns 404. On a headless Linux host, use `xvfb-run --auto-servernum pnpm test:e2e`. PR CI runs lint, build, source typecheck, unit tests and production Electron smoke on macOS, Windows and Linux. Development smoke is a separate local check.
 
 ## Bundle analysis
 
