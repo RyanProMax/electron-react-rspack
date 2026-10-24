@@ -33,6 +33,7 @@ class Contents extends EventEmitter {
 class FakeWindow extends EventEmitter {
   static instances: FakeWindow[] = [];
   static rejectLoad = false;
+  static beforeCreate?: () => void;
   webContents = new Contents();
   id = FakeWindow.instances.length + 1;
   destroyed = false;
@@ -45,6 +46,7 @@ class FakeWindow extends EventEmitter {
   minimized = false;
   constructor(readonly options: unknown) {
     super();
+    FakeWindow.beforeCreate?.();
     FakeWindow.instances.push(this);
   }
   async loadURL(url: string) {
@@ -196,6 +198,7 @@ beforeEach(() => {
   };
   download = async () => undefined;
   FakeWindow.rejectLoad = false;
+  FakeWindow.beforeCreate = undefined;
 });
 afterEach(() => {
   for (const module of disposables.splice(0).reverse()) module.dispose();
@@ -435,4 +438,219 @@ test('closing a downloading window cancels the token and releases subscriptions'
   assert.equal(installs, 0);
   finish();
   await running;
+});
+
+function deferred<T = void>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+  const promise = new Promise<T>((yes, no) => {
+    resolve = yes;
+    reject = no;
+  });
+  return { promise, resolve, reject };
+}
+
+async function beginDownload() {
+  delete process.env.ELECTRON_SKIP_UPDATE;
+  check = async () => {
+    updater.emit('checking-for-update');
+    updater.emit('update-available', info);
+  };
+  const pending = deferred();
+  let token: { cancelled: boolean } | undefined;
+  download = (value) => {
+    token = value;
+    return pending.promise;
+  };
+  const update = own(new Update());
+  update.start();
+  update.start();
+  const running = update.checkUpdate();
+  await tick();
+  const window = FakeWindow.instances[0];
+  ipcMain.emit(Channels.AppUpdaterConfirm, event(window), true);
+  await tick();
+  return { update, running, window, pending, token: token! };
+}
+
+test('updater success forwards render/progress, installs once and releases download listeners', async () => {
+  const { update, running, window, pending } = await beginDownload();
+  assert.equal(checks, 1);
+  assert.deepEqual(window.webContents.messages[0], [Channels.Render, info]);
+  const progress = { percent: 55, transferred: 55, total: 100, bytesPerSecond: 50 };
+  updater.emit('download-progress', progress);
+  assert.deepEqual(window.webContents.messages.at(-1), [Channels.AppUpdaterProgress, progress]);
+  updater.emit('update-downloaded', info);
+  updater.emit('update-downloaded', info);
+  assert.equal(installs, 1);
+  assert.equal(updater.listenerCount('download-progress'), 0);
+  assert.equal(ipcMain.listenerCount(Channels.AppUpdaterAbort), 0);
+  pending.resolve();
+  await running;
+  update.dispose();
+  update.dispose();
+  updater.emit('update-downloaded', info);
+  assert.equal(installs, 1);
+});
+
+test('Abort IPC rejects another window/subframe and directly cancels the active download', async () => {
+  const { running, window, token, pending } = await beginDownload();
+  for (const source of [
+    { sender: {}, senderFrame: null },
+    { ...event(window), senderFrame: { ...window.webContents.mainFrame } },
+  ]) {
+    ipcMain.emit(Channels.AppUpdaterAbort, source);
+    assert.equal(token.cancelled, false);
+    assert.equal(window.destroyed, false);
+  }
+  ipcMain.emit(Channels.AppUpdaterAbort, event(window));
+  assert.equal(token.cancelled, true);
+  assert.equal(window.destroyed, true);
+  updater.emit('download-progress', { percent: 99 });
+  updater.emit('update-downloaded', info);
+  assert.equal(installs, 0);
+  assert.equal(ipcMain.listenerCount(Channels.AppUpdaterAbort), 0);
+  pending.resolve();
+  await running;
+});
+
+test('confirmation validates boolean payloads and explicit false does not download', async () => {
+  delete process.env.ELECTRON_SKIP_UPDATE;
+  check = async () => {
+    updater.emit('update-available', info);
+  };
+  let downloads = 0;
+  download = async () => {
+    downloads++;
+  };
+  const update = own(new Update());
+  update.start();
+  const running = update.checkUpdate();
+  await tick();
+  const window = FakeWindow.instances[0];
+  for (const option of ['true', {}, null, 1])
+    ipcMain.emit(Channels.AppUpdaterConfirm, event(window), option);
+  assert.equal(ipcMain.listenerCount(Channels.AppUpdaterConfirm), 1);
+  assert.equal(window.destroyed, false);
+  ipcMain.emit(Channels.AppUpdaterConfirm, event(window), false);
+  await running;
+  assert.equal(window.destroyed, true);
+  assert.equal(downloads, 0);
+  assert.equal(installs, 0);
+});
+
+test('checking error event settles false; repeated start/dispose and late available cannot reopen', async () => {
+  delete process.env.ELECTRON_SKIP_UPDATE;
+  const pending = deferred();
+  check = () => pending.promise;
+  const update = own(new Update());
+  update.start();
+  update.start();
+  const running = update.checkUpdate();
+  updater.emit('error', new Error('check event failure'));
+  await running;
+  assert.equal(checks, 1);
+  assert.equal(FakeWindow.instances.length, 0);
+  assert.equal(updater.listenerCount('update-available'), 0);
+  update.dispose();
+  update.dispose();
+  update.start();
+  updater.emit('update-available', info);
+  assert.equal(checks, 1);
+  assert.equal(FakeWindow.instances.length, 0);
+  pending.resolve();
+});
+
+test('download error event plus rejection cleans up; dispose wins against late completion', async () => {
+  const { update, running, pending, token, window } = await beginDownload();
+  updater.emit('error', new Error('transport event failure'));
+  update.dispose();
+  update.dispose();
+  assert.equal(token.cancelled, true);
+  assert.equal(window.destroyed, true);
+  updater.emit('update-downloaded', info);
+  pending.reject(new Error('cancelled transport'));
+  await running;
+  assert.equal(installs, 0);
+  assert.equal(updater.eventNames().length, 0);
+  assert.equal(ipcMain.listenerCount(Channels.AppUpdaterAbort), 0);
+});
+
+test('completion winning the race installs once; subsequent abort/dispose is harmless', async () => {
+  const { update, running, window, pending } = await beginDownload();
+  updater.emit('update-downloaded', info);
+  ipcMain.emit(Channels.AppUpdaterAbort, event(window));
+  update.dispose();
+  pending.resolve();
+  await running;
+  assert.equal(installs, 1);
+});
+
+test('main window controls toggle maximize/minimize and reject wrong source', async () => {
+  const core = own(new Core());
+  await core.startApp();
+  const window = FakeWindow.instances[0];
+  ipcMain.emit(Channels.Maximize, { sender: {}, senderFrame: null });
+  ipcMain.emit(Channels.Minimize, { sender: {}, senderFrame: null });
+  assert.equal(window.maximized, false);
+  assert.equal(window.minimized, false);
+  ipcMain.emit(Channels.Maximize, event(window));
+  assert.equal(window.maximized, true);
+  ipcMain.emit(Channels.Maximize, event(window));
+  assert.equal(window.maximized, false);
+  ipcMain.emit(Channels.Minimize, event(window));
+  assert.equal(window.minimized, true);
+});
+
+test('theme broadcast accepts only one light/dark value and cannot forward privileged channels', async () => {
+  const core = own(new Core());
+  await core.startApp();
+  const home = FakeWindow.instances[0];
+  ipcMain.emit(Channels.AboutMe, event(home));
+  await tick();
+  const about = FakeWindow.instances[1];
+  for (const args of [
+    [Channels.Quit],
+    [Channels.ToggleTheme, {}],
+    [Channels.ToggleTheme, 'invalid'],
+    [Channels.ToggleTheme, 'dark', 'extra'],
+  ]) {
+    ipcMain.emit(Channels.Broadcast, event(home), ...args);
+  }
+  assert.deepEqual(about.webContents.messages, []);
+  ipcMain.emit(Channels.Broadcast, event(home), Channels.ToggleTheme, 'dark');
+  assert.deepEqual(about.webContents.messages, [[Channels.ToggleTheme, 'dark']]);
+});
+
+test('Store IPC rejects malformed keys even from an authorized renderer', async () => {
+  const core = own(new Core());
+  await core.startApp();
+  const source = event(FakeWindow.instances[0]);
+  for (const channel of [Channels.GetUserStore, Channels.SetUserStore]) {
+    for (const key of [null, undefined, 0, false, {}, [], '']) {
+      assert.throws(() => handlers.get(channel)!(source, key, 'bad'), /non-empty string/);
+    }
+  }
+});
+
+test('all owned IPC is present before the first BrowserWindow constructor runs', async () => {
+  let constructions = 0;
+  FakeWindow.beforeCreate = () => {
+    constructions++;
+    for (const channel of [Channels.Quit, Channels.Close, Channels.AboutMe, Channels.OpenExternal])
+      assert.equal(ipcMain.listenerCount(channel), 1);
+    for (const channel of [Channels.GetPackageJson, Channels.GetUserStore, Channels.SetUserStore])
+      assert.equal(handlers.has(channel), true);
+  };
+  const core = own(new Core());
+  await core.startApp();
+  assert.equal(constructions, 1);
+});
+
+test('failed confirmation load settles false without leaving IPC listeners', async () => {
+  const update = own(new Update());
+  const confirmed = update.updateConfirm(info);
+  FakeWindow.instances[0].webContents.emit('did-fail-load', {}, -105, 'test failure');
+  assert.equal(await confirmed, false);
+  assert.equal(ipcMain.listenerCount(Channels.AppUpdaterConfirm), 0);
 });

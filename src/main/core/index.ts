@@ -54,6 +54,7 @@ export default class Core {
         // The renderer currently broadcasts only theme changes. Do not forward
         // arbitrary channels into another window's privileged preload bridge.
         if (channel !== Channels.ToggleTheme) return;
+        if (data.length !== 1 || (data[0] !== 'light' && data[0] !== 'dark')) return;
         for (const window of this.windows.getAllWindows()) {
           if (window.webContents !== event.sender) window.webContents.send(channel, ...data);
         }
