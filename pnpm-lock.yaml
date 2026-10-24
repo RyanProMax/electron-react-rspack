@@ -23,6 +23,11 @@ overrides:
   undici@>=7.0.0 <7.30.1: 7.30.1
   http-cache-semantics@<=4.2.0: 4.3.0
 
+patchedDependencies:
+  '@rspack/dev-server@2.2.1':
+    hash: 9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4
+    path: patches/@rspack__dev-server@2.2.1.patch
+
 importers:
 
   .:
@@ -41,13 +46,13 @@ importers:
         version: 2.0.0(@rspack/core@2.2.9)(@types/node@24.0.10)
       '@rspack/cli':
         specifier: 2.2.9
-        version: 2.2.9(@rspack/core@2.2.9)(@rspack/dev-server@2.2.1(@rspack/core@2.2.9)(selfsigned@5.5.0))
+        version: 2.2.9(@rspack/core@2.2.9)(@rspack/dev-server@2.2.1(patch_hash=9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4)(@rspack/core@2.2.9)(selfsigned@5.5.0))
       '@rspack/core':
         specifier: 2.2.9
         version: 2.2.9
       '@rspack/dev-server':
         specifier: 2.2.1
-        version: 2.2.1(@rspack/core@2.2.9)(selfsigned@5.5.0)
+        version: 2.2.1(patch_hash=9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4)(@rspack/core@2.2.9)(selfsigned@5.5.0)
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -57,6 +62,9 @@ importers:
       '@types/node':
         specifier: ^24.0.10
         version: 24.0.10
+      '@types/semver':
+        specifier: ^7.8.0
+        version: 7.8.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.60.0
         version: 8.60.0(@typescript-eslint/parser@8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.8.3))(eslint@9.39.4(jiti@2.7.0))(typescript@5.8.3)
@@ -1444,6 +1452,9 @@ packages:
 
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
+
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@typescript-eslint/eslint-plugin@8.60.0':
     resolution: {integrity: sha512-QYb/sa74/s7OKMbACMjrYnGspj9Hs5YI5aaffSL65UfeBUzVzBJfVo3oWSpbzPurvm7yaCCo2Lk7lVj610HqKw==}
@@ -5049,11 +5060,11 @@ snapshots:
       '@rspack/binding-win32-ia32-msvc': 2.2.9
       '@rspack/binding-win32-x64-msvc': 2.2.9
 
-  '@rspack/cli@2.2.9(@rspack/core@2.2.9)(@rspack/dev-server@2.2.1(@rspack/core@2.2.9)(selfsigned@5.5.0))':
+  '@rspack/cli@2.2.9(@rspack/core@2.2.9)(@rspack/dev-server@2.2.1(patch_hash=9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4)(@rspack/core@2.2.9)(selfsigned@5.5.0))':
     dependencies:
       '@rspack/core': 2.2.9
     optionalDependencies:
-      '@rspack/dev-server': 2.2.1(@rspack/core@2.2.9)(selfsigned@5.5.0)
+      '@rspack/dev-server': 2.2.1(patch_hash=9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4)(@rspack/core@2.2.9)(selfsigned@5.5.0)
 
   '@rspack/core@2.2.9':
     dependencies:
@@ -5063,7 +5074,7 @@ snapshots:
     optionalDependencies:
       '@rspack/core': 2.2.9
 
-  '@rspack/dev-server@2.2.1(@rspack/core@2.2.9)(selfsigned@5.5.0)':
+  '@rspack/dev-server@2.2.1(patch_hash=9fca5da7af41c1334c648dfab38dec18a70255fefed26e69527c591a83ab54c4)(@rspack/core@2.2.9)(selfsigned@5.5.0)':
     dependencies:
       '@rspack/core': 2.2.9
       '@rspack/dev-middleware': 2.0.6(@rspack/core@2.2.9)
@@ -5247,6 +5258,8 @@ snapshots:
   '@types/responselike@1.0.3':
     dependencies:
       '@types/node': 24.0.10
+
+  '@types/semver@7.8.0': {}
 
   '@typescript-eslint/eslint-plugin@8.60.0(@typescript-eslint/parser@8.60.0(eslint@9.39.4(jiti@2.7.0))(typescript@5.8.3))(eslint@9.39.4(jiti@2.7.0))(typescript@5.8.3)':
     dependencies:

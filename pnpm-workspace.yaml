@@ -34,3 +34,6 @@ overrides:
   # Compatible 4.x update outside GHSA-ch52-4w7c-c8xp's affected range.
   # The maintainer disputes that advisory; see docs/security-audit.md.
   'http-cache-semantics@<=4.2.0': 4.3.0
+
+patchedDependencies:
+  '@rspack/dev-server@2.2.1': patches/@rspack__dev-server@2.2.1.patch

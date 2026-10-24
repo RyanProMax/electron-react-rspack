@@ -1,0 +1,30 @@
+diff --git a/dist/0~launch-editor.js b/dist/0~launch-editor.js
+deleted file mode 100644
+index 3ada00b9fe19148e3ca10a48a6b868831316bc6c..0000000000000000000000000000000000000000
+diff --git a/dist/619.js b/dist/619.js
+index 662fe26cbbc1aac14dd7babb40996ecc3bdbb3cc..21b70cc9595914b69cbb53095b6fa74019e64fbe 100644
+--- a/dist/619.js
++++ b/dist/619.js
+@@ -4746,22 +4746,6 @@ class Server {
+                 res.end();
+             }
+         });
+-        middlewares.push({
+-            name: 'rspack-dev-server-open-editor',
+-            path: '/rspack-dev-server/open-editor',
+-            middleware: async (req, res, next)=>{
+-                if ('GET' !== req.method && 'HEAD' !== req.method) return void next();
+-                if (!req.url) return void next();
+-                const resolveUrl = new URL(req.url, `http://${req.headers.host}`);
+-                const params = new URLSearchParams(resolveUrl.search);
+-                const fileName = params.get('fileName');
+-                if ('string' == typeof fileName) {
+-                    const { default: launchEditor } = await import("./0~launch-editor.js").then(__webpack_require__.t.bind(__webpack_require__, "./node_modules/.pnpm/launch-editor@2.14.1/node_modules/launch-editor/index.js", 23));
+-                    launchEditor(fileName);
+-                }
+-                res.end();
+-            }
+-        });
+         middlewares.push({
+             name: 'rspack-dev-server-assets',
+             path: '/rspack-dev-server',
