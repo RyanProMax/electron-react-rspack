@@ -1,30 +1,31 @@
-import { app, ipcMain } from 'electron';
+import { app } from 'electron';
 import ElectronStore from 'electron-store';
 import path from 'path';
 
 import { Channels } from '../../common/constant';
+import Cleanup from '../lifecycle';
 
 export default class Store {
-  rootPath = path.join(app.getPath('userData'), 'ElectronStorage');
-  defaultOptions = {
-    cwd: this.rootPath,
-  };
+  private readonly cleanup = new Cleanup();
+  private userStore: ElectronStore | null = null;
 
-  userStore = new ElectronStore({
-    ...this.defaultOptions,
-    name: 'userStore',
-  });
-
-  constructor() {
-    this.register();
+  start(isTrustedSender: (event: Electron.IpcMainInvokeEvent) => boolean) {
+    if (this.userStore || this.cleanup.disposed) return;
+    this.userStore = new ElectronStore({
+      cwd: path.join(app.getPath('userData'), 'ElectronStorage'),
+      name: 'userStore',
+    });
+    this.cleanup.handle(Channels.GetUserStore, (event, key: string) => {
+      if (!isTrustedSender(event)) throw new Error('Untrusted IPC sender');
+      return this.userStore!.get(key);
+    });
+    this.cleanup.handle(Channels.SetUserStore, (event, key: string, val: unknown) => {
+      if (!isTrustedSender(event)) throw new Error('Untrusted IPC sender');
+      return this.userStore!.set(key, val);
+    });
   }
 
-  private register() {
-    ipcMain.handle(Channels.GetUserStore, (_, key: string) => {
-      return this.userStore.get(key);
-    });
-    ipcMain.handle(Channels.SetUserStore, (_, key: string, val: unknown) => {
-      return this.userStore.set(key, val);
-    });
+  dispose() {
+    this.cleanup.dispose();
   }
 }

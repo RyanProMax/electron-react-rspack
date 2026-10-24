@@ -6,6 +6,9 @@ import BaseWindow from './base';
 import { Channels, Pages } from '../../common/constant';
 import { isDev } from '../../common/env';
 import { logger } from '../logger';
+import Cleanup from '../lifecycle';
+import { isAppSender } from './external';
+import { getHtmlPath } from '../utils';
 
 type CheckAvailableVersionResult = {
   result: boolean;
@@ -15,116 +18,161 @@ type CheckAvailableVersionResult = {
 export default class Update extends BaseWindow {
   private logger = logger.scope('AppUpdater');
   page = Pages.Update;
+  private readonly TIME_OUT = 10 * 1000;
+  private started = false;
+  private checking?: Promise<void>;
+  private cancelCheck?: () => void;
+  private cancelConfirm?: () => void;
+  private cancelDownload?: () => void;
 
-  private TIME_OUT = 10 * 1000;
-
-  constructor() {
-    super();
-    // Production builds check GitHub for updates on startup. E2E sets this so the
-    // suite never opens the update window or hits the network.
-    if (process.env.ELECTRON_SKIP_UPDATE === '1') {
-      this.logger.info('auto update skipped');
-      return;
-    }
+  start() {
+    if (this.started || this.cleanup.disposed) return;
+    this.started = true;
+    // Smoke tests never check, download or install real updates.
+    if (process.env.ELECTRON_SKIP_UPDATE === '1') return;
     if (isDev) {
-      autoUpdater.updateConfigPath = path.join(__dirname, '../../../test/dev-app-update.yml');
+      autoUpdater.updateConfigPath = path.resolve(__dirname, '../test/dev-app-update.yml');
       autoUpdater.forceDevUpdateConfig = true;
     }
     autoUpdater.autoDownload = false;
     autoUpdater.logger = this.logger;
-
-    this.checkUpdate();
+    this.cleanup.on(autoUpdater, 'error', (error: Error) => this.logger.error(error));
+    void this.checkUpdate();
   }
 
   createWindow() {
-    return super.createWindow({
-      width: 360,
-      height: 240,
-      resizable: false,
-    });
+    return super.createWindow({ width: 360, height: 240, resizable: false });
   }
 
-  async checkUpdate() {
-    const { result, data } = await this.checkAvailableVersion();
-    if (result && data) {
-      const option = await this.updateConfirm(data);
-      this.logger.info('confirm option', option);
+  checkUpdate() {
+    if (this.cleanup.disposed) return Promise.resolve();
+    return (this.checking ??= this.runUpdate().finally(() => {
+      this.checking = undefined;
+    }));
+  }
 
-      if (option) {
-        // start update
-        autoUpdater.on('download-progress', (progress) => {
-          console.log('download-progress', progress);
-          this.browserWindow?.webContents.send(Channels.AppUpdaterProgress, progress);
-        });
-
-        autoUpdater.on('update-downloaded', (updateDownloadedEvent) => {
-          this.logger.info('update-downloaded', updateDownloadedEvent);
-          autoUpdater.quitAndInstall(false);
-        });
-
-        const cancellationToken = new CancellationToken();
-
-        ipcMain.once(Channels.AppUpdaterAbort, () => {
-          cancellationToken.cancel();
-          this.browserWindow?.close();
-        });
-
-        autoUpdater.downloadUpdate(cancellationToken);
-      } else {
-        // cancel update
-        this.browserWindow?.close();
+  private async runUpdate() {
+    try {
+      const { result, data } = await this.checkAvailableVersion();
+      if (!result || !data || this.cleanup.disposed) return;
+      const confirmed = await this.updateConfirm(data);
+      if (!confirmed || this.cleanup.disposed) {
+        this.close();
+        return;
       }
+      await this.download();
+    } catch (error) {
+      this.logger.error('Update failed', error);
+      this.close();
     }
   }
 
   checkAvailableVersion(): Promise<CheckAvailableVersionResult> {
-    return new Promise((r) => {
-      const timer = setTimeout(() => {
-        r({ result: false });
-      }, this.TIME_OUT);
-
+    if (this.cleanup.disposed) return Promise.resolve({ result: false });
+    this.cancelCheck?.();
+    return new Promise((resolve) => {
+      const pending = new Cleanup();
       const finish = (result: CheckAvailableVersionResult) => {
-        clearTimeout(timer);
-        r(result);
+        if (pending.disposed) return;
+        pending.dispose();
+        this.cancelCheck = undefined;
+        resolve(result);
       };
-
-      autoUpdater.on('error', (...args) => {
-        this.logger.error(...args);
+      this.cancelCheck = () => finish({ result: false });
+      const timer = setTimeout(this.cancelCheck, this.TIME_OUT);
+      pending.add(() => clearTimeout(timer));
+      pending.on(autoUpdater, 'error', () => finish({ result: false }));
+      pending.on(autoUpdater, 'update-available', (data: UpdateInfo) =>
+        finish({ result: true, data })
+      );
+      pending.on(autoUpdater, 'update-not-available', (data: UpdateInfo) =>
+        finish({ result: false, data })
+      );
+      try {
+        void autoUpdater.checkForUpdates().catch((error) => {
+          this.logger.error('Update check failed', error);
+          finish({ result: false });
+        });
+      } catch (error) {
+        this.logger.error('Update check failed', error);
         finish({ result: false });
-      });
-
-      autoUpdater.on('checking-for-update', (...args) => {
-        console.log('checking-for-update', args);
-      });
-
-      autoUpdater.on('update-available', (versionAvailable) => {
-        this.logger.info('update-available', versionAvailable);
-        finish({ result: true, data: versionAvailable });
-      });
-
-      autoUpdater.on('update-not-available', (updateVersionNotAvailable) => {
-        this.logger.info('update-not-available', updateVersionNotAvailable);
-        finish({ result: false, data: updateVersionNotAvailable });
-      });
-
-      autoUpdater.checkForUpdates();
+      }
     });
   }
 
   updateConfirm(data: UpdateInfo): Promise<boolean> {
-    const browserWindow = this.createWindow();
+    if (this.cleanup.disposed) return Promise.resolve(false);
+    this.cancelConfirm?.();
+    const window = this.createWindow();
+    return new Promise((resolve) => {
+      const pending = new Cleanup();
+      const finish = (confirmed: boolean) => {
+        if (pending.disposed) return;
+        pending.dispose();
+        this.cancelConfirm = undefined;
+        resolve(confirmed);
+      };
+      this.cancelConfirm = () => finish(false);
+      pending.on(window, 'closed', () => finish(false));
+      pending.on(window.webContents, 'did-fail-load', () => finish(false));
+      pending.on(window.webContents, 'did-finish-load', () => {
+        if (!window.isDestroyed()) window.webContents.send(Channels.Render, data);
+      });
+      pending.on(
+        ipcMain,
+        Channels.AppUpdaterConfirm,
+        (event: Electron.IpcMainEvent, option: unknown) => {
+          if (
+            isAppSender(event, window, getHtmlPath(`${this.page}.html`)) &&
+            typeof option === 'boolean'
+          ) {
+            finish(option);
+          }
+        }
+      );
+    });
+  }
 
-    browserWindow.webContents.on('did-finish-load', () => {
-      if (this.browserWindow) {
-        this.browserWindow.webContents.send(Channels.Render, data);
-        this.browserWindow.show();
+  private async download() {
+    const window = this.browserWindow;
+    if (!window || window.isDestroyed() || this.cleanup.disposed) return;
+    const pending = new Cleanup();
+    const token = new CancellationToken();
+    const cancel = () => {
+      token.cancel();
+      pending.dispose();
+    };
+    this.cancelDownload = cancel;
+    pending.on(window, 'closed', cancel);
+    pending.on(ipcMain, Channels.AppUpdaterAbort, (event: Electron.IpcMainEvent) => {
+      if (isAppSender(event, window, getHtmlPath(`${this.page}.html`))) {
+        cancel();
+        this.close();
       }
     });
-
-    return new Promise((resolve) => {
-      ipcMain.once(Channels.AppUpdaterConfirm, (_, option: boolean) => {
-        resolve(option);
-      });
+    pending.on(autoUpdater, 'download-progress', (progress: unknown) => {
+      if (!window.isDestroyed() && !this.cleanup.disposed) {
+        window.webContents.send(Channels.AppUpdaterProgress, progress);
+      }
     });
+    pending.on(autoUpdater, 'update-downloaded', () => {
+      if (!token.cancelled && !this.cleanup.disposed) {
+        pending.dispose();
+        autoUpdater.quitAndInstall(false);
+      }
+    });
+    try {
+      await autoUpdater.downloadUpdate(token);
+    } finally {
+      pending.dispose();
+      this.cancelDownload = undefined;
+    }
+  }
+
+  dispose() {
+    this.cancelCheck?.();
+    this.cancelConfirm?.();
+    this.cancelDownload?.();
+    super.dispose();
   }
 }
