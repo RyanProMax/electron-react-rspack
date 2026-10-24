@@ -49,17 +49,23 @@ pnpm test:e2e
 pnpm exec tsc --noEmit --incremental false
 ```
 
-`test:unit` covers URL/sender validation, IPC/updater cleanup, window closing/reopening and build paths/entries. Electron services and updater operations are stubbed.
+`test:unit` has 31 cases covering URL/sender validation, strict Store/theme payloads, IPC registration timing and cleanup, updater success/progress/install-call assertions, direct Abort, failures, races and window/build lifecycle. Electron services and updater operations in these unit tests are stubbed.
 
-`test:e2e` runs six Playwright Electron smoke tests against the production build. Build first; no separate Playwright browser installation is required. It verifies launch/home, theme, store/preload, About close cancellation/reopening and styles, and external-link source/navigation/popup behavior. Updates are disabled, shell/dialog calls are stubbed, and each launch uses temporary user data.
+`test:e2e` runs the original six smoke cases plus native window/renderer IPC and macOS local-update transport cases. Build first; no separate Playwright browser installation is required. Tests verify preload/Store, Home/About light-dark-light and native screenshots, close/reopen/quit, resize/min-size, minimize/maximize/restore, unmanaged renderers and cross-origin iframe isolation. Native min/max is skipped on Linux xvfb because there is no window manager. User data is temporary, dialogs and external shell opening are stubbed, and product startup update checks are disabled.
 
-For development smoke, keep `start:renderer` running and execute:
+The four macOS local-update probes use a separate temporary Electron app and loopback-only HTTP feed. They run the real MacUpdater parser/transport, progress, SHA-512 validation, 404 and cancellation paths, with isolated filesystem paths. Native Squirrel, installation and restart APIs are guarded against invocation. Fixture ZIP download success is **not** signed application installation success. Cross-origin frames have no preload bridge; additional main-side sender checks use a real frame identity with an explicitly synthetic event, without enabling subframe Node integration.
 
 ```bash
 pnpm test:e2e:dev
 ```
 
-This command first rebuilds main in development mode: Rspack replaces NODE_ENV at build time, so setting it only when launching a production bundle is insufficient. The same suite also checks that the dev server's browser-editor endpoint returns 404. On a headless Linux host, use `xvfb-run --auto-servernum pnpm test:e2e`. PR CI runs lint, build, source typecheck, unit tests and production Electron smoke on macOS, Windows and Linux. Development smoke is a separate local check.
+This starts/reuses the dev server and first rebuilds main in development mode. It also copies source into an OS-temp fixture, invokes the actual `start:renderer` and `start:main` commands, builds preload in development mode, edits only that copy's LESS, and verifies a live style update with the document marker intact. The original checkout and daily app data are not edited by the HMR test. The development suite also verifies the disabled browser-editor URL returns 404.
+
+Visual evidence uses native `webContents.capturePage`, because CDP screenshots can crop Electron content when page zoom is not 100%. Tests wait for theme transitions, capture desktop/minimum/125% zoom states and record display scale factors. Screenshots are evidence for review rather than pixel-baseline tests. The About content region scrolls at constrained zoom; real OS display DPI and multi-monitor behavior require suitable hardware and are not simulated by page zoom.
+
+On a headless Linux host, use `xvfb-run --auto-servernum pnpm test:e2e`. CI runs production checks on macOS, Windows and Linux, and development/HMR plus isolated unsigned package checks on macOS. Screenshots/traces are retained as CI artifacts. `E2E_OUTPUT_DIR` selects a separate test-output directory; optional `E2E_VISUAL_DIR` selects a local screenshot directory.
+
+See [test coverage and boundaries](docs/testing.md) for the distinction between stubbed orchestration, real renderer/native-window behavior, local update transport and signed installation.
 
 ## Bundle analysis
 
@@ -79,7 +85,16 @@ pnpm package:local
 
 This builds and packages for the current OS into `release/` with `--publish never`. Signing credentials and platform-specific packaging prerequisites are separate. `pnpm package` uses `--publish always` and is reserved for an authorized release workflow; running a normal build or test does not publish a release.
 
-Signed installers, real update downloads/installation and release publishing are not covered by the smoke suite. To prevent startup update checks during local UI work, set `ELECTRON_SKIP_UPDATE=1` in the environment.
+For an isolated, non-publishing packaging regression on a Mac:
+
+```bash
+pnpm package:smoke
+pnpm test:e2e:packaged
+```
+
+The smoke package uses the current Mac architecture, a distinct regression app ID/name, `identity: null`, `CSC_IDENTITY_AUTO_DISCOVERY=false` and `--publish never`. Its `.app` and ZIP stay under `release/regression/`; the launcher refuses paths outside that output. Packaged tests cover assets, preload, theme, About, native controls and real macOS LaunchServices reopening of the same isolated test process. This is not a physical Dock-click test or an installation into `/Applications`.
+
+Developer ID signing, notarization, signed installer trust and actual update installation/restart are not validated by an unsigned package or guarded updater probe. No certificates are generated/imported and no system security settings are changed. To prevent startup update checks during other local UI work, set `ELECTRON_SKIP_UPDATE=1`.
 
 ## Architecture and migration
 
