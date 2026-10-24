@@ -20,12 +20,17 @@
   &__content {
     flex: 1;
     min-height: 0;
+    overflow-y: auto;
     width: 100%;
     padding: 20px 28px 24px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 22px;
+
+    > * {
+      flex-shrink: 0;
+    }
   }
 
   &__description {

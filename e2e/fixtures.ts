@@ -11,6 +11,11 @@ import {
 
 const repoRoot = path.resolve(__dirname, '..');
 const mainEntry = path.join(repoRoot, 'build', 'loader.js');
+const executable = process.env.E2E_EXECUTABLE
+  ? path.resolve(repoRoot, process.env.E2E_EXECUTABLE)
+  : undefined;
+if (executable && !executable.startsWith(path.join(repoRoot, 'release/regression') + path.sep))
+  throw new Error('Packaged tests only launch the isolated regression output');
 // Deliberately launch from outside src/main to exercise cwd-independent paths.
 const launchCwd = repoRoot;
 
@@ -61,7 +66,7 @@ export const test = base.extend<ElectronFixtures>({
   // Playwright requires an object destructure here; this fixture has no dependencies.
   // eslint-disable-next-line no-empty-pattern
   electronApp: async ({}, use, testInfo) => {
-    if (!fs.existsSync(mainEntry)) {
+    if (!fs.existsSync(executable || mainEntry)) {
       throw new Error('Missing build/loader.js. Run `pnpm build` before `pnpm test:e2e`.');
     }
 
@@ -69,7 +74,8 @@ export const test = base.extend<ElectronFixtures>({
     let app: ElectronApplication | undefined;
     try {
       app = await electron.launch({
-        args: [mainEntry, `--user-data-dir=${userDataDir}`],
+        executablePath: executable,
+        args: [...(executable ? [] : [mainEntry]), `--user-data-dir=${userDataDir}`],
         cwd: launchCwd,
         env: electronEnv(),
         colorScheme: 'light',

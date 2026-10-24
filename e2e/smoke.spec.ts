@@ -47,8 +47,13 @@ test('main process bridge reads the app path and user store', async ({
   const appPath = await electronApp.evaluate(({ app }) => app.getAppPath());
   // Launching build/loader.js directly: that directory has no package.json, so
   // Electron reports the entry directory as the app path.
-  expect(path.resolve(appPath)).toBe(path.dirname(mainEntry));
-  expect(fs.existsSync(path.join(appPath, 'loader.js'))).toBe(true);
+  if (process.env.E2E_EXECUTABLE) {
+    expect(fs.existsSync(path.join(appPath, 'build/loader.js'))).toBe(true);
+    expect(fs.existsSync(path.join(appPath, 'package.json'))).toBe(true);
+  } else {
+    expect(path.resolve(appPath)).toBe(path.dirname(mainEntry));
+    expect(fs.existsSync(path.join(appPath, 'loader.js'))).toBe(true);
+  }
 
   const stored = await page.evaluate(
     async ({ getChannel, setChannel }) => {

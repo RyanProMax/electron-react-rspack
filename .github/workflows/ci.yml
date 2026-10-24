@@ -54,8 +54,21 @@ jobs:
             pnpm test:e2e
           fi
 
+      - name: Development and HMR regressions (macOS)
+        if: runner.os == 'macOS'
+        run: pnpm test:e2e:dev
+        env:
+          E2E_OUTPUT_DIR: test-results/development
+
+      - name: Isolated unsigned local package and packaged smoke (macOS)
+        if: runner.os == 'macOS'
+        run: pnpm package:smoke && pnpm test:e2e:packaged
+        env:
+          E2E_OUTPUT_DIR: test-results/packaged
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
       - name: Upload Playwright traces and screenshots
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-e2e-${{ runner.os }}

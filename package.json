@@ -26,7 +26,9 @@
     "test:unit": "node --import tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit --incremental false --skipLibCheck",
     "analyze": "pnpm clean && concurrently \"pnpm --filter main run analyze\" \"pnpm --filter preload run analyze\" \"pnpm --filter renderer run analyze\"",
-    "test:e2e:dev": "pnpm --filter main run build:dev && cross-env E2E_DEV=1 playwright test"
+    "test:e2e:dev": "pnpm --filter main run build:dev && cross-env E2E_DEV=1 playwright test",
+    "package:smoke": "pnpm build && node scripts/package-smoke.mjs",
+    "test:e2e:packaged": "node scripts/test-packaged.mjs"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
