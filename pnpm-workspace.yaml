@@ -20,10 +20,17 @@ overrides:
   'ts-node>diff': 4.0.4
   'brace-expansion@<1.1.21': 1.1.21
   'browserslist@<4.28.7': 4.28.7
-  fast-uri: 3.1.8
+  # GHSA-w74x-v6f9-j3xg, xhq7-xmqj-769h, wjr9-j795-jxcr, 333x-w4r6-6crp.
+  fast-uri: 3.1.9
   'follow-redirects@<1.16.1': 1.16.1
   'http-proxy-middleware@<2.0.10': 2.0.10
   'nanoid@<3.3.18': 3.3.18
   'postcss@<8.5.23': 8.5.23
   'shell-quote@<1.11.0': 1.11.0
   webpack: 5.107.2
+  # Undici fixes stay on each consumer's existing major (Electron downloads/rebuild).
+  'undici@>=6.0.0 <6.29.1': 6.29.1
+  'undici@>=7.0.0 <7.30.1': 7.30.1
+  # Compatible 4.x update outside GHSA-ch52-4w7c-c8xp's affected range.
+  # The maintainer disputes that advisory; see docs/security-audit.md.
+  'http-cache-semantics@<=4.2.0': 4.3.0

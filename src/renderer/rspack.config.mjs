@@ -158,6 +158,28 @@ const configuration = {
     ...(await analysisPlugins('renderer')),
   ],
   devServer: {
+    host: 'localhost',
+    // 2.2.1 vendors launch-editor 2.14.1: a dependency override cannot fix it.
+    // The browser-to-editor endpoint is unused by this app; keep it unreachable.
+    setupMiddlewares: (middlewares) => {
+      // Block before the server's generic assets route as well as removing the
+      // editor handler, so this URL cannot fall through to a 200 response.
+      middlewares.unshift({
+        name: 'disable-browser-editor',
+        path: '/rspack-dev-server/open-editor',
+        /**
+         * @param {import('node:http').IncomingMessage} _request
+         * @param {import('node:http').ServerResponse} response
+         */
+        middleware: (_request, response) => {
+          response.statusCode = 404;
+          response.end();
+        },
+      });
+      return middlewares.filter(
+        (middleware) => middleware.name !== 'rspack-dev-server-open-editor'
+      );
+    },
     port,
     hot: true,
     open: false,
