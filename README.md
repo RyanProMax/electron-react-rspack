@@ -29,7 +29,7 @@ pnpm start:main
 
 The default URL is `http://localhost:9527/home.html`. Set `PORT` in a repository-root `.env` or the process environment to change it. The server binds to localhost. Renderer changes use HMR; restart `start:main` after main-process changes, and restart `start:renderer` after preload changes. The main process does not need a TypeScript loader in `NODE_OPTIONS`.
 
-The browser-to-editor endpoint is disabled because dev-server 2.2.1 vendors an affected launch-editor version. Clicking a browser overlay to open a source file in a native editor is unavailable; page serving and HMR remain enabled. See the [security review](docs/security-audit.md).
+The published dev-server 2.2.1 vendors an affected launch-editor version. A [version-bound pnpm patch](patches/README.md) removes that executable module and its middleware; the browser-to-editor URL also remains blocked with 404. Install with the declared pnpm version so the patch is applied. Clicking a browser overlay to open a source file in a native editor is unavailable; page serving and HMR remain enabled. See the [security review](docs/security-audit.md).
 
 ## Build and checks
 
@@ -43,13 +43,13 @@ pnpm test:e2e
 
 `build` cleans once and builds all three targets. Outputs are `build/loader.js`, `build/preload.js` and `build/renderer/`; source maps are emitted explicitly. Main/preload share the output directory and do not clean one another's files. Paths resolve relative to the configuration or bundle, so the built app does not require a particular working directory.
 
-`typecheck` checks source, native ESM configs and tests with `skipLibCheck`. The strict command below still reports upstream declaration errors in Arco/React 19, b-validate, electron-updater's semver dependency and resize-observer-polyfill. The source-only check does not mean those upstream declarations pass.
+`typecheck` checks source, native ESM configs and tests with `skipLibCheck`. The strict command below still reports upstream declaration errors in Arco/React 19, b-validate and resize-observer-polyfill. The missing semver declarations are supplied by the official `@types/semver` package. The source-only check does not mean the remaining upstream declarations pass.
 
 ```bash
 pnpm exec tsc --noEmit --incremental false
 ```
 
-`test:unit` has 31 cases covering URL/sender validation, strict Store/theme payloads, IPC registration timing and cleanup, updater success/progress/install-call assertions, direct Abort, failures, races and window/build lifecycle. Electron services and updater operations in these unit tests are stubbed.
+`test:unit` has 32 cases covering installed dev-server editor-code removal, URL/sender validation, strict Store/theme payloads, IPC registration timing and cleanup, updater success/progress/install-call assertions, direct Abort, failures, races and window/build lifecycle. Electron services and updater operations in these unit tests are stubbed.
 
 `test:e2e` runs the original six smoke cases plus native window/renderer IPC and macOS local-update transport cases. Build first; no separate Playwright browser installation is required. Tests verify preload/Store, Home/About light-dark-light and native screenshots, close/reopen/quit, resize/min-size, minimize/maximize/restore, unmanaged renderers and cross-origin iframe isolation. Native min/max is skipped on Linux xvfb because there is no window manager. User data is temporary, dialogs and external shell opening are stubbed, and product startup update checks are disabled.
 
@@ -107,7 +107,7 @@ See the official [Rspack 1-to-2 migration guide](https://rspack.rs/guide/migrati
 
 ## Security status
 
-The [dependency review](docs/security-audit.md) records the 16 baseline GitHub advisories, dependency paths, compatible fixes, vendored launch-editor mitigation and disputed cache advisory. The updated lockfile currently produces 0 known findings in `pnpm audit`; this does not cover all vendored code or substitute for GitHub code/secret scanning. Default-branch alerts require merge and a GitHub refresh before their status can change. No alerts were manually dismissed. The existing follow-redirects 1.16.1 fix is preserved.
+The [dependency review](docs/security-audit.md) records the 16 baseline GitHub advisories, dependency paths, compatible fixes, vendored launch-editor mitigation and disputed cache advisory. The updated lockfile currently produces 0 known findings in `pnpm audit`; this does not cover all vendored code or substitute for GitHub code/secret scanning. GitHub alert status follows default-branch updates and re-evaluation; it is not inferred from the audit result. No alerts were manually dismissed. The existing follow-redirects 1.16.1 fix is preserved.
 
 ## License
 

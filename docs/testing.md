@@ -4,7 +4,7 @@ The regression suite has several layers. A stubbed successful `quitAndInstall` a
 
 | Command / layer | Assertions | Boundary |
 | --- | --- | --- |
-| `pnpm test:unit` — 31 cases | URL/options/source policy; listener ownership; IPC-before-window ordering; window close cancellation/reopen; Store/theme payloads; updater check timeout/rejection/error, confirmation, progress, direct Abort, completion/cancel/dispose races, late events, once-only install call and cleanup. | Electron windows, shell and updater are stubs. |
+| `pnpm test:unit` — 32 cases | Installed direct/CLI dev-server resolutions contain no vendored editor code; URL/options/source policy; listener ownership; IPC-before-window ordering; window close cancellation/reopen; Store/theme payloads; updater check timeout/rejection/error, confirmation, progress, direct Abort, completion/cancel/dispose races, late events, once-only install call and cleanup. | Electron windows, shell and updater are stubs. |
 | `pnpm build` | Production `electron-main`, `electron-preload`, `web`, shared outputs and source maps. | Compilation is separate from runtime checks. |
 | `pnpm analyze` | All three targets and offline Rsdoctor HTML/JSON reports. | Duplicate-package and intentional side-effect diagnostics remain visible; no benchmark claim. |
 | `pnpm test:e2e` — 18 cases selected | Six existing smoke cases, seven window/IPC/visual cases and four local-transport cases, plus a development-only case. Mac production runs 16 and skips the development command and packaged LaunchServices cases. | Other OSes skip the four MacUpdater probes and packaged LaunchServices case. Linux xvfb also skips native min/max because it has no window manager. |
@@ -31,6 +31,8 @@ The Mac test machine has no valid code-signing identities. Developer ID signing,
 
 ## Checks and artifacts
 
-Lint and `pnpm typecheck` are required. The source check uses `skipLibCheck`; strict `pnpm exec tsc --noEmit --incremental false` currently reports 36 errors in upstream declarations (Arco/React 19, b-validate, semver and resize-observer-polyfill), with none in repository source. Strict checking is not reported as passing.
+Lint and `pnpm typecheck` are required. The source check uses `skipLibCheck`; strict `pnpm exec tsc --noEmit --incremental false` currently reports 35 errors in upstream declarations (Arco/React 19, b-validate and resize-observer-polyfill), with none in repository source. Strict checking is not reported as passing.
 
 CI runs lint/build/source typecheck/unit/production Electron tests on macOS, Windows and Linux. macOS additionally runs development/HMR and isolated packaging checks. `test-results/` and `playwright-report/` are uploaded for review. Test outputs, local app/ZIP artifacts, reports and screenshots are ignored by Git. Local code checks do not replace the exact-commit CI result.
+
+The official `@types/semver` dependency fixes the previous missing-declaration error. Latest Arco patch 2.66.18 was inspected and still uses global `JSX`/removed `ReactText`; it was not installed as a supposed type fix. No declaration overlays, `any` casts or additional disabled checks were added.
