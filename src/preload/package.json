@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "scripts": {
     "build": "rspack build",
-    "analyze": "rspack build --analyze"
+    "analyze": "cross-env RSDOCTOR=true rspack build"
   }
 }

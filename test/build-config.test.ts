@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-require-imports -- Evaluate configs after changing cwd. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
-import { rendererEntries } from '../scripts/renderer-entries';
+import { rendererEntries } from '../scripts/renderer-entries.mjs';
 
 test('renderer entries include sorted source files, skip directories/declarations and reject duplicates', () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'rspack-entries-'));
@@ -20,17 +19,14 @@ test('renderer entries include sorted source files, skip directories/declaration
   }
 });
 
-test('all configs resolve paths from their files and main/preload preserve the shared output', () => {
+test('all configs resolve paths from their files and main/preload preserve the shared output', async () => {
   const previous = process.cwd();
   const root = path.resolve(__dirname, '..');
   try {
     process.chdir(os.tmpdir());
-    const { default: main } =
-      require('../src/main/rspack.config') as typeof import('../src/main/rspack.config');
-    const { default: preload } =
-      require('../src/preload/rspack.config') as typeof import('../src/preload/rspack.config');
-    const { default: renderer } =
-      require('../src/renderer/rspack.config') as typeof import('../src/renderer/rspack.config');
+    const { default: main } = await import('../src/main/rspack.config.mjs');
+    const { default: preload } = await import('../src/preload/rspack.config.mjs');
+    const { default: renderer } = await import('../src/renderer/rspack.config.mjs');
     assert.deepEqual(
       [main.target, preload.target, renderer.target],
       ['electron-main', 'electron-preload', 'web']

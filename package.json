@@ -24,14 +24,15 @@
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "test:e2e": "playwright test",
     "test:unit": "node --import tsx --test test/*.test.ts",
-    "typecheck": "tsc --noEmit --incremental false --skipLibCheck"
+    "typecheck": "tsc --noEmit --incremental false --skipLibCheck",
+    "analyze": "pnpm clean && concurrently \"pnpm --filter main run analyze\" \"pnpm --filter preload run analyze\" \"pnpm --filter renderer run analyze\""
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.4",
     "@playwright/test": "^1.64.1",
-    "@rspack/cli": "^1.7.11",
-    "@rspack/core": "^1.7.11",
+    "@rspack/cli": "2.2.9",
+    "@rspack/core": "2.2.9",
     "@types/fs-extra": "^11.0.4",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.0.10",
@@ -60,7 +61,9 @@
     "rimraf": "^6.1.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@rspack/dev-server": "2.2.1",
+    "@rsdoctor/core": "2.0.0"
   },
   "homepage": "https://github.com/RyanProMax/electron-react-rspack#readme",
   "repository": {

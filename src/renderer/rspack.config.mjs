@@ -1,39 +1,43 @@
-import '../../scripts/env';
-import { Configuration, HtmlRspackPlugin } from '@rspack/core';
-import { ArcoDesignPlugin } from '@arco-plugins/unplugin-react';
-import path from 'path';
-import upperFirst from 'lodash/upperFirst';
+// @ts-check
+import { HtmlRspackPlugin } from '@rspack/core';
+import path from 'node:path';
+import { analysisPlugins } from '../../scripts/analysis.mjs';
+import dotenv from 'dotenv';
+import upperFirst from 'lodash/upperFirst.js';
 
-import { rendererEntries } from '../../scripts/renderer-entries';
-import { port } from '../common/env';
+import { rendererEntries } from '../../scripts/renderer-entries.mjs';
+const configDir = import.meta.dirname;
+dotenv.config({ path: path.resolve(configDir, '../../.env'), quiet: true });
+const port = Number(process.env.PORT) || 9527;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isProduction = !isDevelopment;
 
-const htmlTemplate = path.join(__dirname, 'template.html');
-const entryDir = path.join(__dirname, 'entry');
+const htmlTemplate = path.join(configDir, 'template.html');
+const entryDir = path.join(configDir, 'entry');
 const entry = rendererEntries(entryDir);
 
-const configuration: Configuration = {
-  context: __dirname, // loaders are dependencies of the renderer workspace
+/** @type {import('@rspack/core').Configuration} */
+const configuration = {
+  context: configDir, // loaders are dependencies of the renderer workspace
   target: 'web',
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry,
   output: {
-    path: path.resolve(__dirname, '../../build/renderer'),
+    path: path.resolve(configDir, '../../build/renderer'),
     publicPath: 'auto',
     filename: isProduction ? '[name].[contenthash:8].js' : '[name].js',
     chunkFilename: isProduction ? '[name].[contenthash:8].chunk.js' : '[name].chunk.js',
     clean: true,
   },
   resolve: {
-    tsConfig: path.resolve(__dirname, '../../tsconfig.json'),
+    tsConfig: path.resolve(configDir, '../../tsconfig.json'),
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      '@': path.resolve(__dirname, './'),
-      src: path.resolve(__dirname, '../'),
-      assets: path.resolve(__dirname, '../../assets'),
+      '@': path.resolve(configDir, './'),
+      src: path.resolve(configDir, '../'),
+      assets: path.resolve(configDir, '../../assets'),
     },
   },
   module: {
@@ -44,6 +48,20 @@ const configuration: Configuration = {
           {
             loader: 'builtin:swc-loader',
             options: {
+              // Official SWC replacement for the Arco plugin's import transform.
+              transformImport: [
+                {
+                  libraryName: '@arco-design/web-react',
+                  libraryDirectory: 'es',
+                  style: true,
+                  camelToDashComponentName: false,
+                },
+                {
+                  libraryName: '@arco-design/web-react/icon',
+                  libraryDirectory: 'react-icon',
+                  camelToDashComponentName: false,
+                },
+              ],
               jsc: {
                 parser: {
                   syntax: 'typescript',
@@ -137,11 +155,7 @@ const configuration: Configuration = {
         minify: isProduction,
       });
     }),
-    new ArcoDesignPlugin({
-      // theme: '@arco-themes/react-asuka',
-      // iconBox: '@arco-iconbox/react-partial-bits',
-      removeFontFace: true,
-    }),
+    ...(await analysisPlugins('renderer')),
   ],
   devServer: {
     port,

@@ -1,8 +1,11 @@
+// @ts-check
 import fs from 'node:fs';
 import path from 'node:path';
 
-export function rendererEntries(directory: string) {
-  const entries: Record<string, string> = Object.create(null);
+/** @param {string} directory */
+export function rendererEntries(directory) {
+  /** @type {Record<string, string>} */
+  const entries = Object.create(null);
   const files = fs
     .readdirSync(directory, { withFileTypes: true })
     .filter(

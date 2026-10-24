@@ -4,6 +4,6 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development pnpm run build && cross-env NODE_ENV=development electron ../../build/loader.js",
     "build": "rspack build",
-    "analyze": "rspack build --analyze"
+    "analyze": "cross-env RSDOCTOR=true rspack build"
   }
 }
