@@ -8,6 +8,8 @@ import Update from './update';
 import Core from '../core';
 import { logger } from '../logger';
 import { Channels, Pages } from '../../common/constant';
+import { getHtmlPath } from '../utils';
+import { isAppSender, openExternal } from './external';
 
 export default class Windows {
   logger = logger.scope('Windows');
@@ -65,9 +67,18 @@ export default class Windows {
       }
     });
 
-    ipcMain.on(Channels.OpenExternal, (_, url: string, options?: Electron.OpenExternalOptions) => {
-      shell.openExternal(url, options);
+    ipcMain.on(Channels.OpenExternal, (event, url: unknown, options?: unknown) => {
+      if (!this.isTrustedSender(event)) return;
+      void openExternal(shell.openExternal, url, options).catch((error) =>
+        this.logger.error(error)
+      );
     });
+  }
+
+  isTrustedSender(event: Electron.IpcMainEvent | Electron.IpcMainInvokeEvent) {
+    return Array.from(this.windowInstances.values()).some((instance) =>
+      isAppSender(event, instance.browserWindow, getHtmlPath(`${instance.page}.html`))
+    );
   }
 
   getWindowInstance(page: Pages) {

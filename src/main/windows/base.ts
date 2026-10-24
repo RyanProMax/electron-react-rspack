@@ -3,6 +3,8 @@ import { merge } from 'lodash';
 
 import { getHtmlPath, getPreloadPath } from '../utils/index';
 import { Pages } from '../../common/constant';
+import { isAppWindow, openExternal } from './external';
+import { logger } from '../logger';
 
 export default abstract class BaseWindow {
   abstract page: Pages;
@@ -40,9 +42,19 @@ export default abstract class BaseWindow {
         this.browserWindow?.show();
       });
 
-      this.browserWindow.webContents.on('will-navigate', (e, url) => {
+      const window = this.browserWindow;
+      const openLink = (url: string) => {
+        if (isAppWindow(window, getHtmlPath(`${this.page}.html`))) {
+          void openExternal(shell.openExternal, url).catch((error) => logger.error(error));
+        }
+      };
+      window.webContents.on('will-navigate', (e, url) => {
         e.preventDefault();
-        shell.openExternal(url);
+        openLink(url);
+      });
+      window.webContents.setWindowOpenHandler(({ url }) => {
+        openLink(url);
+        return { action: 'deny' };
       });
 
       this.browserWindow.on('close', () => {
