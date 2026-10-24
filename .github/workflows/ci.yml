@@ -39,6 +39,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Source typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test:unit
+
       - name: End-to-end
         shell: bash
         run: |

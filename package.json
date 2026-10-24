@@ -14,7 +14,7 @@
   "main": "build/loader.js",
   "packageManager": "pnpm@10.32.1",
   "scripts": {
-    "start:renderer": "pnpm clean && pnpm --filter preload run build && pnpm --filter renderer run start",
+    "start:renderer": "pnpm --filter preload run build && pnpm --filter renderer run start",
     "start:main": "pnpm --filter main run start",
     "clean": "ts-node ./scripts/clean.ts",
     "build": "pnpm clean && concurrently \"pnpm --filter main run build\" \"pnpm --filter preload run build\" \"pnpm --filter renderer run build\"",
@@ -22,7 +22,9 @@
     "package": "pnpm build && electron-builder build -c ./build.config.json --publish always",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:unit": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit --incremental false --skipLibCheck"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",

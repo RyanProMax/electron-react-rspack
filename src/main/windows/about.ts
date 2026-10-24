@@ -1,14 +1,10 @@
-import { ipcMain } from 'electron';
-
 import BaseWindow from './base';
-import { Channels, Pages } from '../../common/constant';
+import { Pages } from '../../common/constant';
 
 export default class About extends BaseWindow {
   page = Pages.About;
 
-  register() {
-    ipcMain.on(Channels.AboutMe, () => {
-      this.createWindow({ width: 520, height: 280, minHeight: 280, resizable: false });
-    });
+  createWindow() {
+    return super.createWindow({ width: 520, height: 280, minHeight: 280, resizable: false });
   }
 }

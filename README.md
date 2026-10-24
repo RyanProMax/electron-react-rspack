@@ -29,6 +29,8 @@ pnpm start:renderer
 pnpm start:main
 ```
 
+`start:main` builds main first and launches `build/loader.js`; Electron no longer needs a TypeScript loader in `NODE_OPTIONS`. Restart this command after main-process changes. The renderer uses HMR; preload is built when starting the renderer server. Build and runtime paths resolve relative to their own files, so launching the built app does not require `src/main` as the working directory.
+
 ## Packaging
 
 To generate the project package based on the OS you're running on, just run:
@@ -43,15 +45,29 @@ Artifacts are written to `release/`. This command uses `--publish never`; `pnpm 
 
 ```bash
 pnpm lint
+pnpm typecheck
+pnpm test:unit
 pnpm build
 pnpm test:e2e
 ```
 
-`pnpm test:e2e` runs a Playwright Electron smoke suite against the production build (`build/loader.js`). Run `pnpm build` first; the suite does not start the dev server and does not need `playwright install`. It launches the app, checks that the home window renders, toggles dark mode, and reads `app.getAppPath()` plus a user-store round trip through the preload bridge. Auto-update is turned off for the run (`ELECTRON_SKIP_UPDATE=1`), native dialogs are stubbed, and each launch gets its own `userData` directory.
+`pnpm typecheck` checks source and tests with `skipLibCheck`; a strict `pnpm exec tsc --noEmit --incremental false` still reports existing upstream declaration issues in Arco/React 19, b-validate, electron-updater and resize-observer-polyfill. This change does not upgrade those dependencies.
 
-The suite does not cover packaged installers, the real auto-update flow, component-level UI tests, or multi-window permissions. On Linux without a display, run it with `xvfb-run --auto-servernum pnpm test:e2e`.
+`pnpm test:unit` covers external URL and sender validation, lifecycle ownership, window close/reopen behavior, updater failure/cancellation and build configuration. Native services and updater operations are stubbed.
 
-Pushes to `main` and pull requests run installation, lint, build, and this smoke suite on macOS, Windows, and Linux. The Linux job uses xvfb.
+`pnpm test:e2e` runs a Playwright Electron smoke suite against the production build (`build/loader.js`). Run `pnpm build` first; the suite does not start the dev server and does not need `playwright install`. It retains the original four launch/home/theme/store checks and adds About close/reopen/theme/style behavior and external-link sender/navigation/popup checks. Shell calls are stubbed, auto-update is turned off (`ELECTRON_SKIP_UPDATE=1`), native dialogs are stubbed, and each launch gets its own `userData` directory. With `pnpm start:renderer` running, use `pnpm exec cross-env E2E_DEV=1 pnpm test:e2e` to exercise the same suite against the dev server.
+
+The suite does not cover signed installers or real update downloads/installation. On Linux without a display, run it with `xvfb-run --auto-servernum pnpm test:e2e`.
+
+Pushes to `main` and pull requests run installation, lint, source typecheck, unit tests, build, and this smoke suite on macOS, Windows, and Linux. The Linux job uses xvfb.
+
+## Main-process and build decisions
+
+External links accept only valid HTTP/HTTPS URLs without credentials. Only the optional boolean `activate` option is forwarded. IPC must come from a managed window's current main frame on its exact application document (hash routes are allowed). Navigation and popups use the same URL policy; popups never create an Electron window. Default Chromium web security remains enabled.
+
+Core, Store, Windows and updater subscriptions have explicit owners and disposal. IPC is registered before creating windows; window references are cleared on `closed`, and macOS activation reopens a window without restarting the updater. This follows the small ownership patterns in [electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate/blob/main/src/main/main.ts) and [VS Code lifecycle utilities](https://github.com/microsoft/vscode/blob/main/src/vs/base/common/lifecycle.ts), without introducing a container or copying their frameworks. Sender validation follows [Electron security guidance](https://www.electronjs.org/docs/latest/tutorial/security).
+
+Rspack stays on the locked 1.x toolchain. The [three targets](https://v1.rspack.rs/config/target), [resolve.tsConfig](https://v1.rspack.rs/config/resolve#resolvetsconfig), Arco plugin and LESS/CSS loaders are preserved. Main and preload emit source maps and share `build/` without cleaning each other's files. Renderer entries are sorted source files; directories, declarations and unrelated files are excluded. Rspack 2.x migration remains deferred: the installed Arco plugin only declares 1.x peer support and still uses `rspackExperiments.import`. A previous 2.2.9 build experiment is not a compatibility guarantee or validation of this change.
 
 ## Features
 

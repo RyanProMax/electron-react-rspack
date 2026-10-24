@@ -1,11 +1,10 @@
+import '../../scripts/env';
 import { Configuration, HtmlRspackPlugin } from '@rspack/core';
 import { ArcoDesignPlugin } from '@arco-plugins/unplugin-react';
 import path from 'path';
-import fse from 'fs-extra';
-import keyBy from 'lodash/keyBy';
 import upperFirst from 'lodash/upperFirst';
 
-import { removeFileExtname } from '../main/utils';
+import { rendererEntries } from '../../scripts/renderer-entries';
 import { port } from '../common/env';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -13,25 +12,23 @@ const isProduction = !isDevelopment;
 
 const htmlTemplate = path.join(__dirname, 'template.html');
 const entryDir = path.join(__dirname, 'entry');
-const files = fse.readdirSync(entryDir);
-const entry = keyBy(
-  files.map((f) => path.join(entryDir, f)),
-  (filePath) => removeFileExtname(filePath)
-);
+const entry = rendererEntries(entryDir);
 
 const configuration: Configuration = {
+  context: __dirname, // loaders are dependencies of the renderer workspace
   target: 'web',
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
   entry,
   output: {
-    path: path.join(process.cwd(), '../../build/renderer'),
+    path: path.resolve(__dirname, '../../build/renderer'),
     publicPath: 'auto',
     filename: isProduction ? '[name].[contenthash:8].js' : '[name].js',
     chunkFilename: isProduction ? '[name].[contenthash:8].chunk.js' : '[name].chunk.js',
     clean: true,
   },
   resolve: {
+    tsConfig: path.resolve(__dirname, '../../tsconfig.json'),
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
       '@': path.resolve(__dirname, './'),

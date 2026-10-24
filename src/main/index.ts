@@ -1,4 +1,5 @@
+import '../../scripts/env';
 import Core from './core';
 
 const core = new Core();
-core.startApp();
+void core.startApp();

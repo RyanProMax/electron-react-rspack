@@ -23,19 +23,11 @@ export function getHtmlPath(htmlFileName: string) {
 }
 
 export function getPreloadPath(): string {
-  return app.isPackaged
-    ? path.join(__dirname, 'preload.js')
-    : path.join(process.cwd(), '../../build/preload.js');
+  return path.join(__dirname, 'preload.js');
 }
 
-export const removeFileExtname = (fileName: string) => {
-  return path.basename(fileName, path.extname(fileName));
-};
-
 export const getPackageJson = () => {
-  const filePath = app.isPackaged
-    ? path.resolve(__dirname, '../package.json')
-    : path.join(process.cwd(), '../../package.json');
+  const filePath = path.resolve(__dirname, '../package.json');
 
   return fse.readFile(filePath, 'utf-8');
 };
