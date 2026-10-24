@@ -1,9 +1,34 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import type { ElectronApplication, Page } from '@playwright/test';
 import { test, expect } from './fixtures';
 
 const preload = path.resolve(__dirname, '../build/preload.js');
+
+async function normalWindow(electronApp: ElectronApplication, page: Page) {
+  await expect(page.locator('.home__title')).toBeVisible();
+  const window = await electronApp.browserWindow(page);
+  await expect.poll(() => window.evaluate((window) => window.isVisible())).toBe(true);
+  // The default size fills some hosted runners' work areas, so the OS can
+  // initially report it as maximized. Start from an explicit normal state.
+  await window.evaluate((window) => {
+    window.restore();
+    window.unmaximize();
+    window.setSize(800, 560);
+    window.show();
+  });
+  await expect
+    .poll(() =>
+      window.evaluate((window) => ({
+        minimized: window.isMinimized(),
+        maximized: window.isMaximized(),
+        size: window.getSize(),
+      }))
+    )
+    .toEqual({ minimized: false, maximized: false, size: [800, 560] });
+  return window;
+}
 
 test('native resize respects main minimum size and emits resize', async ({
   electronApp,
@@ -45,7 +70,7 @@ test('renderer Minimize/Maximize and native restore operate on the real window',
     process.platform === 'linux',
     'xvfb CI has no window manager for native minimize/maximize'
   );
-  const nativeWindow = await electronApp.browserWindow(page);
+  const nativeWindow = await normalWindow(electronApp, page);
   await page.evaluate(() => window.__ELECTRON__.ipcRenderer.send('Maximize'));
   await expect.poll(() => nativeWindow.evaluate((window) => window.isMaximized())).toBe(true);
   await page.evaluate(() => window.__ELECTRON__.ipcRenderer.send('Maximize'));
@@ -88,6 +113,7 @@ test('real unmanaged renderer and real cross-origin iframe cannot use managed IP
   electronApp,
   window: page,
 }) => {
+  const win = await normalWindow(electronApp, page);
   const shellCalls = await electronApp.evaluateHandle(({ shell }) => {
     const calls: string[] = [];
     shell.openExternal = async (url) => {
@@ -158,7 +184,6 @@ test('real unmanaged renderer and real cross-origin iframe cannot use managed IP
   expect(await shellCalls.jsonValue()).toEqual([]);
   expect(electronApp.windows()).toHaveLength(2);
   await unmanaged.close();
-  const win = await electronApp.browserWindow(page);
   expect(await win.evaluate((w) => w.isMinimized() || w.isMaximized())).toBe(false);
   for (const channel of ['GetUserStore', 'SetUserStore']) {
     expect(
