@@ -2,7 +2,7 @@
   "name": "main",
   "version": "0.0.1",
   "scripts": {
-    "start": "cross-env NODE_ENV=development NODE_OPTIONS=\"--import tsx\" electron ./index.ts",
+    "start": "cross-env NODE_ENV=development pnpm run build && cross-env NODE_ENV=development electron ../../build/loader.js",
     "build": "rspack build",
     "analyze": "rspack build --analyze"
   }

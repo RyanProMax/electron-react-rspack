@@ -10,9 +10,6 @@ export default class Main extends BaseWindow {
       height: 728,
       minWidth: 720,
       minHeight: 480,
-      webPreferences: {
-        webSecurity: false,
-      },
     });
   }
 }

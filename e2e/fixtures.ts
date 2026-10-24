@@ -11,9 +11,8 @@ import {
 
 const repoRoot = path.resolve(__dirname, '..');
 const mainEntry = path.join(repoRoot, 'build', 'loader.js');
-// Unpackaged main resolves preload and package.json from process.cwd(), which
-// `pnpm start:main` sets to src/main. Match that when launching the built entry.
-const launchCwd = path.join(repoRoot, 'src', 'main');
+// Deliberately launch from outside src/main to exercise cwd-independent paths.
+const launchCwd = repoRoot;
 
 type ElectronFixtures = {
   electronApp: ElectronApplication;
@@ -30,6 +29,7 @@ function electronEnv(): Record<string, string> {
   // A leaked ELECTRON_RUN_AS_NODE makes the binary run as plain Node.
   delete env.ELECTRON_RUN_AS_NODE;
   env.ELECTRON_SKIP_UPDATE = '1';
+  env.NODE_ENV = process.env.E2E_DEV === '1' ? 'development' : 'production';
   return env;
 }
 
@@ -40,7 +40,7 @@ async function neutralizeNativeDialogs(app: ElectronApplication) {
     dialog.showMessageBox = () => Promise.resolve({ response: 0, checkboxChecked: false });
     dialog.showOpenDialogSync = () => undefined;
     dialog.showOpenDialog = () => Promise.resolve({ canceled: true, filePaths: [] });
-    dialog.showSaveDialogSync = () => undefined;
+    dialog.showSaveDialogSync = () => '';
     dialog.showSaveDialog = () => Promise.resolve({ canceled: true, filePath: '' });
   });
 }
@@ -73,7 +73,7 @@ export const test = base.extend<ElectronFixtures>({
         cwd: launchCwd,
         env: electronEnv(),
         colorScheme: 'light',
-        offline: true,
+        offline: process.env.E2E_DEV !== '1',
         timeout: 60_000,
       });
       await app.context().tracing.start({ screenshots: true, snapshots: true });
